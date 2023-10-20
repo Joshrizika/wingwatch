@@ -52,20 +52,20 @@ def calculateCoordinateswithin50Miles(iataCode, boxDimensions):
 #parameters: iataCode - string
 #returns: a list of flights
 def getFlights(iataCode):
-    boxDimensions = 50 #set the dimensions of the box that bounds the results
+    boxDimensions = 30 #set the dimensions of the box that bounds the results
     boundsBox = calculateCoordinateswithin50Miles(iataCode, boxDimensions) #get the bounding box coordinates
     params_depart = { #set the parameters for the first api request
         'api_key': 'ed9f2aab-ab95-4805-9da8-b43eaf96a836', #api key
         'bbox': f'{boundsBox[2]}, {boundsBox[3]}, {boundsBox[0]}, {boundsBox[1]}', #bounding box
         'dep_iata': iataCode, #departing airport iata code
-        '_fields': 'flight_icao, airline_icao, lat, lng, alt, dep_iata, arr_iata, status' #return values
+        '_fields': 'hex, flight_icao, airline_icao, lat, lng, alt, dep_iata, arr_iata, status' #return values
     }
 
     params_arrive = { #set the parameters for the second api request
         'api_key': 'ed9f2aab-ab95-4805-9da8-b43eaf96a836', #api key
         'bbox': f'{boundsBox[2]}, {boundsBox[3]}, {boundsBox[0]}, {boundsBox[1]}', #bounding box
         'arr_iata': iataCode, #arriving airport iata code
-        '_fields': 'flight_icao, airline_icao, lat, lng, alt, dep_iata, arr_iata, status' #return values
+        '_fields': 'hex, flight_icao, airline_icao, lat, lng, alt, dep_iata, arr_iata, status' #return values
     }
     api_result_depart = requests.get('https://airlabs.co/api/v9/flights', params_depart) #first api call
     api_result_arrive = requests.get('https://airlabs.co/api/v9/flights', params_arrive) #second api call
@@ -77,7 +77,7 @@ def getFlights(iataCode):
 
     api_response = api_response_depart + api_response_arrive #concatenate the results together
 
-    airborne_flights = [flight for flight in api_response if flight['status'] == 'en-route'] #filter out all flights that are not en-route
+    airborne_flights = [flight for flight in api_response if flight['status'] == 'en-route' and flight['alt'] <= 1500] #filter out all flights that are not en-route and that are below 1500 feet
 
     timestamp = datetime.now() #get current time
     timestamped_airborne_flights = [{'timestamp': timestamp, **d} for d in airborne_flights] #add timestamp to each flight
@@ -93,7 +93,7 @@ def trackFlights(iataCode):
 
     try:
         with open(log_file_name, 'w') as log_file: #create the file
-            header = "timestamp,flight_icao,airline_icao,lat,lng,alt,dep_iata,arr_iata,status"
+            header = "hex,timestamp,flight_icao,airline_icao,lat,lng,alt,dep_iata,arr_iata,status"
             log_file.write(header)
     except IOError as e: #check for errors
         print(f"Error creating the file: {e}")
