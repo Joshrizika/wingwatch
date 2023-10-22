@@ -4,6 +4,7 @@ import math
 import requests
 from datetime import datetime
 import time
+import os
 
 
 with open('airport_data.js', 'r') as file:
@@ -90,21 +91,24 @@ def getFlights(iataCode):
 #returns: nothing
 def trackFlights(iataCode):
     log_file_name = f"flight_log_{iataCode}.csv" #create a new file name
+    file_exists = os.path.isfile(log_file_name) #check if file exists already
+    
+    if(not file_exists): #if the file does not exist then create it
+        try:
+            with open(log_file_name, 'w') as log_file: #create the file
+                pass
+        except IOError as e: #check for errors
+            print(f"Error creating the file: {e}")
 
-    try:
-        with open(log_file_name, 'w') as log_file: #create the file
-            header = "hex,timestamp,flight_icao,airline_icao,lat,lng,alt,dep_iata,arr_iata,status"
-            log_file.write(header)
-    except IOError as e: #check for errors
-        print(f"Error creating the file: {e}")
-
+    include_headers = not file_exists #if the file doesnt exist then i should include headers
     while True: #loop until program is terminated
         flight_info = getFlights(iataCode) #get the flights
         new_flight_data_df = pd.DataFrame(flight_info) #add them to a pandas dataframe
         with open(log_file_name, 'a') as log_file: #open the file
-            new_flight_data_df.to_csv(log_file, header=False, index=False) #add the new dataframe to the file
+            new_flight_data_df.to_csv(log_file, header=include_headers, index=False) #add the new dataframe to the file
 
+        file_exists = False
         time.sleep(10) #wait 10 seconds then repeat
 
-trackFlights("BOS")
+trackFlights("DCA")
 
