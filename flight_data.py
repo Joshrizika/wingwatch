@@ -59,14 +59,12 @@ def getFlights(iataCode):
         'api_key': 'ed9f2aab-ab95-4805-9da8-b43eaf96a836', #api key
         'bbox': f'{boundsBox[2]}, {boundsBox[3]}, {boundsBox[0]}, {boundsBox[1]}', #bounding box
         'dep_iata': iataCode, #departing airport iata code
-        '_fields': 'hex, flight_icao, airline_icao, lat, lng, alt, dep_iata, arr_iata, status' #return values
     }
 
     params_arrive = { #set the parameters for the second api request
         'api_key': 'ed9f2aab-ab95-4805-9da8-b43eaf96a836', #api key
         'bbox': f'{boundsBox[2]}, {boundsBox[3]}, {boundsBox[0]}, {boundsBox[1]}', #bounding box
         'arr_iata': iataCode, #arriving airport iata code
-        '_fields': 'hex, flight_icao, airline_icao, lat, lng, alt, dep_iata, arr_iata, status' #return values
     }
     api_result_depart = requests.get('https://airlabs.co/api/v9/flights', params_depart) #first api call
     api_result_arrive = requests.get('https://airlabs.co/api/v9/flights', params_arrive) #second api call
