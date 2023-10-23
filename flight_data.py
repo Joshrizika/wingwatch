@@ -89,7 +89,7 @@ def getFlights(iataCode):
 #parameters: iataCode - string
 #returns: nothing
 def trackFlights(iataCode):
-    log_file_name = f"flight_log_{iataCode}.csv" #create a new file name
+    log_file_name = f"flightData/flight_log_{iataCode}.csv" #create a new file name
     file_exists = os.path.isfile(log_file_name) #check if file exists already
     
     if(not file_exists): #if the file does not exist then create it
