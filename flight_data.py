@@ -7,19 +7,18 @@ import time
 import os
 
 
-with open('airport_data.js', 'r') as file:
-    js_code = file.read()
-
-ctx = execjs.compile(js_code)
-airport_data = ctx.call('require', './airport_data')
-
-airport_data_df = pd.DataFrame(airport_data)
 
 
 #function: to get airport coordinates given the location
 #parameters: iataCode - string
 #returns: tuple with latiutde and longitude
 def findAirportCoordinatesByIATACode(iataCode): 
+    with open('airport_data.js', 'r') as file: #open file with airport data
+        js_code = file.read() #read the file
+
+    ctx = execjs.compile(js_code) #compile the code at end of js file to get data
+    airport_data = ctx.call('require', './airport_data') #require we have this data
+    airport_data_df = pd.DataFrame(airport_data) #put data in a dataframe
     airport_data = airport_data_df.loc[airport_data_df["iata_code"] == iataCode] #get row with IATA code
     coordinates = airport_data["coordinates"].iloc[0] #isolate coordinates
     longitude, latitude = map(float, coordinates.split(', ')) #split lat and long
@@ -29,7 +28,7 @@ def findAirportCoordinatesByIATACode(iataCode):
 #function: to calculate a box around the given airport with each side's length being specified by boxDimensions, the airport will be at the center
 #parameters: iataCode - string, boxDimensions - int
 #returns: tuple with north, east, south, and west boundaries respectively
-def calculateCoordinateswithin50Miles(iataCode, boxDimensions):
+def calculateCoordinateswithinDimensions(iataCode, boxDimensions):
     earthRadius = 3963.19 #radius of earth in miles
     angularDistance = boxDimensions / earthRadius #gets angular distance (in radians) covered by the desired box dimensions
 
@@ -54,17 +53,19 @@ def calculateCoordinateswithin50Miles(iataCode, boxDimensions):
 #returns: a list of flights
 def getFlights(iataCode):
     boxDimensions = 30 #set the dimensions of the box that bounds the results
-    boundsBox = calculateCoordinateswithin50Miles(iataCode, boxDimensions) #get the bounding box coordinates
+    boundsBox = calculateCoordinateswithinDimensions(iataCode, boxDimensions) #get the bounding box coordinates
     params_depart = { #set the parameters for the first api request
         'api_key': 'ed9f2aab-ab95-4805-9da8-b43eaf96a836', #api key
         'bbox': f'{boundsBox[2]}, {boundsBox[3]}, {boundsBox[0]}, {boundsBox[1]}', #bounding box
         'dep_iata': iataCode, #departing airport iata code
+        '_fields': 'flight_icao, airline_icao, lat, lng, alt, dep_iata, arr_iata, status' #return values
     }
 
     params_arrive = { #set the parameters for the second api request
         'api_key': 'ed9f2aab-ab95-4805-9da8-b43eaf96a836', #api key
         'bbox': f'{boundsBox[2]}, {boundsBox[3]}, {boundsBox[0]}, {boundsBox[1]}', #bounding box
         'arr_iata': iataCode, #arriving airport iata code
+        '_fields': 'flight_icao, airline_icao, lat, lng, alt, dep_iata, arr_iata, status' #return values
     }
     api_result_depart = requests.get('https://airlabs.co/api/v9/flights', params_depart) #first api call
     api_result_arrive = requests.get('https://airlabs.co/api/v9/flights', params_arrive) #second api call
@@ -76,7 +77,7 @@ def getFlights(iataCode):
 
     api_response = api_response_depart + api_response_arrive #concatenate the results together
 
-    airborne_flights = [flight for flight in api_response if flight['status'] == 'en-route' and flight['alt'] <= 1500] #filter out all flights that are not en-route and that are below 1500 feet
+    airborne_flights = [flight for flight in api_response if flight['status'] == 'en-route' and flight['alt'] <= 1500 and flight['alt'] >= 30] #filter out all flights that are not en-route and that are below 30 feet and above 1500 feet
 
     timestamp = datetime.now() #get current time
     timestamped_airborne_flights = [{'timestamp': timestamp, **d} for d in airborne_flights] #add timestamp to each flight
@@ -108,5 +109,7 @@ def trackFlights(iataCode):
         file_exists = False
         time.sleep(10) #wait 10 seconds then repeat
 
-trackFlights("DCA")
 
+
+if __name__ == "__main__":
+    trackFlights("BOS")
