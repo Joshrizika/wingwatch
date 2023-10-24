@@ -2,8 +2,6 @@ import folium
 import pandas as pd
 from flight_data import findAirportCoordinatesByIATACode
 
-data_path = "flightData/flight_log_BOS.csv"
-
 #function: to display all the points recorded in the collected data
 #parameters: data_path - string
 #returns: nothing
@@ -26,5 +24,8 @@ def displayData(data_path):
         
     map.save(f'flightData/maps/map_{iataCode}.html') #save the map
 
+
 if __name__ == "__main__":
+    data_path = "flightData/flight_log_BOS.csv" #should be in format xxxxxxxxxx_{iataCode}.csv
+
     displayData(data_path)
