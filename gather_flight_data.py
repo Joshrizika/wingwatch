@@ -6,9 +6,6 @@ from datetime import datetime
 import time
 import os
 
-
-
-
 #function: to get airport coordinates given the location
 #parameters: iataCode - string
 #returns: tuple with latiutde and longitude

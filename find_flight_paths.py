@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import math
 from sklearn.cluster import DBSCAN
-from flight_data import findAirportCoordinatesByIATACode
+from gather_flight_data import findAirportCoordinatesByIATACode
 import matplotlib.pyplot as plt
 import folium
 import os
@@ -93,57 +93,65 @@ def createClusters(data_path):
     #     if label != -1: #if they are not noise
     #         print(f"Cluster {label}: {size} points") #print out the cluster and its corresponding size
     #     else: #if they are noise
-    #         print(f"Noise: {size} points") #print out the noise and its corresponding size
+            # print(f"Noise: {size} points") #print out the noise and its corresponding size
 
     # visualizeClusters(flight_data, cluster_labels) #visualize the clusters
 
     return (flight_data, cluster_sizes)
 
+#function: get the equations for the paths used in these clusters
+#parameters: data_path - string
+#returns: dictionary containing slope, y-intercept, and 4 coordinate bounding lines
 def getPaths(data_path):
-    flight_data, cluster_sizes = createClusters(data_path)
+    flight_data, cluster_sizes = createClusters(data_path) #create the clusters and get the flight data and cluster data
+    top_cluster_dict = {cluster: size for cluster, size in cluster_sizes.items() if size >= 100} #filter out clusters that have less than 100 points
+    top_clusters = list(top_cluster_dict.keys()) #make a list of the remaining clusters
+    top_cluster_flight_data = flight_data[flight_data['cluster'].isin(top_clusters)] #filter out all data not present in the top clusters
 
-    top_cluster_dict = {cluster: size for cluster, size in cluster_sizes.items() if size >= 100} #filter out clusters to those that have more than 100 points
+    cluster_dfs = [] #create a new list to store individual cluster flight data
 
-    top_clusters = list(top_cluster_dict.keys())
-
-    top_cluster_flight_data = flight_data[flight_data['cluster'].isin(top_clusters)]
-
-    cluster_dfs = []
-
-    for cluster in top_clusters:
-        new_cluster_df = top_cluster_flight_data[top_cluster_flight_data['cluster'] == cluster].reset_index(drop=True)
-
-        cluster_dfs.append(new_cluster_df)
+    for cluster in top_clusters: #for each cluster
+        new_cluster_df = top_cluster_flight_data[top_cluster_flight_data['cluster'] == cluster].reset_index(drop=True) #filter out data that does not belong to this cluster
+        cluster_dfs.append(new_cluster_df) #append the cluster data to a list of cluster dataframes
 
     # displayClusterData(cluster_dfs, data_path[-7:-4])
+
+    flight_paths_lines = [] #create a new list to store information about the lines
 
     for cluster_df in cluster_dfs:
         X = cluster_df[['lng']] #extract longitude in the form of a 2D array
         y = cluster_df['lat'] #extract latitude in the form of a 1D array
 
-        model = LinearRegression()
-        model.fit(X, y)
+        model = LinearRegression() #create a linear regression model
+        model.fit(X, y) #fit points to this linear regression model
 
-        slope = model.coef_[0]
-        intercept = model.intercept_
+        slope = model.coef_[0] #get the slope of the model
+        intercept = model.intercept_ #get the y-intercept of the model
 
-        # plt.scatter(X, y, label='Data Points')
-        # plt.plot(X, model.predict(X), color='red', label='Regression Line')
-        # plt.xlabel('Longitude')
-        # plt.ylabel('Latitude')
-        # plt.legend()
-        # plt.show()
+        plt.scatter(X, y, label='Data Points') #create a scatter plot with all the data
+        plt.plot(X, model.predict(X), color='red', label='Regression Line') #plot the projected linear regression model for the provided data
+        plt.xlabel('Longitude') #label longitude
+        plt.ylabel('Latitude') #label latitude
+        plt.legend() #create a legend
+        plt.show() #show the plot
 
-        print(f"Regression Equation: Latitude = {slope:.2f} * Longitude + {intercept:.2f}")
+        print(f"Regression Equation: Latitude = {slope:.2f} * Longitude + {intercept:.2f}") #print out line equation
 
-        
+        new_line_dict = {'slope': slope, 
+                         'intercept': intercept, 
+                         'max_lat': max(cluster_df['lat']), 
+                         'max_long': max(cluster_df['lng']), 
+                         'min_lat': min(cluster_df['lat']), 
+                         'min_long': min(cluster_df['lng'])} #create a dictionary of all the line information
 
+        flight_paths_lines.append(new_line_dict) #append it to the list of lines
 
+    return flight_paths_lines #return the list of lines
 
 if __name__ == "__main__":  
     data_path = "flightData/flight_log_BOS.csv" #should be in format xxxxxxxxxx_{iataCode}.csv
-
-    getPaths(data_path)
+    flight_path_lines = getPaths(data_path)
+    print(flight_path_lines)
 
 
 
