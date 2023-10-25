@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import math
 from sklearn.cluster import DBSCAN
-from gather_flight_data import findAirportCoordinatesByIATACode
+from clusters import findAirportCoordinatesByIATACode
 import matplotlib.pyplot as plt
 import folium
 import os
