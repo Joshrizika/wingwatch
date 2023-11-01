@@ -15,9 +15,9 @@ The repository contains the code used to gather and organize the data.  Along wi
 
 ## Configuration
 
-flight_paths.py - Tracks data for the specified airport and outputs it in a .csv.
-display_data.py - Displays location data from a .csv.
-clusters.py - takes the data from a .csv and organizes it into clusters, filters out all insignificant clusters, and then plots a line through each cluster to find a flight path.
+flight_paths.py - Tracks data for the specified airport and outputs it in a .csv.  
+display_data.py - Displays location data from a .csv.  
+clusters.py - takes the data from a .csv and organizes it into clusters, filters out all insignificant clusters, and then plots a line through each cluster to find a flight path.  
 
 ### flight_paths.py
 
