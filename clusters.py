@@ -71,7 +71,7 @@ def createClusters(data_path):
 
     eps = miles_to_degrees(eps_miles, findAirportCoordinatesByIATACode(iataCode)[0]) #given the inputed epsilon value in miles, convert into degrees at the latitude of the specified airport
     
-    print(eps)
+    # print(eps)
 
     flight_data = pd.read_csv(data_path) #read flight data
     flight_data['timestamp'] = pd.to_datetime(flight_data['timestamp']) #make sure the timestamp is in datetime format
@@ -88,7 +88,7 @@ def createClusters(data_path):
     unique_labels = np.unique(cluster_labels) #get all unique clusters
     num_clusters = len(unique_labels) - 1 #get the total number of clusters
 
-    print(num_clusters)
+    # print(num_clusters)
 
     cluster_sizes = {label: np.sum(cluster_labels == label) for label in unique_labels if label != -1} #calculate the size of each cluster
 
@@ -132,21 +132,22 @@ def getPaths(data_path):
         slope = model.coef_[0] #get the slope of the model
         intercept = model.intercept_ #get the y-intercept of the model
 
-        plt.scatter(X, y, label='Data Points') #create a scatter plot with all the data
-        plt.plot(X, model.predict(X), color='red', label='Regression Line') #plot the projected linear regression model for the provided data
-        plt.xlabel('Longitude') #label longitude
-        plt.ylabel('Latitude') #label latitude
-        plt.legend() #create a legend
-        plt.show() #show the plot
+        # plt.scatter(X, y, label='Data Points') #create a scatter plot with all the data
+        # plt.plot(X, model.predict(X), color='red', label='Regression Line') #plot the projected linear regression model for the provided data
+        # plt.xlabel('Longitude') #label longitude
+        # plt.ylabel('Latitude') #label latitude
+        # plt.legend() #create a legend
+        # plt.show() #show the plot
 
-        print(f"Regression Equation: Latitude = {slope:.2f} * Longitude + {intercept:.2f}") #print out line equation
+        # print(f"Regression Equation: Latitude = {slope:.2f} * Longitude + {intercept:.2f}") #print out line equation
 
         new_line_dict = {'slope': slope, 
                          'intercept': intercept, 
                          'max_lat': max(cluster_df['lat']), 
                          'max_long': max(cluster_df['lng']), 
                          'min_lat': min(cluster_df['lat']), 
-                         'min_long': min(cluster_df['lng'])} #create a dictionary of all the line information
+                         'min_long': min(cluster_df['lng']),
+                         'cluster': cluster_df} #create a dictionary of all the line information
 
         flight_paths_lines.append(new_line_dict) #append it to the list of lines
 
