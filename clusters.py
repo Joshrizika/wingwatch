@@ -9,18 +9,15 @@ import os
 import shutil
 from sklearn.linear_model import LinearRegression
 
-#function: given the number of miles, express it in degrees at the specified latitude
-#parameters: miles - int, latitude - float
-#returns: epsilon (miles in degrees at specified latitude)
-def miles_to_degrees(miles, latitude):
-    earth_radius_miles = 3958.8 #define earth radius
-    distance_radians = miles/earth_radius_miles #earth radius in radians
-    distance_degrees = math.degrees(distance_radians) #earth radius in degrees
-    degrees_per_mile = 1/69 #69 miles per 1 degree of latitude
-
-    eps_in_degrees = distance_degrees / math.cos(math.radians(latitude)) * degrees_per_mile #find eps
-
-    return eps_in_degrees #return eps
+#function: converts distance_miles into degrees based on the latitude given
+#parameters: distance_miles - float, latitude - float
+#returns: distance in degrees
+def miles_to_degrees(distance_miles, latitude):
+    earth_radius_miles = 3958.8 #earth's radius in miles
+    circumference_at_latitude = 2 * math.pi * earth_radius_miles * math.cos(math.radians(latitude)) #calculate circumference of earth at latitude
+    distance_degrees = (distance_miles / circumference_at_latitude) * 360.0 #calculate degrees
+    
+    return distance_degrees #return degrees
 
 #function: display the flight data in the clusters that it has been organized into
 #parameters: flight_data - Pandas DataFrame, cluster_labels - list
@@ -42,7 +39,8 @@ def visualizeClusters(flight_data, cluster_labels):
 #parameters: data - Pandas DataFrame, iataCode - string
 #returns: nothing
 def displayClusterData(cluster_dfs, iataCode):
-    shutil.rmtree(f'flightData/maps/clusters/{iataCode}') #remove the directory and its contents
+    if os.path.exists(f'flightData/maps/clusters/{iataCode}') and os.path.isdir(f'flightData/maps/clusters/{iataCode}'):
+        shutil.rmtree(f'flightData/maps/clusters/{iataCode}') #remove the directory and its contents
     for cluster in cluster_dfs:
         cluster_num = cluster.iloc[0]['cluster']
         map = folium.Map(location=list(findAirportCoordinatesByIATACode(iataCode)), zoom_start=8) #create the map with the airport at the center
@@ -66,13 +64,11 @@ def displayClusterData(cluster_dfs, iataCode):
 def createClusters(data_path):
     iataCode = data_path[-7:-4] #get the iataCode from the dataPath
 
-    eps_miles = 8 #epsilon is the distance between points that DBSCAN looks for another point in order to provide a classification of either noise, non-core, or core points. 
+    eps_miles = 0.125 #epsilon is the distance between points that DBSCAN looks for another point in order to provide a classification of either noise, non-core, or core points. 
     minPts = 5 #minimum points to form a cluster
 
     eps = miles_to_degrees(eps_miles, findAirportCoordinatesByIATACode(iataCode)[0]) #given the inputed epsilon value in miles, convert into degrees at the latitude of the specified airport
     
-    # print(eps)
-
     flight_data = pd.read_csv(data_path) #read flight data
     flight_data['timestamp'] = pd.to_datetime(flight_data['timestamp']) #make sure the timestamp is in datetime format
 
@@ -88,7 +84,7 @@ def createClusters(data_path):
     unique_labels = np.unique(cluster_labels) #get all unique clusters
     num_clusters = len(unique_labels) - 1 #get the total number of clusters
 
-    # print(num_clusters)
+    print(num_clusters)
 
     cluster_sizes = {label: np.sum(cluster_labels == label) for label in unique_labels if label != -1} #calculate the size of each cluster
 
@@ -97,7 +93,7 @@ def createClusters(data_path):
     #     if label != -1: #if they are not noise
     #         print(f"Cluster {label}: {size} points") #print out the cluster and its corresponding size
     #     else: #if they are noise
-            # print(f"Noise: {size} points") #print out the noise and its corresponding size
+    #         print(f"Noise: {size} points") #print out the noise and its corresponding size
 
     # visualizeClusters(flight_data, cluster_labels) #visualize the clusters
 
@@ -118,7 +114,7 @@ def getPaths(data_path):
         new_cluster_df = top_cluster_flight_data[top_cluster_flight_data['cluster'] == cluster].reset_index(drop=True) #filter out data that does not belong to this cluster
         cluster_dfs.append(new_cluster_df) #append the cluster data to a list of cluster dataframes
 
-    # displayClusterData(cluster_dfs, data_path[-7:-4])
+    displayClusterData(cluster_dfs, data_path[-7:-4])
 
     flight_paths_lines = [] #create a new list to store information about the lines
 
@@ -132,14 +128,14 @@ def getPaths(data_path):
         slope = model.coef_[0] #get the slope of the model
         intercept = model.intercept_ #get the y-intercept of the model
 
-        # plt.scatter(X, y, label='Data Points') #create a scatter plot with all the data
-        # plt.plot(X, model.predict(X), color='red', label='Regression Line') #plot the projected linear regression model for the provided data
-        # plt.xlabel('Longitude') #label longitude
-        # plt.ylabel('Latitude') #label latitude
-        # plt.legend() #create a legend
-        # plt.show() #show the plot
+        plt.scatter(X, y, label='Data Points') #create a scatter plot with all the data
+        plt.plot(X, model.predict(X), color='red', label='Regression Line') #plot the projected linear regression model for the provided data
+        plt.xlabel('Longitude') #label longitude
+        plt.ylabel('Latitude') #label latitude
+        plt.legend() #create a legend
+        plt.show() #show the plot
 
-        # print(f"Regression Equation: Latitude = {slope:.2f} * Longitude + {intercept:.2f}") #print out line equation
+        print(f"Regression Equation: Latitude = {slope:.2f} * Longitude + {intercept:.2f}") #print out line equation
 
         new_line_dict = {'slope': slope, 
                          'intercept': intercept, 
@@ -154,9 +150,9 @@ def getPaths(data_path):
     return flight_paths_lines #return the list of lines
 
 if __name__ == "__main__":  
-    data_path = "flightData/flight_log_BOS.csv" #should be in format xxxxxxxxxx_{iataCode}.csv
+    data_path = "flightData/flight_log_DCA.csv" #should be in format xxxxxxxxxx_{iataCode}.csv
     flight_path_lines = getPaths(data_path)
-    print(flight_path_lines)
+    # print(flight_path_lines)
 
 
 
