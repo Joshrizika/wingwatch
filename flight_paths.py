@@ -70,7 +70,7 @@ def getFlights(iataCode):
 
     api_response = api_response_depart + api_response_arrive #concatenate the results together
 
-    airborne_flights = [flight for flight in api_response if flight['status'] == 'en-route' and flight['alt'] <= 1500 and flight['alt'] >= 30] #filter out all flights that are not en-route and that are below 30 feet and above 1500 feet
+    airborne_flights = [flight for flight in api_response if flight['status'] == 'en-route' and 'alt' in flight and flight['alt'] <= 1500 and flight['alt'] >= 30] #filter out all flights that are not en-route and that are below 30 feet and above 1500 feet
 
     timestamp = datetime.now() #get current time
     timestamped_airborne_flights = [{'timestamp': timestamp, **d} for d in airborne_flights] #add timestamp to each flight
@@ -80,24 +80,31 @@ def getFlights(iataCode):
 
 #function: to call getFlights() every 10 seconds and add the results to a file 
 #parameters: iataCode - string
-#returns: nothing
+#returns: live flight data into a .csv file
 def trackFlights(iataCode):
     log_file_name = f"flightData/flight_log_{iataCode}.csv" #create a new file name
     file_exists = os.path.isfile(log_file_name) #check if file exists already
+
+    max_line_count = 5000 #set maximum line count
     
-    if(not file_exists): #if the file does not exist then create it
+    if not file_exists: #if the file does not exist then create it
         try:
             with open(log_file_name, 'w') as log_file: #create the file
-                pass
+                line_count = 0 #set initial line count to 0
         except IOError as e: #check for errors
             print(f"Error creating the file: {e}")
+    else: #if the file does exist
+        with open(log_file_name, 'r') as log_file: #open the file
+            line_count = sum(1 for line in log_file) #and count the lines
+
 
     include_headers = not file_exists #if the file doesnt exist then i should include headers
-    while True: #loop until program is terminated
+    while line_count < max_line_count: #loop until program is terminated
         flight_info = getFlights(iataCode) #get the flights
         new_flight_data_df = pd.DataFrame(flight_info) #add them to a pandas dataframe
         with open(log_file_name, 'a') as log_file: #open the file
             new_flight_data_df.to_csv(log_file, header=include_headers, index=False) #add the new dataframe to the file
+            line_count += len(new_flight_data_df) #add new lines to line count
 
         file_exists = False
         time.sleep(10) #wait 10 seconds then repeat
@@ -105,4 +112,4 @@ def trackFlights(iataCode):
 
 
 if __name__ == "__main__":
-    trackFlights("BOS")
+    trackFlights("DCA")
