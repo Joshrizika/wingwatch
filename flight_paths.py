@@ -91,6 +91,7 @@ def trackFlights(iataCode):
         try:
             with open(log_file_name, 'w') as log_file: #create the file
                 line_count = 0 #set initial line count to 0
+                include_headers = True
         except IOError as e: #check for errors
             print(f"Error creating the file: {e}")
     else: #if the file does exist
@@ -98,13 +99,13 @@ def trackFlights(iataCode):
             line_count = sum(1 for line in log_file) #and count the lines
 
 
-    include_headers = not file_exists #if the file doesnt exist then i should include headers
     while line_count < max_line_count: #loop until program is terminated
         flight_info = getFlights(iataCode) #get the flights
         new_flight_data_df = pd.DataFrame(flight_info) #add them to a pandas dataframe
         with open(log_file_name, 'a') as log_file: #open the file
             new_flight_data_df.to_csv(log_file, header=include_headers, index=False) #add the new dataframe to the file
             line_count += len(new_flight_data_df) #add new lines to line count
+            include_headers = False
 
         file_exists = False
         time.sleep(10) #wait 10 seconds then repeat
@@ -112,4 +113,4 @@ def trackFlights(iataCode):
 
 
 if __name__ == "__main__":
-    trackFlights("DCA")
+    trackFlights("JFK")
