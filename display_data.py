@@ -5,8 +5,8 @@ from flight_paths import findAirportCoordinatesByIATACode
 #function: to display all the points recorded in the collected data
 #parameters: data_path - string
 #returns: nothing
-def displayData(data_path):
-    iataCode = data_path[-7:-4] #get iata code from data path
+def displayData(iataCode):
+    data_path = f"flightData/flight_log_{iataCode}.csv"
 
     data = pd.read_csv(data_path, parse_dates=['timestamp']) #create a dataframe using the data and set the dates to datetime type
 
@@ -26,6 +26,4 @@ def displayData(data_path):
 
 
 if __name__ == "__main__":
-    data_path = "flightData/flight_log_BOS.csv" #should be in format xxxxxxxxxx_{iataCode}.csv
-
-    displayData(data_path)
+    displayData("DCA")
