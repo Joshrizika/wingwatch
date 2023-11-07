@@ -24,10 +24,6 @@ def miles_to_degrees(distance_miles, latitude):
 #parameters: flight_data - Pandas DataFrame, cluster_labels - list
 #returns: nothing
 def visualizeClusters(flight_data):
-    # print("here")
-    # print(flight_data)
-    # flight_data['cluster'] = cluster_labels #add a cluster label to the flight data
-
     clustered_data = flight_data[flight_data['cluster'] != -1] #if the data is noise then remove it
 
     plt.figure(figsize=(10, 8)) #create a figure
