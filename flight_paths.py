@@ -70,7 +70,7 @@ def getFlights(iataCode):
 
     api_response = api_response_depart + api_response_arrive #concatenate the results together
 
-    airborne_flights = [flight for flight in api_response if flight['status'] == 'en-route' and 'alt' in flight and flight['alt'] <= 1500 and flight['alt'] >= 30] #filter out all flights that are not en-route and that are below 30 feet and above 1500 feet
+    airborne_flights = [flight for flight in api_response if flight['status'] == 'en-route' and 'alt' in flight and flight['alt'] <= 1500 and flight['alt'] >= 10] #filter out all flights that are not en-route and that are below 30 feet and above 1500 feet
 
     timestamp = datetime.now() #get current time
     timestamped_airborne_flights = [{'timestamp': timestamp, **d} for d in airborne_flights] #add timestamp to each flight
@@ -82,7 +82,7 @@ def getFlights(iataCode):
 #parameters: iataCode - string
 #returns: live flight data into a .csv file
 def trackFlights(iataCode):
-    log_file_name = f"flightData/flight_log_{iataCode}.csv" #create a new file name
+    log_file_name = f"flightData/flight_log_{iataCode}-2.csv" #create a new file name
     file_exists = os.path.isfile(log_file_name) #check if file exists already
 
     max_line_count = 5000 #set maximum line count
@@ -113,4 +113,4 @@ def trackFlights(iataCode):
 
 
 if __name__ == "__main__":
-    trackFlights("JFK")
+    trackFlights("DCA")
