@@ -1,63 +1,14 @@
 import math
 import requests
 import json
-
-#function: finds the minimum distance between a point and a line segment given A & B, the coordinates of each end of the line, and point E
-#parameters: A - List, B - List, E - List
-#returns: distance in degrees
-def minDistance(A, B, E) : 
-
-    # vector AB 
-    AB = [None, None] 
-    AB[0] = B[0] - A[0] 
-    AB[1] = B[1] - A[1] 
-
-    # vector BP 
-    BE = [None, None]
-    BE[0] = E[0] - B[0] 
-    BE[1] = E[1] - B[1] 
-
-    # vector AP 
-    AE = [None, None]
-    AE[0] = E[0] - A[0]
-    AE[1] = E[1] - A[1] 
-
-    # Variables to store dot product 
-
-    # Calculating the dot product 
-    AB_BE = AB[0] * BE[0] + AB[1] * BE[1] 
-    AB_AE = AB[0] * AE[0] + AB[1] * AE[1] 
-
-    # Minimum distance from 
-    # point E to the line segment 
-    reqAns = 0 
-
-    # Case 1 
-    if (AB_BE > 0) :
-
-        # Finding the magnitude 
-        y = E[1] - B[1] 
-        x = E[0] - B[0] 
-        reqAns = math.sqrt(x * x + y * y) 
-
-    # Case 2 
-    elif (AB_AE < 0) :
-        y = E[1] - A[1] 
-        x = E[0] - A[0] 
-        reqAns = math.sqrt(x * x + y * y) 
-
-    # Case 3 
-    else:
-
-        # Finding the perpendicular distance 
-        x1 = AB[0] 
-        y1 = AB[1] 
-        x2 = AE[0] 
-        y2 = AE[1] 
-        mod = math.sqrt(x1 * x1 + y1 * y1) 
-        reqAns = abs(x1 * y2 - y1 * x2) / mod 
-    
-    return reqAns 
+import numpy as np
+from scipy.integrate import quad
+from scipy.interpolate import interp1d
+import matplotlib.pyplot as plt
+import cartopy.crs as ccrs
+import cartopy.feature as cfeature
+from scipy.optimize import minimize
+from scipy.spatial.distance import euclidean
 
 #function: converts distance_degrees into miles based on the position given
 #parameters: lat - float, long - float, distance_degrees - float
@@ -87,93 +38,49 @@ def miles_to_degrees(distance_miles, latitude):
     
     return distance_degrees #return degrees
 
-#function: gets the endpoints of the line
-#parameters: line - dictionary
-#returns: tuple of coordinate pairs
-def findLineEndpoints(line):
-    #set variables
-    slope = line['slope']
-    intercept = line['intercept']
-    max_lat = line['max_lat']
-    max_long = line['max_long']
-    min_lat = line['min_lat']
-    min_long = line['min_long']
-    
-    lat1 = min_lat #set initial lat1
-    long1 = (lat1 - intercept) / slope #set initial long1 to correspond with lat1
-    
-    lat2 = max_lat #set initial lat2
-    long2 = (lat2 - intercept) / slope #set initial long2 to correspond with lat2
-    
-    if long1 < min_long: #if long1 is less than the min long
-        long1 = min_long #set long1 to the min long
-        lat1 = slope * long1 + intercept #adjust lat1 respectively
-        
-    if long2 < min_long: #if long2 is less than the min long
-        long2 = min_long #set long2 to the min long
-        lat2 = slope * long2 + intercept #adjust lat2 respectively
-        
-    if long1 > max_long: #if long1 is greater than the max long
-        long1 = max_long #set long1 to the max long
-        lat1 = slope * long1 + intercept #adjust lat1 respectively
-        
-    if long2 > max_long: #if long2 is greater than the max long
-        long2 = max_long #set long2 to the max long
-        lat2 = slope * long2 + intercept #adjust lat2 respectively
-        
-    return ([lat1, long1], [lat2, long2]) #return tuple of coordinate pairs
+#function: gets distance between point and point on polynomial line at x
+#parameters: x - float, point - tuple, coefficients - list
+#returns: distance in degrees
+def point_to_polynomial_distance(x, point, coefficients):
+    x_val = x[0] if np.ndim(x) > 0 else x #if x is in a list then get it at index 0
+    poly_lat = np.polyval(coefficients, x_val) #get the equivalent latitude for x along line
+    distance = euclidean((poly_lat, x_val), (point[0], point[1])) #calculate euclidean distance
+    return distance #return distance
 
-#function: gets the minimum distance between a point and a line
-#parameters: point - tuple, line - dictionary
+#function: finds the shortest distance between a point and a polynomial line
+#parameters: point - tuple, line - dict
 #returns: minimum distance in miles
 def pointLineDistance(point, line):
-    endpoint1, endpoint2 = findLineEndpoints(line) #calls findLineEndpoint function
-    distance_degrees = minDistance(endpoint1, endpoint2, list(point)) #calls minDistance function
-    distance_miles = degrees_to_miles(point[0], point[1], distance_degrees) # calls degrees_to_miles function
-    return distance_miles #returns distance in miles
+    coefficients = line['coefficients'] #get coefficients
+    min_long = line['min_long'] #get minimum longitude
+    max_long = line['max_long'] #get maximum longitude
+    bounds = [(min_long, max_long)] #define bounds
+    x0 = [np.mean([min_long, max_long])] #get intial x-value at midpoint
 
-#function: generates points interval_miles distance from each other on the line given
-#parameters: line - dictionary, interval_miles - float
-#returns: a list of points
-def generatePoints(line, interval_miles):
-    endpoint1, endpoint2 = findLineEndpoints(line) #gets endpoints of line
-
-    interval_degrees = miles_to_degrees(interval_miles, endpoint1[0]) #gets interval value in degrees
-
-    total_distance = ((endpoint2[0] - endpoint1[0])**2 + (endpoint2[1] - endpoint1[1])**2)**0.5 #calculates total distance of line
-    direction_vector = ((endpoint2[0] - endpoint1[0]) / total_distance, (endpoint2[1] - endpoint1[1]) / total_distance) #calculates direction vector
-
-    points = [] #initializes points list
-
-    #generate first point
-    if interval_degrees <= 0: #if interval is less or equal to 0
-        points.append(endpoint1) #first point is endpoint 1
-    elif interval_degrees >= total_distance: #if interval is greather than line lenght
-        points.append(endpoint2) #first point is endpoint 2
-    else:
-        dist_to_endpoint1 = ((endpoint1[0] - endpoint2[0])**2 + (endpoint1[1] - endpoint2[1])**2)**0.5 #calculate initial distance to endpoint 1 with pythagorean theorem
-        if interval_degrees <= dist_to_endpoint1: #if the interval is less or equal to the distance to endpoint1
-            first_point = (endpoint1[0] + interval_degrees * direction_vector[0], endpoint1[1] + interval_degrees * direction_vector[1]) #calculate coordinates of first point
-        else:
-            first_point = (endpoint2[0] - (total_distance - interval_degrees) * direction_vector[0], endpoint2[1] - (total_distance - interval_degrees) * direction_vector[1]) #use the interval distance to set the first point on the line
-        points.append(first_point) #append the first point
-    
-    #generate points at intervals until reaching a distance interval from the other endpoint
-    current_distance = interval_degrees # set current distance to 1 interval
-    while current_distance < total_distance - interval_degrees: #while were less than 1 interval from the end of the line
-        current_point = (points[-1][0] + interval_degrees * direction_vector[0], points[-1][1] + interval_degrees * direction_vector[1]) #calculate the current point
-        points.append(current_point) #append the current point
-        current_distance += interval_degrees #get the new current distance
-    
-    # Calculate the last point at a distance interval from the nearest endpoint
-    last_distance_to_endpoint2 = ((endpoint2[0] - points[-1][0])**2 + (endpoint2[1] - points[-1][1])**2)**0.5 #get the final distance to endpoint2
-    if interval_degrees <= last_distance_to_endpoint2: #if the distance is greater than the interval
-        last_point = (endpoint2[0] - interval_degrees * direction_vector[0], endpoint2[1] - interval_degrees * direction_vector[1]) #get the last point using the interval
-    else:
-        last_point = (endpoint1[0] + (total_distance - interval_degrees) * direction_vector[0], endpoint1[1] + (total_distance - interval_degrees) * direction_vector[1]) #get the last point using the complement distance
-    points.append(last_point) #append the last point
-    
-    return points
+    result = minimize( #use minimize function to find smallest distance
+    point_to_polynomial_distance, #call point_to_polynomial_distance
+    x0, #set initial x
+    args=(point, coefficients), #set point and coefficients as arguments
+    bounds=bounds, #set bounds
+    method='trust-constr',  #set method
+)
+    if result.success: #if minimize function was successful
+        closest_lon = result.x[0] #get the closest longitude
+        closest_lat = np.polyval(coefficients, closest_lon) #use line to calculate equivalent latitude
+        closest_point_on_curve = (closest_lat, closest_lon) #set tuple with coordinate pair
+        min_distance = euclidean(closest_point_on_curve, point) #calculate the euclidean distance between point and closest point
+        min_distance_miles = degrees_to_miles(closest_lat, closest_lon, min_distance) #convert distance to miles
+        return min_distance_miles #return distance
+    else: #if minimize function was not successful
+        # Print out debugging information
+        # print("Optimization failed:")
+        # print("Message:", result.message)
+        # print("Status Code:", result.status)
+        # print("Number of Iterations:", result.nit)
+        # print("Number of Function Evaluations:", result.nfev)
+        # print("Last Function Evaluation Value:", result.fun)
+        # print("Last x Value:", result.x)
+        raise ValueError("Optimization failed. Please check the input data and try again.") #call error
 
 #function: gets the haversine distance between two points
 #parameters: lat1 - float, long1 - float, lat2 - float, long2 - float
@@ -192,13 +99,79 @@ def haversine(lat1, long1, lat2, long2):
 
     return distance
 
+#function: gets the average altitude of planes in radius from point
+#parameters: point - tuple, cluster_df - DataFrame, radius_miles - float
+#returns: average altitude
 def getAverageAltitude(point, cluster_df, radius_miles):
-    radius_degrees = miles_to_degrees(radius_miles, point[0])
-    lat, long = point
+    lat, long = point #set lat and long
+    filtered_cluster_df = cluster_df[cluster_df.apply(lambda row: haversine(lat, long, row['lat'], row['lng']) <= radius_miles, axis=1)] #filter out all datapoints outside radius
+    average_altitude = filtered_cluster_df['alt'].mean() #calculate average altitude
+    return average_altitude #return average altitude
+
+#function: calculates the derivative of a polynomial and gets the value at x
+#parameters: x - float, coefficients - list
+#returns: value of derivative polynomial at x
+def derivative(x, coefficients):
+    p = np.poly1d(coefficients) #assert that coefficients are in 1d
+    return np.polyder(p)(x) #return value of derivative polynomial at x
+
+#function: calculates infinitesmial element of arc length for polynomial line at point x
+#parameters: x - float, coefficients - list
+#returns: value of arc length differential
+def arcLengthElement(x, coefficients):
+    return np.sqrt(1 + derivative(x, coefficients)**2) #return arc length differential
+
+#function: generates points interval distance apart along polynomial line
+#parameters: coefficients - list, start_x - float, end_x - float, interval - float
+#returns: list of points
+def generatePoints(coefficients, start_x, end_x, interval):
+    x_range = np.linspace(start_x, end_x, 1000) #calculate the arc lengths for a range of x-values
+    arc_lengths = [quad(arcLengthElement, start_x, x, args=(coefficients))[0] for x in x_range] #generate list of arc lengths
     
-    filtered_cluster_df = cluster_df[cluster_df.apply(lambda row: haversine(lat, long, row['lat'], row['lng']) <= radius_miles, axis=1)]
-    average_altitude = filtered_cluster_df['alt'].mean()
-    return average_altitude
+    arc_length_to_x = interp1d(arc_lengths, x_range) #create an interpolation function based on the calculated arc lengths
+    
+    x_values = [start_x] #initialize x-values list
+    current_arc_length = 0 #set initial arc length to 0
+    
+    #find each x-value at the specified interval along the curve
+    while current_arc_length < arc_lengths[-1]: #while current arc length is less than the total arc length
+        current_arc_length += interval #increase current arc length by the interval
+        if current_arc_length >= arc_lengths[-1]: #if current arc length is greater than the total arc length
+            break #break out of while loop
+        next_x = arc_length_to_x(current_arc_length) #calculate next value of x
+        x_values.append(next_x) #append x-value to x-values list
+        
+    points = [(float(np.polyval(coefficients, x)), float(x)) for x in x_values] #evaluate polynomial line at each x-value for corresponding y-values
+
+    return points #return points
+
+#function: display the points along the line on a map
+#parameters: points - list
+#returns: nothing
+def displayLinePointData(points):
+    fig = plt.figure(figsize=(10, 5)) #create new figure
+
+    ax = fig.add_subplot(1, 1, 1, projection=ccrs.Mercator()) #add mercador projection subplot
+
+    zoom = 0.5 #set zoom
+    min_long = min(point[1] for point in points) - zoom #get minimum longitude
+    max_long = max(point[1] for point in points) + zoom #get maximum longitude
+    min_lat = min(point[0] for point in points) - zoom #get minimum latitude
+    max_lat = max(point[0] for point in points) + zoom #get maximum latitude
+    
+    ax.set_extent([min_long, max_long, min_lat, max_lat], crs=ccrs.Geodetic()) #set bounds of map
+
+    ax.coastlines(resolution='10m') #add coastlines
+    ax.add_feature(cfeature.BORDERS, linestyle=':') #add borders
+    ax.add_feature(cfeature.LAND, edgecolor='black') #add land
+    ax.add_feature(cfeature.OCEAN) #add ocean
+    ax.add_feature(cfeature.LAKES, edgecolor='black') #add lakes
+    ax.add_feature(cfeature.RIVERS) #add river
+
+    for point in points: #for each point
+        plt.plot(point[1], point[0], 'ro', markersize=5, transform=ccrs.Geodetic()) #plot point on map
+
+    plt.show() #show plot
 
 
 #function: takes a line and gets all the parks around it
@@ -207,7 +180,8 @@ def getAverageAltitude(point, cluster_df, radius_miles):
 def getParks(line):
     search_distance_miles = 0.3 #distance from the line we will search for parks in miles
     search_distance_meters = search_distance_miles * 1609.34 #convert it to meters
-    points = generatePoints(line, search_distance_miles) #get points along the line
+    points = generatePoints(line['coefficients'], line['min_long'], line['max_long'], miles_to_degrees(search_distance_miles, line['min_lat'])) #generate points along line
+    # displayLinePointData(points) #display point data
 
     unique_spots = set() #create empty set of spots
 
@@ -234,6 +208,7 @@ def getParks(line):
             },
         }
 
+
         response = requests.post('https://places.googleapis.com/v1/places:searchNearby', headers=headers, json=json_data) #api call
         if response.status_code == 200: #if api call was successfull
             data = json.loads(response.text) #get the data
@@ -247,20 +222,24 @@ def getParks(line):
                         place['averageAltitude'] = getAverageAltitude(point, line['cluster'], search_distance_miles)
                         unique_spots.add(json.dumps(place)) #add spot to unique spots
     spots = list(unique_spots) #turn unique spots into list
+    # print(spots)
     return spots #return spots
 
 if __name__ == "__main__" : 
-    # point = (42.18910464633161, -71.09355756834351)
-    line = {'slope': 2.0669625894160877,
-            'intercept': 189.12936615997356, 
-            'max_lat': 42.349176, 
-            'max_long': -71.009757, 
-            'min_lat': 42.180796, 
-            'min_long': -71.094318}
+    line = {'coefficients': [
+                            -3.03918804e-30, -7.01339284e-32, 9.51372530e-27, -9.77640864e-25,
+                            6.81489730e-23, -3.46681640e-21, 8.53900410e-20, 7.63965073e-18,
+                            -1.50905591e-15, 1.63105937e-13, -1.38283618e-11, 9.68917112e-10,
+                            -5.32328856e-08, 1.59605029e-06, 1.07270076e-04, -2.57685970e-02,
+                            3.00784756e+00, -2.56326012e+02, 1.48160608e+04, 6.86667340e+02,
+                            -1.67431174e+08
+                            ],
+            'max_lat': 38.98708, 
+            'max_long': -77.039417, 
+            'min_lat': 38.867844, 
+            'min_long': -77.17926}
     
-    # point = (42.3984127, -70.9868147)
-    # getAverageAltitude(point, )
-
-    # spots = getParks(line)
+    spots = getParks(line)
+    # print(spots)
 
 
