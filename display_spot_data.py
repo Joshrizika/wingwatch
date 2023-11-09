@@ -6,10 +6,9 @@ from main import getSpots
 #function: calls getSpots on data_path and then plots spots on a map
 #parameters: data_path - string
 #returns: creates a .html file with the map
-def plot_locations_on_map(data_path):
-    spots = getSpots(data_path) #get the spots with the data
+def plot_locations_on_map(iataCode):
+    spots = getSpots(iataCode) #get the spots with the data
 
-    iataCode = data_path[-7:-4] #get the iataCode from the dataPath
     coordinates = findAirportCoordinatesByIATACode(iataCode) #get the coordinates of the airport
 
     m = folium.Map(location=coordinates, zoom_start=15) #create a map centered at an initial location
@@ -18,7 +17,6 @@ def plot_locations_on_map(data_path):
     for spot in spots: #for spot in spots
         try:
             location_data = json.loads(spot) #parse the JSON data
-
             latitude = location_data.get('location', {}).get('latitude', None) #get latitude
             longitude = location_data.get('location', {}).get('longitude', None) #get longitude
 
@@ -31,9 +29,8 @@ def plot_locations_on_map(data_path):
             print(f"Skipping invalid JSON data: {spot}")
 
     m.save(f'spotData/maps/spot_map_{iataCode}.html') #save the map
-    print("Map saved as locations_map.html")
+    print(f"Map saved as spotData/maps/spot_map_{iataCode}.html")
 
 
 if __name__ == "__main__" : 
-    data_path = 'flightData/flight_log_BOS.csv'
-    plot_locations_on_map(data_path)
+    plot_locations_on_map("JFK")
