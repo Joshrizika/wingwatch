@@ -11,12 +11,13 @@ def getSpots(iataCode):
     for line in flight_path_lines:
         spots.update(getParks(line))
     spots = list(spots)
+    # print(spots)
     return spots
 
 if __name__ == '__main__':
-    spots = getSpots("BOS")
-    print(spots)
-    print(len(spots))
+    spots = getSpots("DCA")
+    # print(spots)
+    # print(len(spots))
 
 
    
