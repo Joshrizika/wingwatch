@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_322c58347ca7ab59cf5265f5dd815b2c {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_322c58347ca7ab59cf5265f5dd815b2c" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_322c58347ca7ab59cf5265f5dd815b2c = L.map(
+                "map_322c58347ca7ab59cf5265f5dd815b2c",
+                {
+                    center: [40.639801, -73.7789],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 8,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_bbf7d710327611c510ab76560d708ad8 = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca target=\"_blank\" href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\"_blank\" href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            var marker_88f10347d73bd4a7887bbb3a11eafecb = L.marker(
+                [40.628082, -73.780701],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_88f10347d73bd4a7887bbb3a11eafecb.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:11:22.883412<br>Flight ICAO: JBU1483<br>Latitude: 40.628082<br>Longitude: -73.780701<br>Altitude: 83<br>Departure IATA: JFK<br>Arrival IATA: MCO<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d1cd235e229c2548123f2a1805b5445d = L.marker(
+                [40.615036, -73.789612],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_d1cd235e229c2548123f2a1805b5445d.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:11:34.282052<br>Flight ICAO: JBU1483<br>Latitude: 40.615036<br>Longitude: -73.789612<br>Altitude: 388<br>Departure IATA: JFK<br>Arrival IATA: MCO<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_985a163987c03c944f25db128b217f67 = L.marker(
+                [40.615036, -73.789612],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_985a163987c03c944f25db128b217f67.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:11:45.713187<br>Flight ICAO: JBU1483<br>Latitude: 40.615036<br>Longitude: -73.789612<br>Altitude: 388<br>Departure IATA: JFK<br>Arrival IATA: MCO<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_986acc03d6272bc42bef361ad929d8da = L.marker(
+                [40.628931, -73.780122],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_986acc03d6272bc42bef361ad929d8da.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:13:04.156364<br>Flight ICAO: JBU1401<br>Latitude: 40.628931<br>Longitude: -73.780122<br>Altitude: 60<br>Departure IATA: JFK<br>Arrival IATA: FLL<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_38197339b0fdd7df33cacb948fad0a64 = L.marker(
+                [40.628931, -73.780122],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_38197339b0fdd7df33cacb948fad0a64.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:13:15.405938<br>Flight ICAO: JBU1401<br>Latitude: 40.628931<br>Longitude: -73.780122<br>Altitude: 60<br>Departure IATA: JFK<br>Arrival IATA: FLL<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_37e127633a3478f01361fc9186607f1e = L.marker(
+                [40.618038, -73.78805],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_37e127633a3478f01361fc9186607f1e.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:13:26.889382<br>Flight ICAO: JBU1401<br>Latitude: 40.618038<br>Longitude: -73.78805<br>Altitude: 320<br>Departure IATA: JFK<br>Arrival IATA: FLL<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4751afebc8cf45e956b41a65c99c8e48 = L.marker(
+                [40.62323, -73.784424],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_4751afebc8cf45e956b41a65c99c8e48.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:14:48.390856<br>Flight ICAO: JBU1721<br>Latitude: 40.62323<br>Longitude: -73.784424<br>Altitude: 342<br>Departure IATA: JFK<br>Arrival IATA: NAS<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c426f3f01971badd2c44bc20bc187eef = L.marker(
+                [40.62323, -73.784424],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_c426f3f01971badd2c44bc20bc187eef.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:14:59.757796<br>Flight ICAO: JBU1721<br>Latitude: 40.62323<br>Longitude: -73.784424<br>Altitude: 342<br>Departure IATA: JFK<br>Arrival IATA: NAS<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c07976303da7edbac102c20596ea2bc8 = L.marker(
+                [40.609565, -73.792419],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_c07976303da7edbac102c20596ea2bc8.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:15:10.739386<br>Flight ICAO: JBU1721<br>Latitude: 40.609565<br>Longitude: -73.792419<br>Altitude: 655<br>Departure IATA: JFK<br>Arrival IATA: NAS<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_bb62e1edb797cf49ccc6e0c40b78664e = L.marker(
+                [40.609565, -73.792419],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_bb62e1edb797cf49ccc6e0c40b78664e.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:15:22.046355<br>Flight ICAO: JBU1721<br>Latitude: 40.609565<br>Longitude: -73.792419<br>Altitude: 655<br>Departure IATA: JFK<br>Arrival IATA: NAS<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_95b23e707ab2b687f59072df71c8c0be = L.marker(
+                [40.629629, -73.779311],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_95b23e707ab2b687f59072df71c8c0be.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:15:44.875380<br>Flight ICAO: SKW3928<br>Latitude: 40.629629<br>Longitude: -73.779311<br>Altitude: 236<br>Departure IATA: JFK<br>Arrival IATA: CLE<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4626a88bad69dd96cc85f1574c564ec3 = L.marker(
+                [40.629629, -73.779311],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_4626a88bad69dd96cc85f1574c564ec3.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:15:55.882214<br>Flight ICAO: SKW3928<br>Latitude: 40.629629<br>Longitude: -73.779311<br>Altitude: 236<br>Departure IATA: JFK<br>Arrival IATA: CLE<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_1e22fb46f8095bf0febcc7abeedb2e22 = L.marker(
+                [40.621157, -73.784429],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_1e22fb46f8095bf0febcc7abeedb2e22.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:16:07.206063<br>Flight ICAO: SKW3928<br>Latitude: 40.621157<br>Longitude: -73.784429<br>Altitude: 449<br>Departure IATA: JFK<br>Arrival IATA: CLE<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_a605b0f1d4037c261908fe94783654f7 = L.marker(
+                [40.607758, -73.791016],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_a605b0f1d4037c261908fe94783654f7.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:16:18.385111<br>Flight ICAO: SKW3928<br>Latitude: 40.607758<br>Longitude: -73.791016<br>Altitude: 632<br>Departure IATA: JFK<br>Arrival IATA: CLE<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ce3b9e660579d78957663be7ffc304b5 = L.marker(
+                [40.607758, -73.791016],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_ce3b9e660579d78957663be7ffc304b5.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:16:29.573946<br>Flight ICAO: SKW3928<br>Latitude: 40.607758<br>Longitude: -73.791016<br>Altitude: 632<br>Departure IATA: JFK<br>Arrival IATA: CLE<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_6b0a8f0e47283cd1c81e56d84e996f18 = L.marker(
+                [40.63056, -73.778936],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_6b0a8f0e47283cd1c81e56d84e996f18.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:16:53.017217<br>Flight ICAO: JBU1759<br>Latitude: 40.63056<br>Longitude: -73.778936<br>Altitude: 91<br>Departure IATA: JFK<br>Arrival IATA: KIN<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_32f673233e5d4b9705655221f165f4f3 = L.marker(
+                [40.63056, -73.778936],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_32f673233e5d4b9705655221f165f4f3.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:17:04.071792<br>Flight ICAO: JBU1759<br>Latitude: 40.63056<br>Longitude: -73.778936<br>Altitude: 91<br>Departure IATA: JFK<br>Arrival IATA: KIN<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_936a97f2fb8d40a60b08131e58d6c9fe = L.marker(
+                [40.616638, -73.789246],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_936a97f2fb8d40a60b08131e58d6c9fe.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:17:15.348480<br>Flight ICAO: JBU1759<br>Latitude: 40.616638<br>Longitude: -73.789246<br>Altitude: 266<br>Departure IATA: JFK<br>Arrival IATA: KIN<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_a19e00f7666f2deadabffe7351188485 = L.marker(
+                [40.616638, -73.789246],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_a19e00f7666f2deadabffe7351188485.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:17:26.545999<br>Flight ICAO: JBU1759<br>Latitude: 40.616638<br>Longitude: -73.789246<br>Altitude: 266<br>Departure IATA: JFK<br>Arrival IATA: KIN<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_99a9c72442f670a4781d8b7d88537f5a = L.marker(
+                [40.629135, -73.779663],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_99a9c72442f670a4781d8b7d88537f5a.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:18:45.448871<br>Flight ICAO: JBU116<br>Latitude: 40.629135<br>Longitude: -73.779663<br>Altitude: 144<br>Departure IATA: JFK<br>Arrival IATA: SYR<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c7bf4e1116c26615ebe6ac73a8ed9484 = L.marker(
+                [40.629135, -73.779663],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_c7bf4e1116c26615ebe6ac73a8ed9484.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:18:56.611153<br>Flight ICAO: JBU116<br>Latitude: 40.629135<br>Longitude: -73.779663<br>Altitude: 144<br>Departure IATA: JFK<br>Arrival IATA: SYR<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2fee3e65a548d23beacaaa46fb5ee21f = L.marker(
+                [40.619614, -73.785706],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_2fee3e65a548d23beacaaa46fb5ee21f.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:19:08.180346<br>Flight ICAO: JBU116<br>Latitude: 40.619614<br>Longitude: -73.785706<br>Altitude: 388<br>Departure IATA: JFK<br>Arrival IATA: SYR<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7a72261758721125b0e70c3d10bdadba = L.marker(
+                [40.608948, -73.791138],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_7a72261758721125b0e70c3d10bdadba.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:19:19.532310<br>Flight ICAO: JBU116<br>Latitude: 40.608948<br>Longitude: -73.791138<br>Altitude: 541<br>Departure IATA: JFK<br>Arrival IATA: SYR<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5e6023939a0c44f64e7d0fcf5f502b16 = L.marker(
+                [40.62395, -73.784055],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_5e6023939a0c44f64e7d0fcf5f502b16.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:20:15.926378<br>Flight ICAO: CPA831<br>Latitude: 40.62395<br>Longitude: -73.784055<br>Altitude: 137<br>Departure IATA: JFK<br>Arrival IATA: HKG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d64347f41403c23d7b3802997477f744 = L.marker(
+                [40.611241, -73.793106],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_d64347f41403c23d7b3802997477f744.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:20:26.919740<br>Flight ICAO: CPA831<br>Latitude: 40.611241<br>Longitude: -73.793106<br>Altitude: 434<br>Departure IATA: JFK<br>Arrival IATA: HKG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_bada3349e331ba6043a8bd23208329a1 = L.marker(
+                [40.611241, -73.793106],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_bada3349e331ba6043a8bd23208329a1.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:20:38.124399<br>Flight ICAO: CPA831<br>Latitude: 40.611241<br>Longitude: -73.793106<br>Altitude: 434<br>Departure IATA: JFK<br>Arrival IATA: HKG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2ab294796d82ad3371c686b61a37bf2c = L.marker(
+                [40.62544, -73.783056],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_2ab294796d82ad3371c686b61a37bf2c.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:22:32.154531<br>Flight ICAO: JBU337<br>Latitude: 40.62544<br>Longitude: -73.783056<br>Altitude: 152<br>Departure IATA: JFK<br>Arrival IATA: STI<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_0ea50897dea3d14a8d65bff56dc270a8 = L.marker(
+                [40.62544, -73.783056],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_0ea50897dea3d14a8d65bff56dc270a8.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:22:43.475469<br>Flight ICAO: JBU337<br>Latitude: 40.62544<br>Longitude: -73.783056<br>Altitude: 152<br>Departure IATA: JFK<br>Arrival IATA: STI<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_dbe1e19af813728f8b6d8caa112ce5f6 = L.marker(
+                [40.610275, -73.793091],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_dbe1e19af813728f8b6d8caa112ce5f6.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:22:54.844095<br>Flight ICAO: JBU337<br>Latitude: 40.610275<br>Longitude: -73.793091<br>Altitude: 533<br>Departure IATA: JFK<br>Arrival IATA: STI<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ba2b9abf32dfb1a0f1ba8b1de0ce2b55 = L.marker(
+                [40.610275, -73.793091],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_ba2b9abf32dfb1a0f1ba8b1de0ce2b55.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:23:07.275149<br>Flight ICAO: JBU337<br>Latitude: 40.610275<br>Longitude: -73.793091<br>Altitude: 533<br>Departure IATA: JFK<br>Arrival IATA: STI<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ce213033d9267834c93c09f5217148df = L.marker(
+                [40.623531, -73.783805],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_ce213033d9267834c93c09f5217148df.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:27:50.529213<br>Flight ICAO: RPA5737<br>Latitude: 40.623531<br>Longitude: -73.783805<br>Altitude: 236<br>Departure IATA: JFK<br>Arrival IATA: JAX<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_1436d7a6a1b1526348a2fa415b09c369 = L.marker(
+                [40.612312, -73.790297],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_1436d7a6a1b1526348a2fa415b09c369.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:28:01.804595<br>Flight ICAO: RPA5737<br>Latitude: 40.612312<br>Longitude: -73.790297<br>Altitude: 464<br>Departure IATA: JFK<br>Arrival IATA: JAX<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_597ebfec74fa2f2fe8a6b50a62d54c39 = L.marker(
+                [40.630737, -73.778748],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_597ebfec74fa2f2fe8a6b50a62d54c39.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:32:10.506933<br>Flight ICAO: CMP812<br>Latitude: 40.630737<br>Longitude: -73.778748<br>Altitude: 60<br>Departure IATA: JFK<br>Arrival IATA: PTY<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c0e399f53b80954fc81dca08864ba433 = L.marker(
+                [40.630737, -73.778748],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_c0e399f53b80954fc81dca08864ba433.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:32:21.571601<br>Flight ICAO: CMP812<br>Latitude: 40.630737<br>Longitude: -73.778748<br>Altitude: 60<br>Departure IATA: JFK<br>Arrival IATA: PTY<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2196edd4cb13f132b5a6e34c19b073e1 = L.marker(
+                [40.618652, -73.788147],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_2196edd4cb13f132b5a6e34c19b073e1.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:32:32.829334<br>Flight ICAO: CMP812<br>Latitude: 40.618652<br>Longitude: -73.788147<br>Altitude: 228<br>Departure IATA: JFK<br>Arrival IATA: PTY<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7384c253b67aeac52c5644073753f04a = L.marker(
+                [40.623322, -73.784546],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_7384c253b67aeac52c5644073753f04a.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:34:26.641372<br>Flight ICAO: ABD4522<br>Latitude: 40.623322<br>Longitude: -73.784546<br>Altitude: 106<br>Departure IATA: JFK<br>Arrival IATA: LGG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ba26acad41d072b7419bf06ad05a73a8 = L.marker(
+                [40.623322, -73.784546],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_ba26acad41d072b7419bf06ad05a73a8.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:34:38.009282<br>Flight ICAO: ABD4522<br>Latitude: 40.623322<br>Longitude: -73.784546<br>Altitude: 106<br>Departure IATA: JFK<br>Arrival IATA: LGG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_8f1be9342846597a3e4e53d900c09ba9 = L.marker(
+                [40.613336, -73.791421],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_8f1be9342846597a3e4e53d900c09ba9.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:34:49.374775<br>Flight ICAO: ABD4522<br>Latitude: 40.613336<br>Longitude: -73.791421<br>Altitude: 259<br>Departure IATA: JFK<br>Arrival IATA: LGG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3aef2ba8e2711a784841139d9a55b7c6 = L.marker(
+                [40.625244, -73.78302],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_3aef2ba8e2711a784841139d9a55b7c6.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:38:46.003557<br>Flight ICAO: AVA211<br>Latitude: 40.625244<br>Longitude: -73.78302<br>Altitude: 144<br>Departure IATA: JFK<br>Arrival IATA: BOG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d2583b04bc885a61147dc0050d55b425 = L.marker(
+                [40.614965, -73.790047],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_d2583b04bc885a61147dc0050d55b425.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:38:57.000554<br>Flight ICAO: AVA211<br>Latitude: 40.614965<br>Longitude: -73.790047<br>Altitude: 365<br>Departure IATA: JFK<br>Arrival IATA: BOG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_13c59e58a4be7be912ff7415ceb7ae5e = L.marker(
+                [40.614965, -73.790047],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_13c59e58a4be7be912ff7415ceb7ae5e.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:39:08.400350<br>Flight ICAO: AVA211<br>Latitude: 40.614965<br>Longitude: -73.790047<br>Altitude: 365<br>Departure IATA: JFK<br>Arrival IATA: BOG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4303e49a67b1b2b4b4f6c1929f69e897 = L.marker(
+                [40.623578, -73.783805],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_4303e49a67b1b2b4b4f6c1929f69e897.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:43:40.377984<br>Flight ICAO: EDV5470<br>Latitude: 40.623578<br>Longitude: -73.783805<br>Altitude: 190<br>Departure IATA: JFK<br>Arrival IATA: SAV<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4081eb3dfd5f5bba7d236ee793467ded = L.marker(
+                [40.626022, -73.782654],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_4081eb3dfd5f5bba7d236ee793467ded.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:44:49.074978<br>Flight ICAO: GTI8879<br>Latitude: 40.626022<br>Longitude: -73.782654<br>Altitude: 114<br>Departure IATA: JFK<br>Arrival IATA: ANC<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d331302dad67d957a2bf5b4c0ec1ee77 = L.marker(
+                [40.614624, -73.791138],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_d331302dad67d957a2bf5b4c0ec1ee77.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:45:00.353602<br>Flight ICAO: GTI8879<br>Latitude: 40.614624<br>Longitude: -73.791138<br>Altitude: 320<br>Departure IATA: JFK<br>Arrival IATA: ANC<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d879c6341a85c7c9cdfc9ce2ee53c75e = L.marker(
+                [40.614624, -73.791138],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_d879c6341a85c7c9cdfc9ce2ee53c75e.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:45:11.351833<br>Flight ICAO: GTI8879<br>Latitude: 40.614624<br>Longitude: -73.791138<br>Altitude: 320<br>Departure IATA: JFK<br>Arrival IATA: ANC<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f82d01213d611f960da3a89d0120ffda = L.marker(
+                [40.609222, -73.794128],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_f82d01213d611f960da3a89d0120ffda.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:47:27.909287<br>Flight ICAO: DAL1855<br>Latitude: 40.609222<br>Longitude: -73.794128<br>Altitude: 449<br>Departure IATA: JFK<br>Arrival IATA: STI<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_33657e1f2b31c8aae3e28a4d0d83f5ae = L.marker(
+                [40.627441, -73.78162],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_33657e1f2b31c8aae3e28a4d0d83f5ae.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:48:35.347010<br>Flight ICAO: EDV4840<br>Latitude: 40.627441<br>Longitude: -73.78162<br>Altitude: 99<br>Departure IATA: JFK<br>Arrival IATA: RDU<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_de2e80f5d023346ed7f461e154c1f5b1 = L.marker(
+                [40.617783, -73.789246],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_de2e80f5d023346ed7f461e154c1f5b1.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:48:46.655291<br>Flight ICAO: EDV4840<br>Latitude: 40.617783<br>Longitude: -73.789246<br>Altitude: 350<br>Departure IATA: JFK<br>Arrival IATA: RDU<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5e9f9ac0ce08f6f5c20cf042e28e103d = L.marker(
+                [40.617783, -73.789246],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_5e9f9ac0ce08f6f5c20cf042e28e103d.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:48:58.125936<br>Flight ICAO: EDV4840<br>Latitude: 40.617783<br>Longitude: -73.789246<br>Altitude: 350<br>Departure IATA: JFK<br>Arrival IATA: RDU<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_300b03bb0dd7af9494a332369a528335 = L.marker(
+                [40.619156, -73.787842],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_300b03bb0dd7af9494a332369a528335.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:50:39.968970<br>Flight ICAO: JBU803<br>Latitude: 40.619156<br>Longitude: -73.787842<br>Altitude: 228<br>Departure IATA: JFK<br>Arrival IATA: SJU<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c79562a0edc31832b729cd1790fabcb1 = L.marker(
+                [40.619156, -73.787842],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_c79562a0edc31832b729cd1790fabcb1.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:50:51.379224<br>Flight ICAO: JBU803<br>Latitude: 40.619156<br>Longitude: -73.787842<br>Altitude: 228<br>Departure IATA: JFK<br>Arrival IATA: SJU<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_63e45431e1f26d27b7072aa7b2de71ec = L.marker(
+                [40.625565, -73.782776],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_63e45431e1f26d27b7072aa7b2de71ec.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:55:57.554909<br>Flight ICAO: ASL501<br>Latitude: 40.625565<br>Longitude: -73.782776<br>Altitude: 106<br>Departure IATA: JFK<br>Arrival IATA: BEG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_942e52a8520a80760ac50072ef4e7d9c = L.marker(
+                [40.625565, -73.782776],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_942e52a8520a80760ac50072ef4e7d9c.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:56:08.623659<br>Flight ICAO: ASL501<br>Latitude: 40.625565<br>Longitude: -73.782776<br>Altitude: 106<br>Departure IATA: JFK<br>Arrival IATA: BEG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3a0eb765ee720e07a2d6e176224bc6e0 = L.marker(
+                [40.613892, -73.791809],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_3a0eb765ee720e07a2d6e176224bc6e0.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:56:19.899084<br>Flight ICAO: ASL501<br>Latitude: 40.613892<br>Longitude: -73.791809<br>Altitude: 297<br>Departure IATA: JFK<br>Arrival IATA: BEG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_881c1f8f38e43f87230214f250fb8bcf = L.marker(
+                [40.625207, -73.783243],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_881c1f8f38e43f87230214f250fb8bcf.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:58:01.283166<br>Flight ICAO: EDV4973<br>Latitude: 40.625207<br>Longitude: -73.783243<br>Altitude: 259<br>Departure IATA: JFK<br>Arrival IATA: RIC<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c6a29deb8bd413a1f4321cdbed9f6b3f = L.marker(
+                [40.625207, -73.783243],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_c6a29deb8bd413a1f4321cdbed9f6b3f.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:58:12.443495<br>Flight ICAO: EDV4973<br>Latitude: 40.625207<br>Longitude: -73.783243<br>Altitude: 259<br>Departure IATA: JFK<br>Arrival IATA: RIC<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_eedffce1a896722cd5d04e938b5b076e = L.marker(
+                [40.614965, -73.790672],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_eedffce1a896722cd5d04e938b5b076e.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:58:23.584900<br>Flight ICAO: EDV4973<br>Latitude: 40.614965<br>Longitude: -73.790672<br>Altitude: 518<br>Departure IATA: JFK<br>Arrival IATA: RIC<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3adc4f5a1c2d42ba12afe7602a6ebc34 = L.marker(
+                [40.614965, -73.790672],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_3adc4f5a1c2d42ba12afe7602a6ebc34.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 14:58:34.984575<br>Flight ICAO: EDV4973<br>Latitude: 40.614965<br>Longitude: -73.790672<br>Altitude: 518<br>Departure IATA: JFK<br>Arrival IATA: RIC<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e8b4d466d63e6b87306aac6dddce6a0b = L.marker(
+                [40.625931, -73.782166],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_e8b4d466d63e6b87306aac6dddce6a0b.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:03:29.099992<br>Flight ICAO: JBU1118<br>Latitude: 40.625931<br>Longitude: -73.782166<br>Altitude: 312<br>Departure IATA: JFK<br>Arrival IATA: BOS<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e93c177fab21fd395139781a0638fa42 = L.marker(
+                [40.611832, -73.789917],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_e93c177fab21fd395139781a0638fa42.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:03:40.568662<br>Flight ICAO: JBU1118<br>Latitude: 40.611832<br>Longitude: -73.789917<br>Altitude: 624<br>Departure IATA: JFK<br>Arrival IATA: BOS<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_711d8c16b516b0e933a45c2baa97a686 = L.marker(
+                [40.627716, -73.78125],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_711d8c16b516b0e933a45c2baa97a686.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:09:53.377094<br>Flight ICAO: EDV4844<br>Latitude: 40.627716<br>Longitude: -73.78125<br>Altitude: 160<br>Departure IATA: JFK<br>Arrival IATA: SYR<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_083fe5afe55b52cceb4af38909f67034 = L.marker(
+                [40.617619, -73.78805],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_083fe5afe55b52cceb4af38909f67034.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:10:04.641903<br>Flight ICAO: EDV4844<br>Latitude: 40.617619<br>Longitude: -73.78805<br>Altitude: 434<br>Departure IATA: JFK<br>Arrival IATA: SYR<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c5d53fdcc6c82de2c627413ec969fb59 = L.marker(
+                [40.617619, -73.78805],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_c5d53fdcc6c82de2c627413ec969fb59.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:10:16.006900<br>Flight ICAO: EDV4844<br>Latitude: 40.617619<br>Longitude: -73.78805<br>Altitude: 434<br>Departure IATA: JFK<br>Arrival IATA: SYR<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f4eecde91359a7d5425fbf6c29d36bd4 = L.marker(
+                [40.624329, -73.783325],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_f4eecde91359a7d5425fbf6c29d36bd4.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:18:23.847059<br>Flight ICAO: RPA4587<br>Latitude: 40.624329<br>Longitude: -73.783325<br>Altitude: 281<br>Departure IATA: JFK<br>Arrival IATA: CLE<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_14fc2417a60ff6ae6477b33c2dfb871d = L.marker(
+                [40.613388, -73.789551],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_14fc2417a60ff6ae6477b33c2dfb871d.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:18:35.209222<br>Flight ICAO: RPA4587<br>Latitude: 40.613388<br>Longitude: -73.789551<br>Altitude: 502<br>Departure IATA: JFK<br>Arrival IATA: CLE<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_236f96e2d149ec7a1e2f78a5a2b82ea4 = L.marker(
+                [40.613388, -73.789551],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_236f96e2d149ec7a1e2f78a5a2b82ea4.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:18:46.519462<br>Flight ICAO: RPA4587<br>Latitude: 40.613388<br>Longitude: -73.789551<br>Altitude: 502<br>Departure IATA: JFK<br>Arrival IATA: CLE<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_844194f2d5b5937d4bc2221c798fb778 = L.marker(
+                [40.619853, -73.787051],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_844194f2d5b5937d4bc2221c798fb778.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:32:54.866251<br>Flight ICAO: BWA529<br>Latitude: 40.619853<br>Longitude: -73.787051<br>Altitude: 83<br>Departure IATA: JFK<br>Arrival IATA: POS<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c80a5dbb512285709b44c03bfc4bbb96 = L.marker(
+                [40.625766, -73.782682],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_c80a5dbb512285709b44c03bfc4bbb96.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:33:40.538306<br>Flight ICAO: JBU2473<br>Latitude: 40.625766<br>Longitude: -73.782682<br>Altitude: 175<br>Departure IATA: JFK<br>Arrival IATA: CHS<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_664962023517a17b11e4b0a228c7ec4a = L.marker(
+                [40.625766, -73.782682],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_664962023517a17b11e4b0a228c7ec4a.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:33:52.009691<br>Flight ICAO: JBU2473<br>Latitude: 40.625766<br>Longitude: -73.782682<br>Altitude: 175<br>Departure IATA: JFK<br>Arrival IATA: CHS<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3b2d9d6139654812fc25c77ff8abda3c = L.marker(
+                [40.615291, -73.789798],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_3b2d9d6139654812fc25c77ff8abda3c.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:34:03.269015<br>Flight ICAO: JBU2473<br>Latitude: 40.615291<br>Longitude: -73.789798<br>Altitude: 426<br>Departure IATA: JFK<br>Arrival IATA: CHS<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_34f74cfc6961f6366c9dd27d5e36db31 = L.marker(
+                [40.615291, -73.789798],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_34f74cfc6961f6366c9dd27d5e36db31.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:34:14.733898<br>Flight ICAO: JBU2473<br>Latitude: 40.615291<br>Longitude: -73.789798<br>Altitude: 426<br>Departure IATA: JFK<br>Arrival IATA: CHS<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_01b09a24c945ac30f0f7e7b5579b897f = L.marker(
+                [40.627488, -73.781246],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_01b09a24c945ac30f0f7e7b5579b897f.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:38:56.400035<br>Flight ICAO: RPA5599<br>Latitude: 40.627488<br>Longitude: -73.781246<br>Altitude: 228<br>Departure IATA: JFK<br>Arrival IATA: PIT<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4dd9097a435d2010254f9819bd54a78a = L.marker(
+                [40.627488, -73.781246],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_4dd9097a435d2010254f9819bd54a78a.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:39:07.708800<br>Flight ICAO: RPA5599<br>Latitude: 40.627488<br>Longitude: -73.781246<br>Altitude: 228<br>Departure IATA: JFK<br>Arrival IATA: PIT<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_77ef8e99a0562b9554fb609fd72dbd91 = L.marker(
+                [40.617619, -73.787238],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_77ef8e99a0562b9554fb609fd72dbd91.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:39:18.972494<br>Flight ICAO: RPA5599<br>Latitude: 40.617619<br>Longitude: -73.787238<br>Altitude: 449<br>Departure IATA: JFK<br>Arrival IATA: PIT<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_74d216bac74f5ef95401e93990fa3ce0 = L.marker(
+                [40.627167, -73.781555],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_74d216bac74f5ef95401e93990fa3ce0.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:40:26.249242<br>Flight ICAO: JBU134<br>Latitude: 40.627167<br>Longitude: -73.781555<br>Altitude: 190<br>Departure IATA: JFK<br>Arrival IATA: BTV<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9185d8b37a3b862de8739173ac1db573 = L.marker(
+                [40.627167, -73.781555],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_9185d8b37a3b862de8739173ac1db573.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:40:37.513294<br>Flight ICAO: JBU134<br>Latitude: 40.627167<br>Longitude: -73.781555<br>Altitude: 190<br>Departure IATA: JFK<br>Arrival IATA: BTV<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_fc24239a05be21d0f6b715e754158ff5 = L.marker(
+                [40.621203, -73.786177],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_fc24239a05be21d0f6b715e754158ff5.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:40:48.880322<br>Flight ICAO: JBU134<br>Latitude: 40.621203<br>Longitude: -73.786177<br>Altitude: 304<br>Departure IATA: JFK<br>Arrival IATA: BTV<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9401b8c183f1397f16fa4b301da96353 = L.marker(
+                [40.630783, -73.778748],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_9401b8c183f1397f16fa4b301da96353.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:46:17.792823<br>Flight ICAO: THY6662<br>Latitude: 40.630783<br>Longitude: -73.778748<br>Altitude: 60<br>Departure IATA: JFK<br>Arrival IATA: ORD<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_dda4b5c88c6ebfaf2782e041c450a14d = L.marker(
+                [40.618364, -73.788487],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_dda4b5c88c6ebfaf2782e041c450a14d.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:46:29.157243<br>Flight ICAO: THY6662<br>Latitude: 40.618364<br>Longitude: -73.788487<br>Altitude: 137<br>Departure IATA: JFK<br>Arrival IATA: ORD<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_33f7c0d1157ca5b64305224b087a182b = L.marker(
+                [40.618364, -73.788487],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_33f7c0d1157ca5b64305224b087a182b.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:46:40.423903<br>Flight ICAO: THY6662<br>Latitude: 40.618364<br>Longitude: -73.788487<br>Altitude: 137<br>Departure IATA: JFK<br>Arrival IATA: ORD<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b5b3632e852eda52592a5c565f453eb5 = L.marker(
+                [40.62679, -73.781995],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_b5b3632e852eda52592a5c565f453eb5.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:47:37.086499<br>Flight ICAO: ARG1301<br>Latitude: 40.62679<br>Longitude: -73.781995<br>Altitude: 60<br>Departure IATA: JFK<br>Arrival IATA: EZE<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e34bcc9dca304ecfe976b9befb73597f = L.marker(
+                [40.62679, -73.781995],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_e34bcc9dca304ecfe976b9befb73597f.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:47:47.867522<br>Flight ICAO: ARG1301<br>Latitude: 40.62679<br>Longitude: -73.781995<br>Altitude: 60<br>Departure IATA: JFK<br>Arrival IATA: EZE<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3eda2b915c9c09a7d4f284146a903ee9 = L.marker(
+                [40.613243, -73.792544],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_3eda2b915c9c09a7d4f284146a903ee9.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:47:59.871648<br>Flight ICAO: ARG1301<br>Latitude: 40.613243<br>Longitude: -73.792544<br>Altitude: 327<br>Departure IATA: JFK<br>Arrival IATA: EZE<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_560666878ff2f605c7256731234d20bf = L.marker(
+                [40.613243, -73.792544],
+                {}
+            ).addTo(map_322c58347ca7ab59cf5265f5dd815b2c);
+        
+    
+            marker_560666878ff2f605c7256731234d20bf.bindTooltip(
+                `<div>
+                     Timestamp: 2023-11-07 15:48:10.968755<br>Flight ICAO: ARG1301<br>Latitude: 40.613243<br>Longitude: -73.792544<br>Altitude: 327<br>Departure IATA: JFK<br>Arrival IATA: EZE<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+</script>
+</html>
