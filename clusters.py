@@ -112,17 +112,29 @@ def createClusters(iataCode):
 #returns: dictionary containing slope, y-intercept, and 4 coordinate bounding lines
 def getPaths(iataCode):
     flight_data, cluster_sizes = createClusters(iataCode) #create the clusters and get the flight data and cluster data
-    top_cluster_dict = {cluster: size for cluster, size in cluster_sizes.items() if size >= 100} #filter out clusters that have less than 100 points
+
+    sorted_clusters = sorted(cluster_sizes.items(), key=lambda item: item[1], reverse=True) #sort the clusters based on size
+
+    top_cluster_dict = {cluster: size for cluster, size in sorted_clusters[:2]} #add the top two clusters to the dictionary
+    
+    top_cluster_dict.update({cluster: size for cluster, size in sorted_clusters[2:] if size >= 100}) #filter out all remainin clusters that have less than 100 points
+
     top_clusters = list(top_cluster_dict.keys()) #make a list of the remaining clusters
     top_cluster_flight_data = flight_data[flight_data['cluster'].isin(top_clusters)] #filter out all data not present in the top clusters
 
     cluster_dfs = [] #create a new list to store individual cluster flight data
 
+    ranking = 1
     for cluster in top_clusters: #for each cluster
         new_cluster_df = top_cluster_flight_data[top_cluster_flight_data['cluster'] == cluster].reset_index(drop=True) #filter out data that does not belong to this cluster
+        new_cluster_df["airport"] = iataCode
+        new_cluster_df["cluster_rank"] = ranking
+        ranking += 1
         cluster_dfs.append(new_cluster_df) #append the cluster data to a list of cluster dataframes
+    
+    # print(cluster_dfs)
 
-    displayClusterData(cluster_dfs, iataCode)
+    # displayClusterData(cluster_dfs, iataCode)
 
     flight_paths = [] #create a new list to store information about the lines
 
