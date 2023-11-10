@@ -5,6 +5,7 @@ import requests
 from datetime import datetime
 import time
 import os
+import threading
 
 #function: to get airport coordinates given the location
 #parameters: iataCode - string
@@ -80,9 +81,9 @@ def getFlights(iataCode):
 
 #function: to call getFlights() every 10 seconds and add the results to a file 
 #parameters: iataCode - string
-#returns: live flight data into a .csv file
+#returns: nothing
 def trackFlights(iataCode):
-    log_file_name = f"flightData/flight_log_{iataCode}-2.csv" #create a new file name
+    log_file_name = f"flightData/flight_log_{iataCode}.csv" #create a new file name
     file_exists = os.path.isfile(log_file_name) #check if file exists already
 
     max_line_count = 5000 #set maximum line count
@@ -96,6 +97,7 @@ def trackFlights(iataCode):
             print(f"Error creating the file: {e}")
     else: #if the file does exist
         with open(log_file_name, 'r') as log_file: #open the file
+            include_headers = False
             line_count = sum(1 for line in log_file) #and count the lines
 
 
@@ -110,7 +112,20 @@ def trackFlights(iataCode):
         file_exists = False
         time.sleep(10) #wait 10 seconds then repeat
 
+#function: collects data on all inputted airports simultaneously
+#parameters: iataCodes - list
+#returns: nothing
+def collectAirportData(iataCodes):
+    threads = [] #initialize empty threads list
+    for iataCode in iataCodes: #for each airport
+        thread = threading.Thread(target=trackFlights, args=(iataCode,)) #initialize a thread to call trackFlights on the iataCode
+        thread.start() #start the thread
+        threads.append(thread) #append to list of threads
+    
+    for thread in threads: #for each thread
+        thread.join() #make sure that the main program waits until thread is finished
 
 
 if __name__ == "__main__":
-    trackFlights("DCA")
+    iataCodes = ["DCA", "LAX", "IAD", "ATL"]
+    collectAirportData(iataCodes)
