@@ -7,7 +7,7 @@ import time
 import os
 import threading
 
-#function: to get airport coordinates given the location
+#function: to get airport coordinates given the iataCode
 #parameters: iataCode - string
 #returns: tuple with latiutde and longitude
 def findAirportCoordinatesByIATACode(iataCode): 
@@ -21,6 +21,20 @@ def findAirportCoordinatesByIATACode(iataCode):
     coordinates = airport_data["coordinates"].iloc[0] #isolate coordinates
     longitude, latitude = map(float, coordinates.split(', ')) #split lat and long
     return (latitude, longitude)
+
+#function: to get airport elevation given the iataCode
+#parameters: iataCode - string
+#returns: elevation
+def findAirportElevationByIATACode(iataCode): 
+    with open('airport_data.js', 'r') as file: #open file with airport data
+        js_code = file.read() #read the file
+
+    ctx = execjs.compile(js_code) #compile the code at end of js file to get data
+    airport_data = ctx.call('require', './airport_data') #require we have this data
+    airport_data_df = pd.DataFrame(airport_data) #put data in a dataframe
+    airport_data = airport_data_df.loc[airport_data_df["iata_code"] == iataCode] #get row with IATA code
+    elevation = int(airport_data["elevation_ft"].iloc[0]) #isolate elevation
+    return elevation #return eleveation
 
  
 #function: to calculate a box around the given airport with each side's length being specified by boxDimensions, the airport will be at the center
@@ -71,7 +85,13 @@ def getFlights(iataCode):
 
     api_response = api_response_depart + api_response_arrive #concatenate the results together
 
-    airborne_flights = [flight for flight in api_response if flight['status'] == 'en-route' and 'alt' in flight and flight['alt'] <= 1500 and flight['alt'] >= 10] #filter out all flights that are not en-route and that are below 30 feet and above 1500 feet
+    fields = ['flight_icao', 'airline_icao', 'lat', 'lng', 'alt', 'dep_iata', 'arr_iata', 'status']
+    flights = [flight for flight in api_response if all(flight.get(field) is not None for field in fields)] #filter out all rows missing data
+    for flight in flights: #for each flight
+        flight['alt'] = round(flight['alt'] * 3.28084) #convert meters to feet
+        flight['alt'] = flight['alt'] - findAirportElevationByIATACode(iataCode) #convert elevation to altitude
+    airborne_flights = [flight for flight in flights if flight['status'] == 'en-route' and flight['alt'] <= 4921 and flight['alt'] >= 0] #filter out all flights that are not en-route and that are below 0 meters and above 1500 meters (i will adjust these values later)
+
 
     timestamp = datetime.now() #get current time
     timestamped_airborne_flights = [{'timestamp': timestamp, **d} for d in airborne_flights] #add timestamp to each flight
@@ -127,5 +147,5 @@ def collectAirportData(iataCodes):
 
 
 if __name__ == "__main__":
-    iataCodes = ["DCA", "LAX", "IAD", "ATL"]
+    iataCodes = ["PDX"]
     collectAirportData(iataCodes)
