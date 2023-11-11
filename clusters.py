@@ -96,14 +96,14 @@ def createClusters(iataCode):
 
     cluster_sizes = {label: np.sum(cluster_labels == label) for label in unique_labels if label != -1} #calculate the size of each cluster
 
-    # print(f"Number of clusters: {num_clusters}") #print out total number of clusters
-    # for label, size in cluster_sizes.items(): #for all clusters
-    #     if label != -1: #if they are not noise
-    #         print(f"Cluster {label}: {size} points") #print out the cluster and its corresponding size
-    #     else: #if they are noise
-    #         print(f"Noise: {size} points") #print out the noise and its corresponding size
+    print(f"Number of clusters: {num_clusters}") #print out total number of clusters
+    for label, size in cluster_sizes.items(): #for all clusters
+        if label != -1: #if they are not noise
+            print(f"Cluster {label}: {size} points") #print out the cluster and its corresponding size
+        else: #if they are noise
+            print(f"Noise: {size} points") #print out the noise and its corresponding size
 
-    # visualizeClusters(flight_data) #visualize the clusters
+    visualizeClusters(flight_data) #visualize the clusters
 
     return (flight_data, cluster_sizes)
 
@@ -134,7 +134,7 @@ def getPaths(iataCode):
     
     # print(cluster_dfs)
 
-    # displayClusterData(cluster_dfs, iataCode)
+    displayClusterData(cluster_dfs, iataCode)
 
     flight_paths = [] #create a new list to store information about the lines
 
@@ -151,17 +151,18 @@ def getPaths(iataCode):
         X_curve = np.linspace(min(X), max(X), 100) #generate x values along curve for plotting
         y_curve = poly(X_curve) #generate corresponding y values
 
-        # plt.scatter(X, y, label='Data Points') #create a scatter plot with all the data
-        # plt.plot(X_curve, y_curve, color='red', label='Polynomial Regression')
-        # plt.xlabel('Longitude') #label longitude
-        # plt.ylabel('Latitude') #label latitude
-        # plt.legend() #create a legend
-        # plt.show() #show the plot
+        plt.scatter(X, y, label='Data Points') #create a scatter plot with all the data
+        plt.plot(X_curve, y_curve, color='red', label='Polynomial Regression')
+        plt.title(f'Cluster: {cluster_df.iloc[0]["cluster"]}')
+        plt.xlabel('Longitude') #label longitude
+        plt.ylabel('Latitude') #label latitude
+        plt.legend() #create a legend
+        plt.show() #show the plot
 
         # Print the polynomial regression equation
-        equation = f'Latitude = {coefficients[-1]:.2f} '  # Intercept term
-        for i in range(degree, 0, -1):
-            equation += f'+ {coefficients[i]:.2f} * Longitude^{i} '
+        # equation = f'Latitude = {coefficients[-1]:.2f} '  # Intercept term
+        # for i in range(degree, 0, -1):
+        #     equation += f'+ {coefficients[i]:.2f} * Longitude^{i} '
         # print(f"Polynomial Regression Equation: {equation}")
 
         new_path_dict = {
@@ -180,7 +181,7 @@ def getPaths(iataCode):
     return flight_paths #return the list of path
 
 if __name__ == "__main__":  
-    flight_paths = getPaths("DCA")
+    flight_paths = getPaths("ATL")
     # print(flight_paths)
 
 
