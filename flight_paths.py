@@ -103,7 +103,7 @@ def getFlights(iataCode):
 #parameters: iataCode - string
 #returns: nothing
 def trackFlights(iataCode):
-    log_file_name = f"flightData/flight_log_{iataCode}.csv" #create a new file name
+    log_file_name = f"flightData/data/flight_log_{iataCode}.csv" #create a new file name
     file_exists = os.path.isfile(log_file_name) #check if file exists already
 
     max_line_count = 5000 #set maximum line count

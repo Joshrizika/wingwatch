@@ -6,7 +6,7 @@ from flight_paths import findAirportCoordinatesByIATACode
 #parameters: data_path - string
 #returns: nothing
 def displayData(iataCode):
-    data_path = f"flightData/flight_log_{iataCode}.csv"
+    data_path = f"flightData/data/flight_log_{iataCode}.csv"
 
     data = pd.read_csv(data_path, parse_dates=['timestamp']) #create a dataframe using the data and set the dates to datetime type
 

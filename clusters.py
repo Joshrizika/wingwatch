@@ -59,7 +59,7 @@ def displayClusterData(cluster_dfs, iataCode):
 #parameters: iataCode - string
 #returns: flight data with column specifying cluster, and dictionary of cluster name and size
 def createClusters(iataCode):
-    data_path = f"flightData/flight_log_{iataCode}.csv" 
+    data_path = f"flightData/data/flight_log_{iataCode}.csv" 
 
     eps_miles = 0.125 #epsilon is the distance between points that DBSCAN looks for another point in order to provide a classification of either noise, non-core, or core points. 
     minPts = 5 #minimum points to form a cluster
