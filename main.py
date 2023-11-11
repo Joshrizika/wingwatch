@@ -6,7 +6,6 @@ from spots import getParks
 #returns: a list of parks
 def getSpots(iataCode):
     spots = set() #create empty set
-
     flight_path_lines = getPaths(iataCode) #get flight paths
     for line in flight_path_lines: #for each flight path
         spots.update(getParks(line)) #get parks and add them to spots set
