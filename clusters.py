@@ -121,15 +121,13 @@ def getPaths(iataCode):
 
     top_clusters = list(top_cluster_dict.keys()) #make a list of the remaining clusters
     top_cluster_flight_data = flight_data[flight_data['cluster'].isin(top_clusters)] #filter out all data not present in the top clusters
+    top_cluster_flight_data["airport"] = iataCode
+
 
     cluster_dfs = [] #create a new list to store individual cluster flight data
 
-    ranking = 1
     for cluster in top_clusters: #for each cluster
         new_cluster_df = top_cluster_flight_data[top_cluster_flight_data['cluster'] == cluster].reset_index(drop=True) #filter out data that does not belong to this cluster
-        new_cluster_df["airport"] = iataCode
-        new_cluster_df["cluster_rank"] = ranking
-        ranking += 1
         cluster_dfs.append(new_cluster_df) #append the cluster data to a list of cluster dataframes
     
     # print(cluster_dfs)

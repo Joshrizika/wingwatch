@@ -220,7 +220,6 @@ def getParks(line):
                     point = (place['location']['latitude'], place['location']['longitude']) #get coordinates
                     distance_from_line = pointLineDistance(point, line)
                     if distance_from_line <= search_distance_miles: #if point is less than search_distance_miles distance away
-                        place['cluster_rank'] = int(line['cluster']['cluster_rank'].iloc[0])
                         place['airport'] = str(line['cluster']['airport'].iloc[0])
                         place['distanceFromFlightpath'] = distance_from_line #add the distance_from_line to the object
                         place['averageAltitude'] = getAverageAltitude(point, line['cluster'], search_distance_miles)

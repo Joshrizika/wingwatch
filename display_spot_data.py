@@ -23,7 +23,7 @@ def plot_locations_on_map(iataCode):
             if latitude is not None and longitude is not None: #check if both latitude and longitude are available
                 folium.Marker( #create a marker
                     location=[latitude, longitude], #at specified location
-                    popup=f"Place Name: {location_data.get('displayName', {}).get('text', 'Unknown Place')}<br>Average Altitude: {location_data['averageAltitude']}<br>Distance from Flightpath: {location_data['distanceFromFlightpath']}<br>Flightpath Ranking: {location_data['cluster_rank']}" #with marker for name average altitude and distance from flightpath
+                    popup=f"Place Name: {location_data.get('displayName', {}).get('text', 'Unknown Place')}<br>Average Altitude: {location_data['averageAltitude']}<br>Distance from Flightpath: {location_data['distanceFromFlightpath']}" #with marker for name average altitude and distance from flightpath
                 ).add_to(m) #add it to the map
         except json.JSONDecodeError: #skip any invalid data
             print(f"Skipping invalid JSON data: {spot}")
@@ -33,4 +33,4 @@ def plot_locations_on_map(iataCode):
 
 
 if __name__ == "__main__" : 
-    plot_locations_on_map("IAD")
+    plot_locations_on_map("LAX")
