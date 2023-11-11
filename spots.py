@@ -9,6 +9,7 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 from scipy.optimize import minimize
 from scipy.spatial.distance import euclidean
+import pandas as pd
 
 #function: converts distance_degrees into miles based on the position given
 #parameters: lat - float, long - float, distance_degrees - float
@@ -105,6 +106,7 @@ def haversine(lat1, long1, lat2, long2):
 def getAverageAltitude(point, cluster_df, radius_miles):
     lat, long = point #set lat and long
     filtered_cluster_df = cluster_df[cluster_df.apply(lambda row: haversine(lat, long, row['lat'], row['lng']) <= radius_miles, axis=1)] #filter out all datapoints outside radius
+    filtered_cluster_df['alt'] = pd.to_numeric(filtered_cluster_df['alt'], errors='coerce')
     average_altitude = filtered_cluster_df['alt'].mean() #calculate average altitude
     return average_altitude #return average altitude
 
@@ -218,9 +220,8 @@ def getParks(line):
                     point = (place['location']['latitude'], place['location']['longitude']) #get coordinates
                     distance_from_line = pointLineDistance(point, line)
                     if distance_from_line <= search_distance_miles: #if point is less than search_distance_miles distance away
-                        place['airport'] = str(line['cluster']['airport'].iloc[0])
                         place['cluster_rank'] = int(line['cluster']['cluster_rank'].iloc[0])
-                        # print(line['cluster']['airport'].iloc[0])
+                        place['airport'] = str(line['cluster']['airport'].iloc[0])
                         place['distanceFromFlightpath'] = distance_from_line #add the distance_from_line to the object
                         place['averageAltitude'] = getAverageAltitude(point, line['cluster'], search_distance_miles)
                         unique_spots.add(json.dumps(place)) #add spot to unique spots
