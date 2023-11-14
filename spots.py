@@ -1,15 +1,16 @@
-import math
-import requests
-import json
-import numpy as np
-from scipy.integrate import quad
+from flight_paths import findAirportCoordinatesByIATACode
+from scipy.spatial.distance import euclidean
 from scipy.interpolate import interp1d
+from scipy.optimize import minimize
+import cartopy.feature as cfeature
+from scipy.integrate import quad
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import cartopy.feature as cfeature
-from scipy.optimize import minimize
-from scipy.spatial.distance import euclidean
 import pandas as pd
+import numpy as np
+import requests
+import math
+import json
 
 #function: converts distance_degrees into miles based on the position given
 #parameters: lat - float, long - float, distance_degrees - float
@@ -36,7 +37,6 @@ def miles_to_degrees(distance_miles, latitude):
     earth_radius_miles = 3958.8 #earth's radius in miles
     circumference_at_latitude = 2 * math.pi * earth_radius_miles * math.cos(math.radians(latitude)) #calculate circumference of earth at latitude
     distance_degrees = (distance_miles / circumference_at_latitude) * 360.0 #calculate degrees
-    
     return distance_degrees #return degrees
 
 #function: gets distance between point and point on polynomial line at x
@@ -105,10 +105,18 @@ def haversine(lat1, long1, lat2, long2):
 #returns: average altitude
 def getAverageAltitude(point, cluster_df, radius_miles):
     lat, long = point #set lat and long
-    filtered_cluster_df = cluster_df[cluster_df.apply(lambda row: haversine(lat, long, row['lat'], row['lng']) <= radius_miles, axis=1)] #filter out all datapoints outside radius
-    filtered_cluster_df['alt'] = pd.to_numeric(filtered_cluster_df['alt'], errors='coerce')
-    average_altitude = filtered_cluster_df['alt'].mean() #calculate average altitude
+    average_altitude = float("nan")
+    while np.isnan(average_altitude):
+        filtered_cluster_df = cluster_df[cluster_df.apply(lambda row: haversine(lat, long, row['lat'], row['lng']) <= radius_miles, axis=1)] #filter out all datapoints outside radius
+        filtered_cluster_df['alt'] = pd.to_numeric(filtered_cluster_df['alt'], errors='coerce')
+        average_altitude = filtered_cluster_df['alt'].mean() #calculate average altitude
+        radius_miles+=0.1
     return average_altitude #return average altitude
+
+def getDistanceFromAirport(spot_coords, iataCode):
+    airport_coords = findAirportCoordinatesByIATACode(iataCode)
+    distance = haversine(spot_coords[0], spot_coords[1], airport_coords[0], airport_coords[1])
+    return distance
 
 #function: calculates the derivative of a polynomial and gets the value at x
 #parameters: x - float, coefficients - list
@@ -222,7 +230,9 @@ def getParks(line):
                     if distance_from_line <= search_distance_miles: #if point is less than search_distance_miles distance away
                         place['airport'] = str(line['cluster']['airport'].iloc[0])
                         place['distanceFromFlightpath'] = distance_from_line #add the distance_from_line to the object
-                        place['averageAltitude'] = getAverageAltitude(point, line['cluster'], search_distance_miles)
+                        place['averageAltitude'] = getAverageAltitude(point, line['cluster'], search_distance_miles) 
+                        place_coords = (place['location']['latitude'], place['location']['longitude'])
+                        place['distanceFromAirport'] = getDistanceFromAirport(place_coords, place['airport'])
                         unique_spots.add(json.dumps(place)) #add spot to unique spots
     spots = list(unique_spots) #turn unique spots into list
     # print(spots)
