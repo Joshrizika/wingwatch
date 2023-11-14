@@ -1,12 +1,13 @@
+from flight_paths import findAirportCoordinatesByIATACode
+from sklearn.cluster import DBSCAN
+import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-import math
-from sklearn.cluster import DBSCAN
-from flight_paths import findAirportCoordinatesByIATACode
-import matplotlib.pyplot as plt
 import folium
-import os
 import shutil
+import math
+import os
+
 
 #function: converts distance_miles into degrees based on the latitude given
 #parameters: distance_miles - float, latitude - float
@@ -132,7 +133,7 @@ def getPaths(iataCode):
     
     # print(cluster_dfs)
 
-    displayClusterData(cluster_dfs, iataCode)
+    # displayClusterData(cluster_dfs, iataCode)
 
     flight_paths = [] #create a new list to store information about the lines
 
@@ -144,18 +145,18 @@ def getPaths(iataCode):
 
         coefficients = np.polyfit(X, y, degree) #get coefficients from polynomial curve
 
-        poly = np.poly1d(coefficients) #create polynomial function from coefficients
+        # poly = np.poly1d(coefficients) #create polynomial function from coefficients
 
-        X_curve = np.linspace(min(X), max(X), 100) #generate x values along curve for plotting
-        y_curve = poly(X_curve) #generate corresponding y values
+        # X_curve = np.linspace(min(X), max(X), 100) #generate x values along curve for plotting
+        # y_curve = poly(X_curve) #generate corresponding y values
 
-        plt.scatter(X, y, label='Data Points') #create a scatter plot with all the data
-        plt.plot(X_curve, y_curve, color='red', label='Polynomial Regression')
-        plt.title(f'Cluster: {cluster_df.iloc[0]["cluster"]}')
-        plt.xlabel('Longitude') #label longitude
-        plt.ylabel('Latitude') #label latitude
-        plt.legend() #create a legend
-        plt.show() #show the plot
+        # plt.scatter(X, y, label='Data Points') #create a scatter plot with all the data
+        # plt.plot(X_curve, y_curve, color='red', label='Polynomial Regression')
+        # plt.title(f'Cluster: {cluster_df.iloc[0]["cluster"]}')
+        # plt.xlabel('Longitude') #label longitude
+        # plt.ylabel('Latitude') #label latitude
+        # plt.legend() #create a legend
+        # plt.show() #show the plot
 
         # Print the polynomial regression equation
         # equation = f'Latitude = {coefficients[-1]:.2f} '  # Intercept term

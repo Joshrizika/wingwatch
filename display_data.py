@@ -1,6 +1,6 @@
-import folium
-import pandas as pd
 from flight_paths import findAirportCoordinatesByIATACode
+import pandas as pd
+import folium
 
 #function: to display all the points recorded in the collected data
 #parameters: data_path - string
@@ -26,4 +26,4 @@ def displayData(iataCode):
 
 
 if __name__ == "__main__":
-    displayData("ATL")
+    displayData("EWR")

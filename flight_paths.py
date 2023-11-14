@@ -1,11 +1,12 @@
+from datetime import datetime
 import pandas as pd
+import threading
+import requests
 import execjs
 import math
-import requests
-from datetime import datetime
 import time
 import os
-import threading
+
 
 #function: to get airport coordinates given the iataCode
 #parameters: iataCode - string
@@ -147,5 +148,5 @@ def collectAirportData(iataCodes):
 
 
 if __name__ == "__main__":
-    iataCodes = ["PDX"]
+    iataCodes = ["DEN", "ORD", "LHR"]
     collectAirportData(iataCodes)
