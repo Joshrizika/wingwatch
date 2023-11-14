@@ -97,14 +97,14 @@ def createClusters(iataCode):
 
     cluster_sizes = {label: np.sum(cluster_labels == label) for label in unique_labels if label != -1} #calculate the size of each cluster
 
-    print(f"Number of clusters: {num_clusters}") #print out total number of clusters
-    for label, size in cluster_sizes.items(): #for all clusters
-        if label != -1: #if they are not noise
-            print(f"Cluster {label}: {size} points") #print out the cluster and its corresponding size
-        else: #if they are noise
-            print(f"Noise: {size} points") #print out the noise and its corresponding size
+    # print(f"Number of clusters: {num_clusters}") #print out total number of clusters
+    # for label, size in cluster_sizes.items(): #for all clusters
+    #     if label != -1: #if they are not noise
+    #         print(f"Cluster {label}: {size} points") #print out the cluster and its corresponding size
+    #     else: #if they are noise
+    #         print(f"Noise: {size} points") #print out the noise and its corresponding size
 
-    visualizeClusters(flight_data) #visualize the clusters
+    # visualizeClusters(flight_data) #visualize the clusters
 
     return (flight_data, cluster_sizes)
 
