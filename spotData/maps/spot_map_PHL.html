@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_3ff5942ad3fb1d0705fe8ed6aa3d3dda {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_3ff5942ad3fb1d0705fe8ed6aa3d3dda" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_3ff5942ad3fb1d0705fe8ed6aa3d3dda = L.map(
+                "map_3ff5942ad3fb1d0705fe8ed6aa3d3dda",
+                {
+                    center: [39.87189865112305, -75.24109649658203],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 15,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_7846069f99aec40dd3d27e34d99dcc52 = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca target=\"_blank\" href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\"_blank\" href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+            var marker_d034fc5102f38f5154c16e8f29a038a8 = L.marker(
+                [39.8919032, -75.12402639999999],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_7f3a798bcbfe8b78ec07ed0d1024fac3 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_5f9e20355b547f4c9ca425cd519bc431 = $(`<div id="html_5f9e20355b547f4c9ca425cd519bc431" style="width: 100.0%; height: 100.0%;">Place Name: Division Saint Playground<br>Average Altitude: 1415.432098765432<br>Distance from Flightpath: 0.15325137906795003<br>Distance from Airport: 6.359154963299935</div>`)[0];
+                popup_7f3a798bcbfe8b78ec07ed0d1024fac3.setContent(html_5f9e20355b547f4c9ca425cd519bc431);
+            
+        
+
+        marker_d034fc5102f38f5154c16e8f29a038a8.bindPopup(popup_7f3a798bcbfe8b78ec07ed0d1024fac3)
+        ;
+
+        
+    
+    
+            var marker_104261ca4dae90b04d0d973851bd8be9 = L.marker(
+                [39.8884125, -75.1622344],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_e705ce90113a7f8f3f7a0f0c78539223 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_f3e0767e0e5c9912d130242b3ffcba34 = $(`<div id="html_f3e0767e0e5c9912d130242b3ffcba34" style="width: 100.0%; height: 100.0%;">Place Name: Shelby Field<br>Average Altitude: 836.6814159292036<br>Distance from Flightpath: 0.05845484583445633<br>Distance from Airport: 4.334302489019132</div>`)[0];
+                popup_e705ce90113a7f8f3f7a0f0c78539223.setContent(html_f3e0767e0e5c9912d130242b3ffcba34);
+            
+        
+
+        marker_104261ca4dae90b04d0d973851bd8be9.bindPopup(popup_e705ce90113a7f8f3f7a0f0c78539223)
+        ;
+
+        
+    
+    
+            var marker_1df02415be7480bde617d7ef1bcdf285 = L.marker(
+                [39.918000299999996, -75.0138357],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_6330dc0a53e17e9ecc8a59756e2c6aa8 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_39b351ac730f6e274f0157d1639f710b = $(`<div id="html_39b351ac730f6e274f0157d1639f710b" style="width: 100.0%; height: 100.0%;">Place Name: Lion's Den Park<br>Average Altitude: 2593.5<br>Distance from Flightpath: 0.07637057791716448<br>Distance from Airport: 12.461200933876732</div>`)[0];
+                popup_6330dc0a53e17e9ecc8a59756e2c6aa8.setContent(html_39b351ac730f6e274f0157d1639f710b);
+            
+        
+
+        marker_1df02415be7480bde617d7ef1bcdf285.bindPopup(popup_6330dc0a53e17e9ecc8a59756e2c6aa8)
+        ;
+
+        
+    
+    
+            var marker_7e43fdb0c7792db2a1184c151094553a = L.marker(
+                [39.9054734, -75.064765],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_7a5fba423793cf4e500e4b5747c77385 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_920cb155014a5d27fe7fadebe66a852c = $(`<div id="html_920cb155014a5d27fe7fadebe66a852c" style="width: 100.0%; height: 100.0%;">Place Name: Newton Lake Park<br>Average Altitude: 2138.8805970149256<br>Distance from Flightpath: 0.05619403625916992<br>Distance from Airport: 9.631807709980361</div>`)[0];
+                popup_7a5fba423793cf4e500e4b5747c77385.setContent(html_920cb155014a5d27fe7fadebe66a852c);
+            
+        
+
+        marker_7e43fdb0c7792db2a1184c151094553a.bindPopup(popup_7a5fba423793cf4e500e4b5747c77385)
+        ;
+
+        
+    
+    
+            var marker_73301f576376a1dac9fb4a941bf3c10f = L.marker(
+                [39.89613, -75.12045789999999],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_c699a8f459f7396dcf0c30f107cb5605 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_3822aa8ca3569a5da8eaba60d9aab1b4 = $(`<div id="html_3822aa8ca3569a5da8eaba60d9aab1b4" style="width: 100.0%; height: 100.0%;">Place Name: Gloucester City Veteran Memorial<br>Average Altitude: 1480.8785046728972<br>Distance from Flightpath: 0.029857338515584888<br>Distance from Airport: 6.611624230516002</div>`)[0];
+                popup_c699a8f459f7396dcf0c30f107cb5605.setContent(html_3822aa8ca3569a5da8eaba60d9aab1b4);
+            
+        
+
+        marker_73301f576376a1dac9fb4a941bf3c10f.bindPopup(popup_c699a8f459f7396dcf0c30f107cb5605)
+        ;
+
+        
+    
+    
+            var marker_939a84516f15d94f231f12467ee372e6 = L.marker(
+                [39.853286399999995, -75.2821756],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_f02e52f8ffb0aa399344814e6c8501d3 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_544ff3ac69098110d88e1782d749998b = $(`<div id="html_544ff3ac69098110d88e1782d749998b" style="width: 100.0%; height: 100.0%;">Place Name: Little Tinicum Island<br>Average Altitude: 1315.6060606060605<br>Distance from Flightpath: 0.15775155432477236<br>Distance from Airport: 2.529882903801999</div>`)[0];
+                popup_f02e52f8ffb0aa399344814e6c8501d3.setContent(html_544ff3ac69098110d88e1782d749998b);
+            
+        
+
+        marker_939a84516f15d94f231f12467ee372e6.bindPopup(popup_f02e52f8ffb0aa399344814e6c8501d3)
+        ;
+
+        
+    
+    
+            var marker_465e5cb85930401b3fd1deeb0bfcb65f = L.marker(
+                [39.9152345, -75.0236974],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_6d1ea0ed682ef1925b8e713670ba3487 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_d7128055ba23cafdd886f8918b1d22bd = $(`<div id="html_d7128055ba23cafdd886f8918b1d22bd" style="width: 100.0%; height: 100.0%;">Place Name: Yetman International 3.0<br>Average Altitude: 2570.1176470588234<br>Distance from Flightpath: 0.0324042528097546<br>Distance from Airport: 11.907281488128973</div>`)[0];
+                popup_6d1ea0ed682ef1925b8e713670ba3487.setContent(html_d7128055ba23cafdd886f8918b1d22bd);
+            
+        
+
+        marker_465e5cb85930401b3fd1deeb0bfcb65f.bindPopup(popup_6d1ea0ed682ef1925b8e713670ba3487)
+        ;
+
+        
+    
+    
+            var marker_8a9dda7dad513b6e373a19a68def4702 = L.marker(
+                [39.9049555, -75.0882316],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_46a913cded96550d33008545d162d500 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_d5b0e06c5c6e21b31384fecbb9f201d2 = $(`<div id="html_d5b0e06c5c6e21b31384fecbb9f201d2" style="width: 100.0%; height: 100.0%;">Place Name: Veteran's Memorial Park<br>Average Altitude: 1919.376811594203<br>Distance from Flightpath: 0.15759777359555383<br>Distance from Airport: 8.419920898029313</div>`)[0];
+                popup_46a913cded96550d33008545d162d500.setContent(html_d5b0e06c5c6e21b31384fecbb9f201d2);
+            
+        
+
+        marker_8a9dda7dad513b6e373a19a68def4702.bindPopup(popup_46a913cded96550d33008545d162d500)
+        ;
+
+        
+    
+    
+            var marker_f7c132b909b248fc64f149ffb5ba0e0f = L.marker(
+                [39.9160295, -75.0305425],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_08e03f4006389e77d3880b88296c370b = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_34d98ae1be314c11d8322c2a9fc1f7f8 = $(`<div id="html_34d98ae1be314c11d8322c2a9fc1f7f8" style="width: 100.0%; height: 100.0%;">Place Name: Mammoth Park<br>Average Altitude: 2529.5714285714284<br>Distance from Flightpath: 0.14329693235864843<br>Distance from Airport: 11.570724173425402</div>`)[0];
+                popup_08e03f4006389e77d3880b88296c370b.setContent(html_34d98ae1be314c11d8322c2a9fc1f7f8);
+            
+        
+
+        marker_f7c132b909b248fc64f149ffb5ba0e0f.bindPopup(popup_08e03f4006389e77d3880b88296c370b)
+        ;
+
+        
+    
+    
+            var marker_336a3868f21b8c42807b754167caf0af = L.marker(
+                [39.8984161, -75.114037],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_6773ad55ecc741c6ba6f335b2c73227e = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_fdb36851fb52fa2fdcca9a86adfef50b = $(`<div id="html_fdb36851fb52fa2fdcca9a86adfef50b" style="width: 100.0%; height: 100.0%;">Place Name: Johnson Blvd Recreation Dev<br>Average Altitude: 1584.5375<br>Distance from Flightpath: 0.0827173698607179<br>Distance from Airport: 6.981165873661368</div>`)[0];
+                popup_6773ad55ecc741c6ba6f335b2c73227e.setContent(html_fdb36851fb52fa2fdcca9a86adfef50b);
+            
+        
+
+        marker_336a3868f21b8c42807b754167caf0af.bindPopup(popup_6773ad55ecc741c6ba6f335b2c73227e)
+        ;
+
+        
+    
+    
+            var marker_ee1814ac5b105fd20a2bae3841c08675 = L.marker(
+                [39.9026408, -75.103089],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_daf86216b34d5c700ee4f2b3304d4924 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_1d46eca6adf46d828f6493ba1cf736cc = $(`<div id="html_1d46eca6adf46d828f6493ba1cf736cc" style="width: 100.0%; height: 100.0%;">Place Name: Union Field<br>Average Altitude: 1771.892857142857<br>Distance from Flightpath: 0.18986796148381457<br>Distance from Airport: 7.618751117323668</div>`)[0];
+                popup_daf86216b34d5c700ee4f2b3304d4924.setContent(html_1d46eca6adf46d828f6493ba1cf736cc);
+            
+        
+
+        marker_ee1814ac5b105fd20a2bae3841c08675.bindPopup(popup_daf86216b34d5c700ee4f2b3304d4924)
+        ;
+
+        
+    
+    
+            var marker_e8e8758c557a467a2ac55beee71cf1c6 = L.marker(
+                [39.8964571, -75.1279034],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_b57b42849358e16e3ce4bf2e8deff5b1 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_14802d815e5ca39bbd502c434c51b3fd = $(`<div id="html_14802d815e5ca39bbd502c434c51b3fd" style="width: 100.0%; height: 100.0%;">Place Name: Proprietors Park<br>Average Altitude: 1367.3917525773195<br>Distance from Flightpath: 0.12344334724133105<br>Distance from Airport: 6.236637312625656</div>`)[0];
+                popup_b57b42849358e16e3ce4bf2e8deff5b1.setContent(html_14802d815e5ca39bbd502c434c51b3fd);
+            
+        
+
+        marker_e8e8758c557a467a2ac55beee71cf1c6.bindPopup(popup_b57b42849358e16e3ce4bf2e8deff5b1)
+        ;
+
+        
+    
+    
+            var marker_a5d1389c9f416d73dc8fe97ff7ec3999 = L.marker(
+                [39.8960261, -75.0957428],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_47dd326234880bfdaddd9aa9c46cde49 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_979675f040fcfff48e5b5d9881bc31fd = $(`<div id="html_979675f040fcfff48e5b5d9881bc31fd" style="width: 100.0%; height: 100.0%;">Place Name: Robert Krupinski Sr. Memorial Park<br>Average Altitude: 1750.5652173913043<br>Distance from Flightpath: 0.22959065783760857<br>Distance from Airport: 7.884751983660632</div>`)[0];
+                popup_47dd326234880bfdaddd9aa9c46cde49.setContent(html_979675f040fcfff48e5b5d9881bc31fd);
+            
+        
+
+        marker_a5d1389c9f416d73dc8fe97ff7ec3999.bindPopup(popup_47dd326234880bfdaddd9aa9c46cde49)
+        ;
+
+        
+    
+    
+            var marker_938fe48d15d2ef5a137986ae40357c17 = L.marker(
+                [39.91193500000001, -75.02504909999999],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_edd9b95a53959fb0c9be195358eb10ef = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4c58da06fab971be7a747349c57766e6 = $(`<div id="html_4c58da06fab971be7a747349c57766e6" style="width: 100.0%; height: 100.0%;">Place Name: Erlton School Park and Playground<br>Average Altitude: 2553.7954545454545<br>Distance from Flightpath: 0.12549389293933003<br>Distance from Airport: 11.78261126443425</div>`)[0];
+                popup_edd9b95a53959fb0c9be195358eb10ef.setContent(html_4c58da06fab971be7a747349c57766e6);
+            
+        
+
+        marker_938fe48d15d2ef5a137986ae40357c17.bindPopup(popup_edd9b95a53959fb0c9be195358eb10ef)
+        ;
+
+        
+    
+    
+            var marker_f807aff31e2c210e79c93c528e029a39 = L.marker(
+                [39.896967100000005, -75.1182792],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_e092c6fbc6a0c5847720805eebddf551 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_f60179c16ae002fa62a580f0240985e7 = $(`<div id="html_f60179c16ae002fa62a580f0240985e7" style="width: 100.0%; height: 100.0%;">Place Name: Paul Street Playground<br>Average Altitude: 1513.8645833333333<br>Distance from Flightpath: 0.050984768190909066<br>Distance from Airport: 6.738032472769547</div>`)[0];
+                popup_e092c6fbc6a0c5847720805eebddf551.setContent(html_f60179c16ae002fa62a580f0240985e7);
+            
+        
+
+        marker_f807aff31e2c210e79c93c528e029a39.bindPopup(popup_e092c6fbc6a0c5847720805eebddf551)
+        ;
+
+        
+    
+    
+            var marker_f68025a4d69fc4608194d25b05d6cb9e = L.marker(
+                [39.8873043, -75.167593],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_fb8faae7928c7593b23ce40ae0c7e412 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_e1454bdcaa4e9d922e3bbb044a1e3f2f = $(`<div id="html_e1454bdcaa4e9d922e3bbb044a1e3f2f" style="width: 100.0%; height: 100.0%;">Place Name: The Riverfront Greenway<br>Average Altitude: 751.204081632653<br>Distance from Flightpath: 0.05604192030451801<br>Distance from Airport: 4.040074325853987</div>`)[0];
+                popup_fb8faae7928c7593b23ce40ae0c7e412.setContent(html_e1454bdcaa4e9d922e3bbb044a1e3f2f);
+            
+        
+
+        marker_f68025a4d69fc4608194d25b05d6cb9e.bindPopup(popup_fb8faae7928c7593b23ce40ae0c7e412)
+        ;
+
+        
+    
+    
+            var marker_3beb9b5550889feed1ce0748d3d44bbc = L.marker(
+                [39.8941118, -75.11777740000001],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_5a33392842d40506e07c98a59cada4f7 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4156778c601661cf976b8183ecd29401 = $(`<div id="html_4156778c601661cf976b8183ecd29401" style="width: 100.0%; height: 100.0%;">Place Name: Washington Street Playlot<br>Average Altitude: 1518.8369565217392<br>Distance from Flightpath: 0.1026586747012681<br>Distance from Airport: 6.71606617683547</div>`)[0];
+                popup_5a33392842d40506e07c98a59cada4f7.setContent(html_4156778c601661cf976b8183ecd29401);
+            
+        
+
+        marker_3beb9b5550889feed1ce0748d3d44bbc.bindPopup(popup_5a33392842d40506e07c98a59cada4f7)
+        ;
+
+        
+    
+    
+            var marker_e843c46e4e85577a6b32f232a384b687 = L.marker(
+                [39.8963392, -75.1125773],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_810a8759de4c7693f09b76eb481d0d5d = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_2a0923dff275921b02985068b5c36838 = $(`<div id="html_2a0923dff275921b02985068b5c36838" style="width: 100.0%; height: 100.0%;">Place Name: Nicholson Road Community Pl<br>Average Altitude: 1598.3023255813953<br>Distance from Flightpath: 0.04029415010189207<br>Distance from Airport: 7.0200777979955085</div>`)[0];
+                popup_810a8759de4c7693f09b76eb481d0d5d.setContent(html_2a0923dff275921b02985068b5c36838);
+            
+        
+
+        marker_e843c46e4e85577a6b32f232a384b687.bindPopup(popup_810a8759de4c7693f09b76eb481d0d5d)
+        ;
+
+        
+    
+    
+            var marker_a404345d56a33f747561d9a5dce4d55f = L.marker(
+                [39.9124961, -75.0249714],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_b2ae77457d1e6ee9822be84b3d35a8c2 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_978f073429ded484fdc6a287e39313ea = $(`<div id="html_978f073429ded484fdc6a287e39313ea" style="width: 100.0%; height: 100.0%;">Place Name: 999 Jefferson Ave<br>Average Altitude: 2555.5208333333335<br>Distance from Flightpath: 0.09709806572154024<br>Distance from Airport: 11.795728768979144</div>`)[0];
+                popup_b2ae77457d1e6ee9822be84b3d35a8c2.setContent(html_978f073429ded484fdc6a287e39313ea);
+            
+        
+
+        marker_a404345d56a33f747561d9a5dce4d55f.bindPopup(popup_b2ae77457d1e6ee9822be84b3d35a8c2)
+        ;
+
+        
+    
+    
+            var marker_e1d2490352d1da7e56bcdfc3aa61d62e = L.marker(
+                [39.910271099999996, -75.0271621],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_312c580d9a670e811a585388e0e5627a = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_16221f0e41732749090b2485787fb4fd = $(`<div id="html_16221f0e41732749090b2485787fb4fd" style="width: 100.0%; height: 100.0%;">Place Name: Pennypacker Park<br>Average Altitude: 2452.6923076923076<br>Distance from Flightpath: 0.19057350035245427<br>Distance from Airport: 11.647182536354237</div>`)[0];
+                popup_312c580d9a670e811a585388e0e5627a.setContent(html_16221f0e41732749090b2485787fb4fd);
+            
+        
+
+        marker_e1d2490352d1da7e56bcdfc3aa61d62e.bindPopup(popup_312c580d9a670e811a585388e0e5627a)
+        ;
+
+        
+    
+    
+            var marker_ae311e116bc2d3059a758b096accbb82 = L.marker(
+                [39.898273499999995, -75.0846517],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_6ac722c62a6f00ca47911fdaf6cf9eac = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_f9b4354671088edf983273668c0befe6 = $(`<div id="html_f9b4354671088edf983273668c0befe6" style="width: 100.0%; height: 100.0%;">Place Name: Oaklyn-Lions Memorial Park<br>Average Altitude: 1981.7272727272727<br>Distance from Flightpath: 0.2266287316220437<br>Distance from Airport: 8.492239706985002</div>`)[0];
+                popup_6ac722c62a6f00ca47911fdaf6cf9eac.setContent(html_f9b4354671088edf983273668c0befe6);
+            
+        
+
+        marker_ae311e116bc2d3059a758b096accbb82.bindPopup(popup_6ac722c62a6f00ca47911fdaf6cf9eac)
+        ;
+
+        
+    
+    
+            var marker_7fcb16ae6d693c720f68f1c2f67b0675 = L.marker(
+                [39.9109396, -75.02645],
+                {}
+            ).addTo(map_3ff5942ad3fb1d0705fe8ed6aa3d3dda);
+        
+    
+        var popup_80d6c6ff5c34a8ae979edbf5672449a5 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_a85a502fb2a0264773f4eefff33f7c31 = $(`<div id="html_a85a502fb2a0264773f4eefff33f7c31" style="width: 100.0%; height: 100.0%;">Place Name: Maria Barnaby Greenwald Memorial<br>Average Altitude: 2465.242424242424<br>Distance from Flightpath: 0.16303862833822502<br>Distance from Airport: 11.69445923072843</div>`)[0];
+                popup_80d6c6ff5c34a8ae979edbf5672449a5.setContent(html_a85a502fb2a0264773f4eefff33f7c31);
+            
+        
+
+        marker_7fcb16ae6d693c720f68f1c2f67b0675.bindPopup(popup_80d6c6ff5c34a8ae979edbf5672449a5)
+        ;
+
+        
+    
+</script>
+</html>
