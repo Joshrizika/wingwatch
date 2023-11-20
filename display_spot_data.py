@@ -33,6 +33,5 @@ def plot_locations_on_map(iataCode):
 
 
 if __name__ == "__main__" : 
-    plot_locations_on_map("DEN")
-    plot_locations_on_map("ORD")
+    plot_locations_on_map("DCA")
 
