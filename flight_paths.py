@@ -41,7 +41,7 @@ def findAirportElevationByIATACode(iataCode):
 #function: to calculate a box around the given airport with each side's length being specified by boxDimensions, the airport will be at the center
 #parameters: iataCode - string, boxDimensions - int
 #returns: tuple with north, east, south, and west boundaries respectively
-def calculateCoordinateswithinDimensions(iataCode, boxDimensions):
+def calculateCoordinatesWithinDimensions(iataCode, boxDimensions):
     earthRadius = 3963.19 #radius of earth in miles
     angularDistance = boxDimensions / earthRadius #gets angular distance (in radians) covered by the desired box dimensions
 
@@ -58,13 +58,29 @@ def calculateCoordinateswithinDimensions(iataCode, boxDimensions):
 
     return (latitudeNorth, longitudeEast, latitudeSouth, longitudeWest) #reurn the bounds going clockwise starting at north
 
+#function: gets the haversine distance between two points
+#parameters: lat1 - float, long1 - float, lat2 - float, long2 - float
+#returns: distance between points in miles
+def haversine(lat1, long1, lat2, long2):
+    earth_radius_miles = 3958.8 #set earth radius
+
+    lat1, long1, lat2, long2 = map(math.radians, [lat1, long1, lat2, long2]) #convert latitude and longitude from degrees to radians
+
+    # Haversine formula
+    dlat = lat2 - lat1 #difference in latitude
+    dlong = long2 - long1 #distance in longitude
+    a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlong/2)**2 #intermediate value representing the square of half the angular separation
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a)) #intermediate value representing the central angle
+    distance = earth_radius_miles * c #multiply by earth radius in miles
+
+    return distance
 
 #function: to return flight information for flights coming and going from "iataCode"
 #parameters: iataCode - string
 #returns: a list of flights
 def getFlights(iataCode):
     boxDimensions = 30 #set the dimensions of the box that bounds the results
-    boundsBox = calculateCoordinateswithinDimensions(iataCode, boxDimensions) #get the bounding box coordinates
+    boundsBox = calculateCoordinatesWithinDimensions(iataCode, boxDimensions) #get the bounding box coordinates
     params_depart = { #set the parameters for the first api request
         'api_key': 'ed9f2aab-ab95-4805-9da8-b43eaf96a836', #api key
         'bbox': f'{boundsBox[2]}, {boundsBox[3]}, {boundsBox[0]}, {boundsBox[1]}', #bounding box
@@ -91,8 +107,8 @@ def getFlights(iataCode):
     for flight in flights: #for each flight
         flight['alt'] = round(flight['alt'] * 3.28084) #convert meters to feet
         flight['alt'] = flight['alt'] - findAirportElevationByIATACode(iataCode) #convert elevation to altitude
-    airborne_flights = [flight for flight in flights if flight['status'] == 'en-route' and flight['alt'] <= 4921 and flight['alt'] >= 0] #filter out all flights that are not en-route and that are below 0 meters and above 1500 meters (i will adjust these values later)
-
+    airport_coords = findAirportCoordinatesByIATACode(iataCode)
+    airborne_flights = [flight for flight in flights if flight['status'] == 'en-route' and flight['alt'] <= 4921 and flight['alt'] >= 0 and haversine(flight['lat'], flight['lng'], airport_coords[0], airport_coords[1]) >= 0.621371] #filter out all flights that are not en-route, that are below 0 feet and above 4921 feet, and that are greater than 1 km away from the airport
 
     timestamp = datetime.now() #get current time
     timestamped_airborne_flights = [{'timestamp': timestamp, **d} for d in airborne_flights] #add timestamp to each flight
@@ -148,5 +164,5 @@ def collectAirportData(iataCodes):
 
 
 if __name__ == "__main__":
-    iataCodes = ["DEN", "ORD", "LHR"]
+    iataCodes = ["LHR"]
     collectAirportData(iataCodes)
