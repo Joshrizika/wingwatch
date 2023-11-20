@@ -198,7 +198,7 @@ def getParks(line):
     headers = { #set headers
         'Content-Type': 'application/json', #content type JSON
         'X-Goog-Api-Key': 'AIzaSyCOsh2QBtZT0mFpOH5dTyk3x4nHdxJsX_4', #api key
-        'X-Goog-FieldMask': 'places.name,places.id,places.types,places.formattedAddress,places.location,places.viewport,places.googleMapsUri,places.displayName,places.editorialSummary' #expected fields
+        'X-Goog-FieldMask': 'places.id,places.formattedAddress,places.location,places.viewport,places.googleMapsUri,places.displayName,places.editorialSummary' #expected fields
     }
 
     for point in points: #for each point
