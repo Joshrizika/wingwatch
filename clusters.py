@@ -1,4 +1,5 @@
 from flight_paths import findAirportCoordinatesByIATACode
+from scipy.stats import gaussian_kde
 from sklearn.cluster import DBSCAN
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -104,7 +105,7 @@ def createClusters(iataCode):
     #     else: #if they are noise
     #         print(f"Noise: {size} points") #print out the noise and its corresponding size
 
-    # visualizeClusters(flight_data) #visualize the clusters
+    visualizeClusters(flight_data) #visualize the clusters
 
     return (flight_data, cluster_sizes)
 
@@ -133,7 +134,7 @@ def getPaths(iataCode):
     
     # print(cluster_dfs)
 
-    # displayClusterData(cluster_dfs, iataCode)
+    displayClusterData(cluster_dfs, iataCode)
 
     flight_paths = [] #create a new list to store information about the lines
 
@@ -141,35 +142,45 @@ def getPaths(iataCode):
         X = np.array(cluster_df['lng']) #extract longitude in the form of a 2D array
         y = np.array(cluster_df['lat']) #extract latitude in the form of a 1D array
 
+        xy = np.vstack([X, y]) #stack arrays in sequence by row
+        z = gaussian_kde(xy)(xy) #peform kernel density estimate on data
+
+        density_threshold = np.percentile(z, 20)  #keep the top 80% densest points
+        high_density_indices = z >= density_threshold #specify indices
+
+        X_filtered = X[high_density_indices] #filter out X data
+        y_filtered = y[high_density_indices] #filter out y data
+        weights_filtered = z[high_density_indices] / max(z[high_density_indices])  #normalize the weights
+
         degree = 20 #specify degree of polynomial line
 
-        coefficients = np.polyfit(X, y, degree) #get coefficients from polynomial curve
+        coefficients = np.polyfit(X_filtered, y_filtered, degree, w=weights_filtered) #get coefficients from filtered data
 
-        # poly = np.poly1d(coefficients) #create polynomial function from coefficients
+        poly = np.poly1d(coefficients) #create polynomial function from coefficients
 
-        # X_curve = np.linspace(min(X), max(X), 100) #generate x values along curve for plotting
-        # y_curve = poly(X_curve) #generate corresponding y values
+        X_curve = np.linspace(min(X_filtered), max(X_filtered), 100) #generate x values along curve for plotting
+        y_curve = poly(X_curve) #generate corresponding y values
 
-        # plt.scatter(X, y, label='Data Points') #create a scatter plot with all the data
-        # plt.plot(X_curve, y_curve, color='red', label='Polynomial Regression')
-        # plt.title(f'Cluster: {cluster_df.iloc[0]["cluster"]}')
-        # plt.xlabel('Longitude') #label longitude
-        # plt.ylabel('Latitude') #label latitude
-        # plt.legend() #create a legend
-        # plt.show() #show the plot
+        plt.scatter(X, y, c=z, s=50, label='Data Points') #create a scatter plot with all the data
+        plt.plot(X_curve, y_curve, color='red', label='Polynomial Regression')
+        plt.title(f'Cluster: {cluster_df.iloc[0]["cluster"]}')
+        plt.xlabel('Longitude') #label longitude
+        plt.ylabel('Latitude') #label latitude
+        plt.legend() #create a legend
+        plt.show() #show the plot
 
         # Print the polynomial regression equation
-        # equation = f'Latitude = {coefficients[-1]:.2f} '  # Intercept term
-        # for i in range(degree, 0, -1):
-        #     equation += f'+ {coefficients[i]:.2f} * Longitude^{i} '
-        # print(f"Polynomial Regression Equation: {equation}")
+        equation = f'Latitude = {coefficients[-1]:.2f} '  # Intercept term
+        for i in range(degree, 0, -1):
+            equation += f'+ {coefficients[i]:.2f} * Longitude^{i} '
+        print(f"Polynomial Regression Equation: {equation}")
 
         new_path_dict = {
             'coefficients': coefficients,
-            'max_lat': max(cluster_df['lat']), 
-            'max_long': max(cluster_df['lng']), 
-            'min_lat': min(cluster_df['lat']), 
-            'min_long': min(cluster_df['lng']),
+            'max_lat': np.max(y_curve), 
+            'max_long': np.max(X_curve), 
+            'min_lat': np.min(y_curve), 
+            'min_long': np.min(X_curve),
             'cluster': cluster_df
         }
 
@@ -180,7 +191,7 @@ def getPaths(iataCode):
     return flight_paths #return the list of path
 
 if __name__ == "__main__":  
-    flight_paths = getPaths("ATL")
+    flight_paths = getPaths("DCA")
     # print(flight_paths)
 
 
