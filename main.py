@@ -13,7 +13,7 @@ def getSpots(iataCode):
     return spots
 
 if __name__ == '__main__':
-    spots = getSpots("DCA")
+    spots = getSpots("BOS")
     print(spots)
 
    
