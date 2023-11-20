@@ -26,4 +26,4 @@ def displayData(iataCode):
 
 
 if __name__ == "__main__":
-    displayData("EWR")
+    displayData("BOS")
