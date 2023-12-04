@@ -1,35 +1,69 @@
-## Introduction Wing Watch
+# Wing Watch
 
-Wing Watch is an app that helps users find places to watch planes from
+## Introduction
+
+Wing Watch is an innovative app designed to help users find the best locations for plane spotting. It tracks and organizes flight path data, making it easy to identify prime locations for watching planes.
 
 ## Overview
 
-The repository contains the code used to gather and organize the data.  Along with the code for the app itself.  
+The Wing Watch repository contains code essential for data collection and organization, as well as the application's core functionality. This includes scripts for tracking flight paths, displaying data, and clustering flight information to determine optimal viewing spots.
 
 ## Installation (Environment)
 
+First make sure pip3 is installed, you can check this by running...
+```bash
+pip3 --version
+```
+
+To make sure all dependencies are installed, run...
+```bash
+pip3 install -r requirements.txt
+```
 
 ### General Requirements
 
+[Specify the general requirements for the app. Include details about the programming language, libraries, or any other tools needed.]
+Make sure python3 is installed, you can check this by running...
+```bash
+python3 --version
+```
 
 ## Configuration
 
-flight_paths.py - Tracks data for the specified airport and outputs it in a .csv.  
-display_data.py - Displays location data from a .csv.  
-clusters.py - takes the data from a .csv and organizes it into clusters, filters out all insignificant clusters, and then plots a line through each cluster to find a flight path.  
+The app's functionality is divided into several scripts, each serving a specific purpose in the data gathering and display process.
 
 ### flight_paths.py
 
-We call a function every ten seconds which calls an API request and retrieves live flight data around the specified airport.  That data is organized, filtered, timestamped, and put into a .csv file.
+This script periodically retrieves live flight data around a specified airport. The data is organized, timestamped, and stored in a .csv file.
 
 ### display_data.py
 
-Takes data from the .csv file and creates a map using folium that stores each point as a marker on a map.  This map is saved as a .html file that can be opened in a browser to observe the data
+Processes the .csv file to create an interactive map using Folium. Each flight data point is marked on this map, which is saved as an .html file for easy viewing.
 
 ### clusters.py
 
-Using the data collected we sklearn clustering algorithm DBSCAN to sort the points into clusters based on their density.  The clusters with less than 100 points are then removed and the remaining clusters have the sklearn linear regression model performed on them to calculate a flight path.  These line slope formulas are then returned.
+Employs the sklearn DBSCAN clustering algorithm to categorize flight data points based on density. Clusters with fewer than 100 points are filtered out. For the remaining clusters, a linear regression model calculates the flight paths.
+
+### spots.py
+
+Takes a line segment corresponding to a flightpath and uses the Google Maps Nearby Places API to find parks in the surrounding area around this line.  Those parks are taken as the resulting spots and are assigned attributes such as distance from flightpath, and average altitude.  
+
+### display_spot_data.py
+
+Displays the resulting spot data and its attributes on a map using Folium.
 
 ### main.py
 
-To be created
+Takes in the data output from flight_paths.py and runs that data through the clustering algorithm and the spot finding algorithm.  It outputs JSON data of spots in that city.  
+
+## Running the App
+
+TO BE IMPLEMENTED AFTER APP CREATION
+
+## Contributing
+
+TO BE IMPLEMENTED AFTER APP CREATION
+
+## License
+
+TO BE IMPLEMENTED AFTER APP CREATION
