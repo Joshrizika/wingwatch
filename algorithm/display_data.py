@@ -8,7 +8,7 @@ import folium
 #parameters: data_path - string
 #returns: nothing
 def displayData(iataCode):
-    data_path = f"flightData/data/flight_log_{iataCode}.csv"
+    data_path = f"data/flightData/data/flight_log_{iataCode}.csv"
 
     data = pd.read_csv(data_path, parse_dates=['timestamp']) #create a dataframe using the data and set the dates to datetime type
 
@@ -24,7 +24,7 @@ def displayData(iataCode):
         tooltip_text += f"Arrival IATA: {row['arr_iata']}<br>"
         folium.Marker([row['lat'], row['lng']], tooltip=tooltip_text).add_to(map) #add the marker to the map
         
-    map.save(f'flightData/maps/map_{iataCode}.html') #save the map
+    map.save(f'data/flightData/maps/map_{iataCode}.html') #save the map
 
 
 if __name__ == "__main__":

@@ -39,8 +39,8 @@ def visualizeClusters(flight_data):
 #parameters: data - Pandas DataFrame, iataCode - string
 #returns: nothing
 def displayClusterData(cluster_dfs, iataCode):
-    if os.path.exists(f'flightData/maps/clusters/{iataCode}') and os.path.isdir(f'flightData/maps/clusters/{iataCode}'):
-        shutil.rmtree(f'flightData/maps/clusters/{iataCode}') #remove the directory and its contents
+    if os.path.exists(f'data/flightData/maps/clusters/{iataCode}') and os.path.isdir(f'data/flightData/maps/clusters/{iataCode}'):
+        shutil.rmtree(f'data/lightData/maps/clusters/{iataCode}') #remove the directory and its contents
     for cluster in cluster_dfs:
         cluster_num = cluster.iloc[0]['cluster']
         map = folium.Map(location=list(findAirportCoordinatesByIATACode(iataCode)), zoom_start=8) #create the map with the airport at the center
@@ -55,14 +55,14 @@ def displayClusterData(cluster_dfs, iataCode):
             tooltip_text += f"Arrival IATA: {row['arr_iata']}<br>"
             folium.Marker([row['lat'], row['lng']], tooltip=tooltip_text).add_to(map) #add the marker to the map
         
-        os.makedirs(f'flightData/maps/clusters/{iataCode}', exist_ok=True) #create a new directory
-        map.save(f'flightData/maps/clusters/{iataCode}/cluster_{cluster_num}_map.html') #save the map
+        os.makedirs(f'data/flightData/maps/clusters/{iataCode}', exist_ok=True) #create a new directory
+        map.save(f'data/flightData/maps/clusters/{iataCode}/cluster_{cluster_num}_map.html') #save the map
 
 #function: sort the data provided into clusters using DBSCAN
 #parameters: iataCode - string
 #returns: flight data with column specifying cluster, and dictionary of cluster name and size
 def createClusters(iataCode):
-    data_path = f"flightData/data/flight_log_{iataCode}.csv" 
+    data_path = f"data/flightData/data/flight_log_{iataCode}.csv" 
 
     eps_miles = 0.125 #epsilon is the distance between points that DBSCAN looks for another point in order to provide a classification of either noise, non-core, or core points. 
     minPts = 5 #minimum points to form a cluster
