@@ -76,13 +76,13 @@ def pointLineDistance(point, line):
         return min_distance_miles #return distance
     else: #if minimize function was not successful
         # Print out debugging information
-        # print("Optimization failed:")
-        # print("Message:", result.message)
-        # print("Status Code:", result.status)
-        # print("Number of Iterations:", result.nit)
-        # print("Number of Function Evaluations:", result.nfev)
-        # print("Last Function Evaluation Value:", result.fun)
-        # print("Last x Value:", result.x)
+        print("Optimization failed:")
+        print("Message:", result.message)
+        print("Status Code:", result.status)
+        print("Number of Iterations:", result.nit)
+        print("Number of Function Evaluations:", result.nfev)
+        print("Last Function Evaluation Value:", result.fun)
+        print("Last x Value:", result.x)
         raise ValueError("Optimization failed. Please check the input data and try again.") #call error
 
 #function: gets the haversine distance between two points
@@ -200,7 +200,7 @@ def getParks(line):
     headers = { #set headers
         'Content-Type': 'application/json', #content type JSON
         'X-Goog-Api-Key': 'AIzaSyCOsh2QBtZT0mFpOH5dTyk3x4nHdxJsX_4', #api key
-        'X-Goog-FieldMask': 'places.id,places.formattedAddress,places.location,places.viewport,places.googleMapsUri,places.displayName,places.editorialSummary' #expected fields
+        'X-Goog-FieldMask': 'places.formattedAddress,places.location,places.googleMapsUri,places.displayName,places.editorialSummary' #expected fields
     }
 
     for point in points: #for each point
