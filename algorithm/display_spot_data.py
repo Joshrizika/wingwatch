@@ -30,8 +30,8 @@ def plot_locations_on_map(iataCode):
         except json.JSONDecodeError: #skip any invalid data
             print(f"Skipping invalid JSON data: {spot}")
 
-    m.save(f'algorithm/data/spotData/maps/spot_map_{iataCode}.html') #save the map
-    print(f"Map saved as algorithm/data/spotData/maps/spot_map_{iataCode}.html")
+    m.save(f'data/spotData/maps/spot_map_{iataCode}.html') #save the map
+    print(f"Map saved as data/spotData/maps/spot_map_{iataCode}.html")
 
 
 if __name__ == "__main__" : 
