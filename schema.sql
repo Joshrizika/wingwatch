@@ -1,9 +1,12 @@
+DROP SCHEMA public CASCADE; 
+CREATE SCHEMA public;
+
 CREATE TABLE places (
     place_id VARCHAR(50) PRIMARY KEY,
     display_name VARCHAR(255) NOT NULL,
     address VARCHAR(255),
-    latitude DOUBLE NOT NULL,
-    longitude DOUBLE NOT NULL,
+    latitude DOUBLE PRECISION NOT NULL,
+    longitude DOUBLE PRECISION NOT NULL,
     viewport JSONB,
     google_maps_uri VARCHAR(255),
     airport CHAR(3) NOT NULL,
