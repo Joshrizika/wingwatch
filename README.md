@@ -54,7 +54,7 @@ Displays the resulting spot data and its attributes on a map using Folium.
 
 ### main.py
 
-Takes in the data output from flight_paths.py and runs that data through the clustering algorithm and the spot finding algorithm.  It outputs JSON data of spots in that city.  
+Takes in the data output from flight_paths.py and runs that data through the clustering algorithm and the spot finding algorithm.  It saves the results to a .csv file.  
 
 ## Running the App
 
