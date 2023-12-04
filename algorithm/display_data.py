@@ -5,7 +5,7 @@ import folium
 #This file is used to display the data collected from the flights
 
 #function: to display all the points recorded in the collected data
-#parameters: data_path - string
+#parameters: iataCode - string
 #returns: nothing
 def displayData(iataCode):
     data_path = f"data/flightData/data/flight_log_{iataCode}.csv"
