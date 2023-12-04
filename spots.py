@@ -12,6 +12,8 @@ import requests
 import math
 import json
 
+#This file is used to get the spots around the flight path.
+
 #function: converts distance_degrees into miles based on the position given
 #parameters: lat - float, long - float, distance_degrees - float
 #returns: distance in miles

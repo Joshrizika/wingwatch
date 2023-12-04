@@ -3,6 +3,8 @@ from main import getSpots
 import folium
 import json
 
+#This file is used to display our resulting spot data on a map.
+
 #function: calls getSpots on data_path and then plots spots on a map
 #parameters: data_path - string
 #returns: creates a .html file with the map
@@ -33,5 +35,5 @@ def plot_locations_on_map(iataCode):
 
 
 if __name__ == "__main__" : 
-    plot_locations_on_map("DCA")
+    plot_locations_on_map("BOS")
 

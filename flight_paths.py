@@ -7,6 +7,7 @@ import math
 import time
 import os
 
+#This file collects flight data in a given area around the selected airport and saves it to a file.
 
 #function: to get airport coordinates given the iataCode
 #parameters: iataCode - string

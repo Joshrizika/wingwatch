@@ -1,6 +1,8 @@
 from clusters import getPaths
 from spots import getParks
 
+#This file runs the clustering and spot finding algorithms.
+
 #function: takes data from data_path, gets paths from data and finds parks along them
 #parameters: line - dictionary
 #returns: a list of parks

@@ -9,6 +9,7 @@ import shutil
 import math
 import os
 
+#This file takes flight data collected on an airport and runs it through a clustring algorithm to find the most common flight paths.  The top clusters have a polynomial regression line fitted to them.
 
 #function: converts distance_miles into degrees based on the latitude given
 #parameters: distance_miles - float, latitude - float
@@ -98,12 +99,12 @@ def createClusters(iataCode):
 
     cluster_sizes = {label: np.sum(cluster_labels == label) for label in unique_labels if label != -1} #calculate the size of each cluster
 
-    # print(f"Number of clusters: {num_clusters}") #print out total number of clusters
-    # for label, size in cluster_sizes.items(): #for all clusters
-    #     if label != -1: #if they are not noise
-    #         print(f"Cluster {label}: {size} points") #print out the cluster and its corresponding size
-    #     else: #if they are noise
-    #         print(f"Noise: {size} points") #print out the noise and its corresponding size
+    print(f"Number of clusters: {num_clusters}") #print out total number of clusters
+    for label, size in cluster_sizes.items(): #for all clusters
+        if label != -1: #if they are not noise
+            print(f"Cluster {label}: {size} points") #print out the cluster and its corresponding size
+        else: #if they are noise
+            print(f"Noise: {size} points") #print out the noise and its corresponding size
 
     visualizeClusters(flight_data) #visualize the clusters
 
@@ -132,7 +133,7 @@ def getPaths(iataCode):
         new_cluster_df = top_cluster_flight_data[top_cluster_flight_data['cluster'] == cluster].reset_index(drop=True) #filter out data that does not belong to this cluster
         cluster_dfs.append(new_cluster_df) #append the cluster data to a list of cluster dataframes
     
-    # print(cluster_dfs)
+    print(cluster_dfs)
 
     displayClusterData(cluster_dfs, iataCode)
 
@@ -184,7 +185,7 @@ def getPaths(iataCode):
             'cluster': cluster_df
         }
 
-        # print(new_path_dict)
+        print(new_path_dict)
 
         flight_paths.append(new_path_dict) #append it to the list of paths
 
