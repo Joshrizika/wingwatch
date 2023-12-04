@@ -13,11 +13,11 @@ import os
 #parameters: iataCode - string
 #returns: tuple with latiutde and longitude
 def findAirportCoordinatesByIATACode(iataCode): 
-    with open('data/airport_data.js', 'r') as file: #open file with airport data
+    with open('algorithm/data/airport_data.js', 'r') as file: #open file with airport data
         js_code = file.read() #read the file
 
     ctx = execjs.compile(js_code) #compile the code at end of js file to get data
-    airport_data = ctx.call('require', './airport_data') #require we have this data
+    airport_data = ctx.call('require', './algorithm/data/airport_data') #require we have this data
     airport_data_df = pd.DataFrame(airport_data) #put data in a dataframe
     airport_data = airport_data_df.loc[airport_data_df["iata_code"] == iataCode] #get row with IATA code
     coordinates = airport_data["coordinates"].iloc[0] #isolate coordinates
@@ -28,11 +28,11 @@ def findAirportCoordinatesByIATACode(iataCode):
 #parameters: iataCode - string
 #returns: elevation
 def findAirportElevationByIATACode(iataCode): 
-    with open('data/airport_data.js', 'r') as file: #open file with airport data
+    with open('algorithm/data/airport_data.js', 'r') as file: #open file with airport data
         js_code = file.read() #read the file
 
     ctx = execjs.compile(js_code) #compile the code at end of js file to get data
-    airport_data = ctx.call('require', './airport_data') #require we have this data
+    airport_data = ctx.call('require', './algorithm/data/airport_data') #require we have this data
     airport_data_df = pd.DataFrame(airport_data) #put data in a dataframe
     airport_data = airport_data_df.loc[airport_data_df["iata_code"] == iataCode] #get row with IATA code
     elevation = int(airport_data["elevation_ft"].iloc[0]) #isolate elevation
@@ -121,7 +121,7 @@ def getFlights(iataCode):
 #parameters: iataCode - string
 #returns: nothing
 def trackFlights(iataCode):
-    log_file_name = f"data/flightData/data/flight_log_{iataCode}.csv" #create a new file name
+    log_file_name = f"algorithm/data/flightData/data/flight_log_{iataCode}.csv" #create a new file name
     file_exists = os.path.isfile(log_file_name) #check if file exists already
 
     max_line_count = 5000 #set maximum line count
