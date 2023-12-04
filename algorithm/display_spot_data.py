@@ -6,8 +6,8 @@ import json
 #This file is used to display our resulting spot data on a map.
 
 #function: calls getSpots on data_path and then plots spots on a map
-#parameters: data_path - string
-#returns: creates a .html file with the map
+#parameters: iataCode - string
+#returns: nothing
 def plot_locations_on_map(iataCode):
     spots = getSpots(iataCode) #get the spots with the data
 
