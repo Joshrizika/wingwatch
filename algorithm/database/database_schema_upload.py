@@ -8,11 +8,13 @@ connection = psycopg2.connect(database="wing-watch-db",
 
 cursor = connection.cursor()
 
-schema_file = 'schema.sql'
+schema_file = 'database/schema.sql'
 with open(schema_file, 'r') as file:
     schema_sql = file.read()
 
 try:
+    cursor.execute("DROP SCHEMA public CASCADE;") #drop the schema if it already exists
+    cursor.execute("CREATE SCHEMA public;") #create a new schema
     cursor.execute(schema_sql)
     connection.commit()
     print("Schema uploaded successfully.")
