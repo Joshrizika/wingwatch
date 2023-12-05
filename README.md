@@ -56,6 +56,14 @@ Displays the resulting spot data and its attributes on a map using Folium.
 
 Takes in the data output from flight_paths.py and runs that data through the clustering algorithm and the spot finding algorithm.  It saves the results to a .csv file.  
 
+### schema_upload.py
+
+Resets the current database then re initializes it with the schema provided in schema.sql.
+
+### data_upload.py
+
+Uploads spot data to the database.
+
 ## Running the App
 
 TO BE IMPLEMENTED AFTER APP CREATION
