@@ -1,7 +1,8 @@
 CREATE TABLE places (
     place_id SERIAL PRIMARY KEY,
-    display_name VARCHAR(255) NOT NULL,
-    address VARCHAR(255),
+    name VARCHAR(255) NOT NULL,
+    address VARCHAR(255), 
+    description TEXT,
     latitude DOUBLE PRECISION NOT NULL,
     longitude DOUBLE PRECISION NOT NULL,
     google_maps_uri VARCHAR(255),
