@@ -146,7 +146,7 @@ def getPaths(iataCode):
         xy = np.vstack([X, y]) #stack arrays in sequence by row
         z = gaussian_kde(xy)(xy) #peform kernel density estimate on data
 
-        density_threshold = np.percentile(z, 20)  #keep the top 80% densest points
+        density_threshold = np.percentile(z, 10)  #keep the top 80% densest points
         high_density_indices = z >= density_threshold #specify indices
 
         X_filtered = X[high_density_indices] #filter out X data
