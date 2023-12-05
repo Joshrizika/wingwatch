@@ -8,7 +8,7 @@ import json
 
 #function: takes data from data_path, gets paths from data, finds parks along paths, and saves data to csv
 #parameters: iataCode - string
-#returns: nothing
+#returns: a list of spots in JSON format
 def getSpots(iataCode):
     spots = set() #create empty set
     flight_path_lines = getPaths(iataCode) #get flight paths
@@ -21,6 +21,8 @@ def getSpots(iataCode):
     df.rename(columns={'displayName.text': 'displayName', 'editorialSummary.text': 'editorialSummary', 'location.latitude': 'latitude', 'location.longitude': 'longitude'}, inplace=True) #rename columns
     df.drop(columns=['displayName.languageCode', 'editorialSummary.languageCode'], inplace=True) #remove columns
     df.to_csv(f'data/spotData/data/spots_{iataCode}.csv', index=False) #save data to .csv file
+
+    return spots
 
 #function: finds spots for all inputted airports simultaneously
 #parameters: iataCodes - list
