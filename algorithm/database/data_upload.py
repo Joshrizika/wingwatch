@@ -33,5 +33,10 @@ def insertSpots(iataCode):
         cursor.close() #close cursor
         connection.close() #close connection
 
+    
+
+
 if __name__ == '__main__':
-    insertSpots('PHL')
+    iataCodes = ["ATL", "BOS", "DCA", "DFW", "EWR", "IAD", "JFK", "LAX", "LGA", "ORD", "PHL"]
+    for iataCode in iataCodes:
+        insertSpots(iataCode)
