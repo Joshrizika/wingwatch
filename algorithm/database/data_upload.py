@@ -12,7 +12,7 @@ def insertSpots(iataCode):
         connection = psycopg2.connect(database="wing-watch-db", #connect to database
                                       host="localhost",
                                       user="joshrizika",
-                                      password="",
+                                      password="wingpass",
                                       port="5432")
         cursor = connection.cursor() #create a cursor object
 
