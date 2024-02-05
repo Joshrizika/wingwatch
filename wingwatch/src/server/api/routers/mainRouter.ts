@@ -1,17 +1,20 @@
 import { z } from "zod";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { db } from "~/server/db";
+import { getServerAuthSession } from "~/server/auth";
 
-import {
-  createTRPCRouter,
-  // protectedProcedure,
-  publicProcedure,
-} from "~/server/api/trpc";
 
 export const mainRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
+  getSession: publicProcedure
+    .input(z.void()) // No input required for this procedure
+    .query(async () => {
+      return getServerAuthSession();
+    }),
+
+  findPlaces: publicProcedure
+    .input(z.void()) // No input required for this procedure
+    .query(async () => {
+      const places = await db.places.findMany();
+      return places;
     }),
 });
