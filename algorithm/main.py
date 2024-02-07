@@ -8,30 +8,28 @@ import os
 
 #This file runs the clustering and spot finding algorithms and returns the data to a csv.
 
-
+#function: saves flight path data to a csv
+#parameters: flight_path - dictionary, iataCode - string, line_index - int
+#returns: nothing
 def savePath(flight_path, iataCode, line_index):
-    path_csv = f"data/pathData/paths_{iataCode}.csv" # Path to the CSV file
-    line_id = iataCode + str(line_index) # Create a unique id for the flight path
+    path_csv = f"data/pathData/paths_{iataCode}.csv" #path to the CSV file
+    line_id = iataCode + str(line_index) #create a unique id for the flight path
     
-    # Decide file mode based on line_index
-    file_mode = 'w' if line_index == 0 else 'a'
+    file_mode = 'w' if line_index == 0 else 'a' #determine the file mode based on whether the file is being written for the first time or cleared
     
-    with open(path_csv, mode=file_mode, newline='') as file: # Open the file in the determined mode
-        writer = csv.writer(file) # Create a writer
+    with open(path_csv, mode=file_mode, newline='') as file: #open the file in the determined mode
+        writer = csv.writer(file) #create a writer
         
-        # Write header if the file is being written for the first time or cleared
-        if line_index == 0:
-            writer.writerow(['path_id', 'coefficients', 'max_lat', 'max_long', 'min_lat', 'min_long'])
+        if line_index == 0: #if the file is being written for the first time
+            writer.writerow(['path_id', 'coefficients', 'max_lat', 'max_long', 'min_lat', 'min_long']) #write the header row
         
-        # Prepare data
-        coefficients = flight_path['coefficients'] # Get coefficients
-        max_lat = flight_path['max_lat'] # Get max latitude
-        max_long = flight_path['max_long'] # Get max longitude
-        min_lat = flight_path['min_lat'] # Get min latitude
-        min_long = flight_path['min_long'] # Get min longitude
+        coefficients = flight_path['coefficients'] #get coefficients
+        max_lat = flight_path['max_lat'] #get max latitude
+        max_long = flight_path['max_long'] #get max longitude
+        min_lat = flight_path['min_lat'] #get min latitude
+        min_long = flight_path['min_long'] #get min longitude
         
-        # Write data row
-        writer.writerow([line_id, coefficients, max_lat, max_long, min_lat, min_long])
+        writer.writerow([line_id, coefficients, max_lat, max_long, min_lat, min_long]) #write the data to the file
 
 #function: takes data from data_path, gets paths from data, finds parks along paths, and saves data to csv
 #parameters: iataCode - string
