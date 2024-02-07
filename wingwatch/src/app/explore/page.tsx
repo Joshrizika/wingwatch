@@ -14,7 +14,7 @@ declare global {
 export default function Explore() {
     noStore();
 
-    const session = api.main.getSession.useQuery().data;
+    // const session = api.main.getSession.useQuery().data;
     const placesQuery = api.main.findPlaces.useQuery();
 
     useEffect(() => {
