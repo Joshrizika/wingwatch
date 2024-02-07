@@ -21,6 +21,8 @@ model places {
     description                 String?
     latitude                    Float
     longitude                   Float
+    path_id                     String
+    path                        paths    @relation(fields: [path_id], references: [path_id])
     google_maps_uri             String
     airport                     String
     distance_from_flightpath    Float
@@ -29,6 +31,16 @@ model places {
     ratings                     Rating[]
     reviews                     Review[]
     favorites                   Favorited[]
+}
+
+model paths {
+    path_id                     String @id
+    coefficients                Float[]
+    max_latitude                Float
+    max_longitude               Float
+    min_latitude                Float
+    min_longitude               Float
+    places                      places[]
 }
 
 // Necessary for Next auth

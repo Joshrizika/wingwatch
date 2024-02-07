@@ -7,6 +7,7 @@ import numpy as np
 import folium
 import shutil
 import math
+import csv
 import os
 
 #This file takes flight data collected on an airport and runs it through a clustring algorithm to find the most common flight paths.  The top clusters have a polynomial regression line fitted to them.
@@ -106,7 +107,7 @@ def createClusters(iataCode):
         else: #if they are noise
             print(f"Noise: {size} points") #print out the noise and its corresponding size
 
-    visualizeClusters(flight_data) #visualize the clusters
+    # visualizeClusters(flight_data) #visualize the clusters
 
     return (flight_data, cluster_sizes)
 
@@ -162,13 +163,13 @@ def getPaths(iataCode):
         X_curve = np.linspace(min(X_filtered), max(X_filtered), 100) #generate x values along curve for plotting
         y_curve = poly(X_curve) #generate corresponding y values
 
-        plt.scatter(X, y, c=z, s=50, label='Data Points') #create a scatter plot with all the data
-        plt.plot(X_curve, y_curve, color='red', label='Polynomial Regression')
-        plt.title(f'Cluster: {cluster_df.iloc[0]["cluster"]}')
-        plt.xlabel('Longitude') #label longitude
-        plt.ylabel('Latitude') #label latitude
-        plt.legend() #create a legend
-        plt.show() #show the plot
+        # plt.scatter(X, y, c=z, s=50, label='Data Points') #create a scatter plot with all the data
+        # plt.plot(X_curve, y_curve, color='red', label='Polynomial Regression')
+        # plt.title(f'Cluster: {cluster_df.iloc[0]["cluster"]}')
+        # plt.xlabel('Longitude') #label longitude
+        # plt.ylabel('Latitude') #label latitude
+        # plt.legend() #create a legend
+        # plt.show() #show the plot
 
         # Print the polynomial regression equation
         equation = f'Latitude = {coefficients[-1]:.2f} '  # Intercept term
@@ -188,6 +189,13 @@ def getPaths(iataCode):
         print(new_path_dict)
 
         flight_paths.append(new_path_dict) #append it to the list of paths
+
+
+        
+            
+            
+
+            
 
     return flight_paths #return the list of path
 
