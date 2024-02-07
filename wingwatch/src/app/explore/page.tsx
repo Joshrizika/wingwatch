@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { unstable_noStore as noStore } from "next/cache";
 import { api } from "~/trpc/react";
 import Navbar from '../_components/Navbar';
+import useLocation from '../hooks/useLocation';
 
 declare global {
   interface Window {
@@ -16,6 +17,8 @@ export default function Explore() {
 
     // const session = api.main.getSession.useQuery().data;
     const placesQuery = api.main.findPlaces.useQuery();
+    const { location, error } = useLocation();
+
 
     useEffect(() => {
         // Dynamically load the Google Maps script with the initMap callback
@@ -27,36 +30,59 @@ export default function Explore() {
         // Attach the initMap function to the window object
         window.initMap = function () {
             const mapElement = document.getElementById("map")!;
-            const map = new google.maps.Map(mapElement, {
-                center: { lat: 42.3601, lng: -71.0589 },
-                zoom: 8,
-            });
-
-            // Add markers to the map based on the places
-            placesQuery.data?.forEach(place => {
-                const marker = new google.maps.Marker({
-                    position: { lat: place.latitude, lng: place.longitude },
-                    map: map,
-                    title: place.name,
+            if(mapElement){
+                const center = location.latitude && location.longitude ? { lat: location.latitude, lng: location.longitude } : { lat: 42.3601, lng: -71.0589 };
+                if (error){
+                    console.log(error);
+                }
+                const map = new google.maps.Map(mapElement, {
+                    center: center,
+                    zoom: 8,
                 });
 
-                const infowindow = new google.maps.InfoWindow({
-                    content: `<div><h1>${place.name}</h1>
-                              <p>${place.address}</p>
-                              <p>Airport: ${place.airport}</p>
-                              <p>Distance From Flightpath: ${place.distance_from_flightpath}</p>
-                              <p>Average Altitude: ${place.average_altitude}</p>
-                              <p>Distance From Airport: ${place.distance_from_airport}</p></div>`,
-                });
+                if (location.latitude && location.longitude) {
+                    new google.maps.Marker({
+                        position: center,
+                        map: map,
+                        // Using a built-in symbol as the icon
+                        icon: {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: 7, // Size of the dot
+                            fillColor: '#4285F4', // Blue color
+                            fillOpacity: 1,
+                            strokeColor: 'white',
+                            strokeWeight: 2,
+                        },
+                        title: "You are here",
+                    });
+                }
+            
+                // Add markers to the map based on the places
+                placesQuery.data?.forEach(place => {
+                    const marker = new google.maps.Marker({
+                        position: { lat: place.latitude, lng: place.longitude },
+                        map: map,
+                        title: place.name,
+                    });
 
-                marker.addListener('mouseover', function() {
-                    infowindow.open(map, marker);
-                });
+                    const infowindow = new google.maps.InfoWindow({
+                        content: `<div><h1>${place.name}</h1>
+                                <p>${place.address}</p>
+                                <p>Airport: ${place.airport}</p>
+                                <p>Distance From Flightpath: ${place.distance_from_flightpath}</p>
+                                <p>Average Altitude: ${place.average_altitude}</p>
+                                <p>Distance From Airport: ${place.distance_from_airport}</p></div>`,
+                    });
 
-                marker.addListener('mouseout', function() {
-                    infowindow.close();
+                    marker.addListener('mouseover', function() {
+                        infowindow.open(map, marker);
+                    });
+
+                    marker.addListener('mouseout', function() {
+                        infowindow.close();
+                    });
                 });
-            });
+            }
         };
 
         // Cleanup: Remove the script and clean up the window object
@@ -64,7 +90,7 @@ export default function Explore() {
             document.body.removeChild(script);
             delete window.initMap;
         };
-    }, [placesQuery.data]);
+    }, [placesQuery.data, location, error]);
 
     return (
         <>
