@@ -1,10 +1,7 @@
 CREATE TABLE paths (
     path_id VARCHAR(5) PRIMARY KEY,
-    coefficients DOUBLE PRECISION[] NOT NULL,
-    max_latitude DOUBLE PRECISION NOT NULL,
-    max_longitude DOUBLE PRECISION NOT NULL,
-    min_latitude DOUBLE PRECISION NOT NULL,
-    min_longitude DOUBLE PRECISION NOT NULL
+    latitude DOUBLE PRECISION[] NOT NULL,
+    longitude DOUBLE PRECISION[] NOT NULL
 );
 
 CREATE TABLE places (

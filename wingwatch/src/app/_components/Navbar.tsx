@@ -20,8 +20,12 @@ export default function Navbar() {
         </div>
         <div className="flex items-center space-x-4">
           <Link href="/explore" passHref><span className="text-gray-800 hover:text-blue-500 transition duration-300 ease-in-out">Explore</span></Link>
-          <Link href="/saved" passHref><span className="text-gray-800 hover:text-blue-500 transition duration-300 ease-in-out">Saved</span></Link>
-          <Link href="/contribute" passHref><span className="text-gray-800 hover:text-blue-500 transition duration-300 ease-in-out">Contribute</span></Link>
+          {session && (
+            <Link href="/saved" passHref><span className="text-gray-800 hover:text-blue-500 transition duration-300 ease-in-out">Saved</span></Link>
+          )}
+          {session && (
+            <Link href="/contribute" passHref><span className="text-gray-800 hover:text-blue-500 transition duration-300 ease-in-out">Contribute</span></Link>
+          )}
           <div className="relative inline-block text-left">
             <div onClick={() => setDropdownOpen(!dropdownOpen)} className="cursor-pointer flex items-center space-x-2">
               <Image src="/user.png" alt="User" width={32} height={32} />

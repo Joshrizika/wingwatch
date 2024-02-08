@@ -190,17 +190,10 @@ def getPaths(iataCode):
 
         flight_paths.append(new_path_dict) #append it to the list of paths
 
-
-        
-            
-            
-
-            
-
     return flight_paths #return the list of path
 
 if __name__ == "__main__":  
-    flight_paths = getPaths("DCA")
+    flight_paths = getPaths("BOS")
     # print(flight_paths)
 
 

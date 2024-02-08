@@ -21,10 +21,16 @@ def insertSpots(iataCode):
         file_path = f'../algorithm/data/pathData/paths_{iataCode}.csv' #save file path to path data
         df = pd.read_csv(file_path) #read csv file into df
 
-        df['coefficients'] = df['coefficients'].apply(lambda x: '{' + ','.join([str(i) for i in np.fromstring(x.strip("[]"), sep=' ')]) + '}') #convert coefficients to array
+        aggregated_df = df.groupby('path_id').agg({
+            'latitude': lambda x: list(x),
+            'longitude': lambda x: list(x)
+        }).reset_index()
 
-        data_tuples = [tuple(x) for x in df.to_numpy()] #convert df to list of tuples
-        cursor.executemany("INSERT INTO paths (path_id, coefficients, max_latitude, max_longitude, min_latitude, min_longitude) VALUES (%s, %s, %s, %s, %s, %s)", data_tuples) #insert data into database
+        # Convert aggregated DataFrame to list of tuples for database insertion
+        data_tuples = [tuple(x) for x in aggregated_df.to_numpy()]
+        print(data_tuples)
+
+        cursor.executemany("INSERT INTO paths (path_id, latitude, longitude) VALUES (%s, %s, %s)", data_tuples) #insert data into database
 
         #Add data to places table
         file_path = f'../algorithm/data/spotData/data/spots_{iataCode}.csv' #save file path to spot data

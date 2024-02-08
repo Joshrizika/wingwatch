@@ -10,11 +10,16 @@ export const mainRouter = createTRPCRouter({
     .query(async () => {
       return getServerAuthSession();
     }),
-
   findPlaces: publicProcedure
     .input(z.void()) // No input required for this procedure
     .query(async () => {
       const places = await db.places.findMany();
       return places;
+    }),
+  findPaths: publicProcedure
+    .input(z.void()) // No input required for this procedure
+    .query(async () => {
+      const paths = await db.paths.findMany();
+      return paths;
     }),
 });

@@ -1,35 +1,40 @@
 from clusters import getPaths
-from spots import getParks
+from spots import getParks, generatePoints, miles_to_degrees, displayLinePointData
 import pandas as pd
+import numpy as np
 import threading
 import json
 import csv
-import os
+from scipy.integrate import quad
+from scipy.interpolate import interp1d
+
+
 
 #This file runs the clustering and spot finding algorithms and returns the data to a csv.
 
 #function: saves flight path data to a csv
 #parameters: flight_path - dictionary, iataCode - string, line_index - int
 #returns: nothing
-def savePath(flight_path, iataCode, line_index):
-    path_csv = f"data/pathData/paths_{iataCode}.csv" #path to the CSV file
-    line_id = iataCode + str(line_index) #create a unique id for the flight path
-    
-    file_mode = 'w' if line_index == 0 else 'a' #determine the file mode based on whether the file is being written for the first time or cleared
-    
-    with open(path_csv, mode=file_mode, newline='') as file: #open the file in the determined mode
-        writer = csv.writer(file) #create a writer
-        
-        if line_index == 0: #if the file is being written for the first time
-            writer.writerow(['path_id', 'coefficients', 'max_lat', 'max_long', 'min_lat', 'min_long']) #write the header row
-        
-        coefficients = flight_path['coefficients'] #get coefficients
-        max_lat = flight_path['max_lat'] #get max latitude
-        max_long = flight_path['max_long'] #get max longitude
-        min_lat = flight_path['min_lat'] #get min latitude
-        min_long = flight_path['min_long'] #get min longitude
-        
-        writer.writerow([line_id, coefficients, max_lat, max_long, min_lat, min_long]) #write the data to the file
+def savePath(line, iataCode, line_index):
+    path_csv = f"data/pathData/paths_{iataCode}.csv"  #path to the CSV file
+    path_id = iataCode + str(line_index)  #create a unique id for the flight path
+
+    file_mode = 'w' if line_index == 0 else 'a'  #determine the file mode based on whether the file is being written for the first time or appended
+
+    with open(path_csv, mode=file_mode, newline='') as file:  #open the file in the determined mode
+        writer = csv.writer(file)  #create a writer
+
+        if line_index == 0:  #if the file is being written for the first time
+            writer.writerow(['path_id', 'latitude', 'longitude'])  #write the header row
+
+        points = generatePoints(line['coefficients'], line['min_long'], line['max_long'], miles_to_degrees(0.3, line['min_lat'])) #generate points along line
+        # displayLinePointData(points) #display points on a map
+
+        latitudes = [point[0] for point in points]  #extract the latitudes from the points
+        longitudes = [point[1] for point in points] #extract the longitudes from the points
+
+        for lat, lon in zip(latitudes, longitudes): #for each latitude and longitude
+            writer.writerow([path_id, lat, lon]) #write the path_id, latitude, and longitude to the file
 
 #function: takes data from data_path, gets paths from data, finds parks along paths, and saves data to csv
 #parameters: iataCode - string
