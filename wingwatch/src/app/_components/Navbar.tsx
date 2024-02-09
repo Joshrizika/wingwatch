@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { api } from "~/trpc/react";
@@ -6,6 +6,21 @@ import { api } from "~/trpc/react";
 export default function Navbar() {
   const session = api.main.getSession.useQuery().data;
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav className="bg-white shadow" style={{ position: 'relative', zIndex: 1000 }}>
@@ -15,7 +30,7 @@ export default function Navbar() {
             <span><Image src="/favicon.ico" alt="Logo" width={32} height={32} /></span>
           </Link>
           <Link href="/" passHref>
-            <span className="cursor-pointer text-xl font-bold text-gray-800 hover:text-blue-500 transition duration-300 ease-in-out">Wing Watch</span>
+            <span className="cursor-pointer text-xl font-bold text-gray-800">Wing Watch</span>
           </Link>
         </div>
         <div className="flex items-center space-x-4">
@@ -26,7 +41,7 @@ export default function Navbar() {
           {session && (
             <Link href="/contribute" passHref><span className="text-gray-800 hover:text-blue-500 transition duration-300 ease-in-out">Contribute</span></Link>
           )}
-          <div className="relative inline-block text-left">
+          <div className="relative inline-block text-left" ref={dropdownRef}>
             <div onClick={() => setDropdownOpen(!dropdownOpen)} className="cursor-pointer flex items-center space-x-2">
               <Image src="/user.png" alt="User" width={32} height={32} />
             </div>
