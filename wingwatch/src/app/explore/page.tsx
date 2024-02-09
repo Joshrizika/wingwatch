@@ -17,8 +17,12 @@ export default function Explore() {
 
     // const session = api.main.getSession.useQuery().data;
     const placesQuery = api.main.findPlaces.useQuery();
+    const topPlacesQuery = api.main.findTopPlaces.useQuery();
     const pathsQuery = api.main.findPaths.useQuery();
     const { location, error } = useLocation();
+    const closestPlacesQuery = api.main.findClosestPlaces.useQuery({ 
+        latitude: location.latitude!, longitude: location.longitude! 
+    });
 
     useEffect(() => {
         const center = location.latitude && location.longitude ? { lat: location.latitude, lng: location.longitude } : {lat: -2.8203035410171496e+46, lng: -118.4622};
@@ -110,8 +114,55 @@ export default function Explore() {
     return (
         <>
             <Navbar />
-            <div>
-                <div id="map" style={{ height: '600px', width: '100%' }}></div>
+            <div className="flex flex-col">
+                <div className="flex flex-col md:flex-row">
+                    {/* Views Near Me Section */}
+                    <div className="w-full md:w-1/2" style={{ minHeight: '60vh'}}>
+                        <div className="sticky top-0 bg-white p-4 z-10">
+                            <h2 className="text-2xl font-bold mb-4">Views Near Me</h2>
+                        </div>
+                        <div className="overflow-auto p-4 pt-0" style={{ maxHeight: '50vh' }}>
+                            <div className="space-y-4">
+                                {closestPlacesQuery.data?.map((place, index) => (
+                                    <div key={index} className="border p-4">
+                                        <h3>{place.name}</h3>
+                                        {place.description ? <p>Description: {place.description}</p> : null}
+                                        <p>Address: {place.address}</p>
+                                        <p>Airport: {place.airport}</p>
+                                        <p>Distance from flightpath: {place.distance_from_flightpath}</p>
+                                        <p>Average altitude: {place.average_altitude}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Map Section */}
+                    <div className="w-full md:w-1/2 md:h-auto">
+                        <div id="map" className="h-full w-full"></div>
+                    </div>
+                </div>
+    
+                {/* Best Views Section */}
+                <div className="w-full">
+                    <div className="sticky top-0 bg-white p-4 z-10">
+                        <h2 className="text-2xl font-bold mb-4">Best Views</h2>
+                    </div>
+                    <div className="overflow-auto p-4 pt-0" style={{ maxHeight: '50vh' }}>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {topPlacesQuery.data?.map((place, index) => (
+                                <div key={index} className="border p-4">
+                                    <h3>{place.name}</h3>
+                                    {place.description ? <p>Description: {place.description}</p> : null}
+                                    <p>Address: {place.address}</p>
+                                    <p>Airport: {place.airport}</p>
+                                    <p>Distance from flightpath: {place.distance_from_flightpath}</p>
+                                    <p>Average altitude: {place.average_altitude}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
             </div>
         </>
     );
