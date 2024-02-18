@@ -4,6 +4,10 @@ import { db } from "~/server/db";
 import { getServerAuthSession } from "~/server/auth";
 
 
+// add another router that generates random lucky numbers based on the user's inputted birth day plus some weather api data
+
+
+
 export const mainRouter = createTRPCRouter({
   getSession: publicProcedure
     .input(z.void()) // No input required for this procedure
@@ -41,6 +45,12 @@ export const mainRouter = createTRPCRouter({
       })).sort((a, b) => a.value - b.value);
 
       return sortedPlaces;
+    }),
+  findPlace: publicProcedure
+    .input(z.object({ id: z.string() })) // Input required for this procedure
+    .query(async ({ input }) => {
+      const place = await db.places.findUnique({ where: { place_id: input.id }, include: { path: true, reviews: true}});
+      return place;
     }),
   findPaths: publicProcedure
     .input(z.void()) // No input required for this procedure
