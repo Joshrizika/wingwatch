@@ -32,19 +32,11 @@ CREATE TABLE users (
     account_created TIMESTAMP
 );
 
-CREATE TABLE rating (
-    rating_id SERIAL PRIMARY KEY,
-    user_id SERIAL NOT NULL,
-    place_id SERIAL NOT NULL,
-    rating INT NOT NULL,
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id),
-    CONSTRAINT fk_place FOREIGN KEY (place_id) REFERENCES places(place_id)
-);
-
 CREATE TABLE review (
     review_id SERIAL PRIMARY KEY,
     user_id SERIAL NOT NULL,
     place_id SERIAL NOT NULL,
+    rating INT NOT NULL,
     review TEXT NOT NULL,
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id),
     CONSTRAINT fk_place FOREIGN KEY (place_id) REFERENCES places(place_id)
