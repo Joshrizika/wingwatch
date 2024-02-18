@@ -114,12 +114,63 @@ export default function Place() {
 
       <div className="mx-auto max-w-4xl p-4">
         <section className="mb-8">
-          <h2 className="mb-2 text-2xl font-bold">Project Description</h2>
+          <h2 className="mb-2 text-2xl font-bold">
+            Introduction to Wing Watch
+          </h2>
           <p className="text-gray-700">
-            Wing Watch is an innovative app designed to help users find the best
-            locations for plane spotting. It tracks and organizes flight path
-            data, making it easy to identify prime locations for watching
-            planes.
+            Wing Watch is an innovative web application designed for aviation
+            enthusiasts and plane spotters. This platform revolutionizes the way
+            people discover and enjoy plane spotting locations, focusing on
+            areas with high air traffic, excellent visibility, and pleasant
+            ambiance. It&apos;s the perfect tool for those looking to marvel at
+            the spectacle of man-made flight in comfort and serenity.
+          </p>
+        </section>
+
+        <section className="mb-8">
+          <h2 className="mb-2 text-2xl font-bold">How It Works</h2>
+          <p className="text-gray-700">
+            Utilizing advanced algorithms and real-time air traffic data, Wing
+            Watch maps out flight paths and identifies optimal plane spotting
+            locations. Users can search for spots near them, filter by
+            preferences such as altitude or distance from flight paths, and
+            contribute by rating and reviewing locations.
+          </p>
+        </section>
+
+        <section className="mb-8">
+          <h2 className="mb-2 text-2xl font-bold ">
+            Features and User Engagement
+          </h2>
+          <p className="text-gray-700">
+            Wing Watch fosters a vibrant community of plane spotters,
+            encouraging users to engage by leaving comments, ratings, and tips.
+            This interactive element transforms Wing Watch from a mere utility
+            to a dynamic platform that celebrates the beauty of aviation and
+            encourages meaningful connections among enthusiasts.
+          </p>
+        </section>
+
+        <section className="mb-8">
+          <h2 className="mb-2 text-2xl font-bold">Technical Innovations</h2>
+          <p className="text-gray-700">
+            The app is built on a sophisticated technical framework that
+            includes real-time flight tracking, density-based spatial
+            clustering, and Google Maps API integration. Our custom algorithm
+            ensures the most accurate and relevant spotting locations are always
+            at the users&apos; fingertips.
+          </p>
+        </section>
+
+        <section className="mb-8">
+          <h2 className="mb-2 text-2xl font-bold">
+            Join the Wing Watch Community
+          </h2>
+          <p className="text-gray-700">
+            Whether you&apos;re a seasoned spotter or new to the hobby, Wing
+            Watch offers a dynamic platform to enhance your plane spotting
+            experience. Explore the skies with us and connect with a community
+            that shares your passion for aviation.
           </p>
         </section>
 
@@ -142,7 +193,7 @@ export default function Place() {
             <p className="text-gray-700">
               Joshua Rizika is a graduating senior from George Washington
               University, with a keen interest in aviation. Throughout the
-              development of this app, I&apos;ve had the opportunity to dive
+              development of this app, it&apos;s had the opportunity to dive
               deep into flight path data, combining my academic background and
               personal interests. Working with data on this project has been
               incredibly rewarding, allowing me to uncover the best spots for
