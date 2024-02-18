@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wing Watch</title>
+    <style>
+        /* Add any CSS you need for your application here */
+        body { font-family: Arial, sans-serif; }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.5s;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 600px;
+        }
+        .modal.show {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<!-- Load React. -->
+<!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+<script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+<!-- Load our React component. -->
+<script type="text/babel">
+
+// Your React code here
+const { useEffect, useState } = React;
+
+// DocumentModal component
+const DocumentModal = ({ isOpen, content, onClose }) => {
+    useEffect(() => {
+        const handleEscapeKeyPress = (event) => {
+            if (event.key === 'Escape') {
+                onClose();
+            }
+        };
+
+        if (isOpen) {
+            window.addEventListener('keydown', handleEscapeKeyPress);
+        }
+        return () => {
+            window.removeEventListener('keydown', handleEscapeKeyPress);
+        };
+    }, [isOpen, onClose]);
+
+    if (!isOpen) return null;
+
+    return (
+        <div className="modal" onClick={onClose} style={{display: isOpen ? 'flex' : 'none'}}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                {content && <iframe src={content} frameBorder="0" style={{width: '100%', height: '500px'}}></iframe>}
+                <div style={{marginTop: '10px', textAlign: 'right'}}>
+                    <button onClick={onClose}>Close</button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// Main component
+function App() {
+  const [selectedDocument, setSelectedDocument] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const documents = [
+    {
+      name: "Elevator Pitch",
+      path: "index_files/writings/Wing Watch Elevator Pitch.pdf",
+      thumbnail: "index_files/writings/thumbnails/Writing 1 Thumbnail.png", // Replace with actual path
+    },
+    {
+      name: "Project Design",
+      path: "index_files/writings/Wing Watch Essay 2.pdf",
+      thumbnail: "index_files/writings/thumbnails/Writing 2 Thumbnail.png", // Replace with actual path
+    },
+    {
+      name: "Project Description",
+      path: "index_files/writings/Team Josh Project Description.pdf",
+      thumbnail: "index_files/writings/thumbnails/Writing 3 Thumbnail.png", // Replace with actual path
+    },
+    {
+      name: "Final Design Document",
+      path: "index_files/writings/Team Josh Writing 4.pdf",
+      thumbnail: "index_files/writings/thumbnails/Writing 4 Thumbnail.png", // Replace with actual path
+    },
+    // Add more documents as needed
+  ];
+
+  const handleDocumentClick = (documentPath) => {
+    setSelectedDocument(documentPath);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  return (
+    <>
+      {/* Introductory sections */}
+      <div style={{maxWidth: '900px', margin: 'auto', padding: '20px'}}>
+        {/* Introduction to Wing Watch */}
+        <section style={{marginBottom: '20px'}}>
+          <h2 style={{marginBottom: '10px', fontSize: '24px', fontWeight: 'bold'}}>Introduction to Wing Watch</h2>
+          <p>Wing Watch is an innovative web application designed for aviation
+            enthusiasts and plane spotters. This platform revolutionizes the way
+            people discover and enjoy plane spotting locations, focusing on
+            areas with high air traffic, excellent visibility, and pleasant
+            ambiance. It&apos;s the perfect tool for those looking to marvel at
+            the spectacle of man-made flight in comfort and serenity.</p>
+        </section>
+
+        <section style={{marginBottom: '20px'}}>
+          <h2 style={{marginBottom: '10px', fontSize: '24px', fontWeight: 'bold'}}>How It Works</h2>
+          <p>Utilizing advanced algorithms and real-time air traffic data, Wing
+            Watch maps out flight paths and identifies optimal plane spotting
+            locations. Users can search for spots near them, filter by
+            preferences such as altitude or distance from flight paths, and
+            contribute by rating and reviewing locations.</p>
+        </section>
+
+        <section style={{marginBottom: '20px'}}>
+          <h2 style={{marginBottom: '10px', fontSize: '24px', fontWeight: 'bold'}}>Features and User Engagement</h2>
+          <p>Wing Watch fosters a vibrant community of plane spotters,
+            encouraging users to engage by leaving comments, ratings, and tips.
+            This interactive element transforms Wing Watch from a mere utility
+            to a dynamic platform that celebrates the beauty of aviation and
+            encourages meaningful connections among enthusiasts.</p>
+        </section>
+
+        <section style={{marginBottom: '20px'}}>
+          <h2 style={{marginBottom: '10px', fontSize: '24px', fontWeight: 'bold'}}>Technical Innovations</h2>
+          <p>The app is built on a sophisticated technical framework that
+            includes real-time flight tracking, density-based spatial
+            clustering, and Google Maps API integration. Our custom algorithm
+            ensures the most accurate and relevant spotting locations are always
+            at the users&apos; fingertips.</p>
+        </section>
+
+        <section style={{marginBottom: '20px'}}>
+          <h2 style={{marginBottom: '10px', fontSize: '24px', fontWeight: 'bold'}}>Join the Wing Watch Community</h2>
+          <p>Whether you&apos;re a seasoned spotter or new to the hobby, Wing
+            Watch offers a dynamic platform to enhance your plane spotting
+            experience. Explore the skies with us and connect with a community
+            that shares your passion for aviation.</p>
+        </section>
+
+        
+
+        {/* About Me Section */}
+        <section style={{display: 'flex', marginBottom: '20px'}}>
+          <div style={{flexShrink: '0', marginRight: '20px'}}>
+            <img src="index_files/headshot.jpg" alt="Description" style={{width: '200px', height: '200px', objectFit: 'cover', borderRadius: '10px'}} />
+          </div>
+          <div>
+            <h2 style={{marginBottom: '10px', fontSize: '24px', fontWeight: 'bold'}}>About Me</h2>
+            <p>Joshua Rizika is a graduating senior from George Washington
+              University, with a keen interest in aviation. Throughout the
+              development of this app, it&apos;s had the opportunity to dive
+              deep into flight path data, combining my academic background and
+              personal interests. Working with data on this project has been
+              incredibly rewarding, allowing me to uncover the best spots for
+              plane spotting enthusiasts like myself. I hope Wing Watch helps
+              you find your next great viewing location and enhances your love
+              for aviation as much as it has for me.</p>
+          </div>
+        </section>
+
+        {/* GitHub Section */}
+        <section style={{marginBottom: '20px'}}>
+          <h2 style={{marginBottom: '10px', fontSize: '24px', fontWeight: 'bold'}}>GitHub</h2>
+          <p>Visit our <a href="https://github.com/GW-CS-SD-23-24/sd-team-josh" style={{color: 'blue'}}>GitHub</a> to learn more about the algorithms and structure that made this
+            project possible.</p>
+        </section>
+
+        {/* Documents Section */}
+        <section style={{textAlign: 'center', marginBottom: '20px'}}>
+          <h2 style={{marginBottom: '16px', fontSize: '24px', fontWeight: 'bold'}}>Documents</h2>
+          <div style={{display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap'}}>
+            {documents.map((doc, index) => (
+              <div key={index} onClick={() => handleDocumentClick(doc.path)} style={{cursor: 'pointer', width: '150px'}}>
+                <img src={doc.thumbnail} alt={`Preview of ${doc.name}`} style={{width: '100%', marginBottom: '10px', borderRadius: '10px'}} />
+                <p>{doc.name}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      {/* Document Modal */}
+      <DocumentModal isOpen={isModalOpen} content={selectedDocument} onClose={closeModal} />
+    </>
+  );
+}
+
+
+// Render the App component
+ReactDOM.render(<App />, document.getElementById('root'));
+
+</script>
+
+<!-- Load Babel Compiler -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+</body>
+</html>
