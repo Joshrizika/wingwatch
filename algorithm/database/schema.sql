@@ -38,6 +38,7 @@ CREATE TABLE review (
     place_id SERIAL NOT NULL,
     rating INT NOT NULL,
     review TEXT NOT NULL,
+    timestamp TIMESTAMP NOT NULL,
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id),
     CONSTRAINT fk_place FOREIGN KEY (place_id) REFERENCES places(place_id)
 );
