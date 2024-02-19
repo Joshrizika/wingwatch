@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { unstable_noStore as noStore } from "next/cache";
+// import { unstable_noStore as noStore } from "next/cache";
 import { api } from "~/trpc/react";
 import Navbar from "../_components/Navbar";
 import useLocation from "../hooks/useLocation";
@@ -14,7 +14,7 @@ declare global {
 }
 
 export default function Explore() {
-  noStore();
+  // noStore();
 
   const placesQuery = api.main.findPlaces.useQuery();
   const topPlacesQuery = api.main.findTopPlaces.useQuery();
