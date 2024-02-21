@@ -6,7 +6,6 @@ import RatingBar from "../_components/RatingBar";
 import Review from "../_components/Review";
 import { useSearchParams } from "next/navigation";
 import { api } from "~/trpc/react";
-// import Link from "next/link";
 import { format } from "date-fns";
 import { useState } from "react";
 
