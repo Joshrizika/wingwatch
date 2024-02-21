@@ -29,11 +29,13 @@ export default function Review({ onClose }: ReviewProps) {
       setHasReviewed(!!userReview);
     }
   }, [placeQuery.data, session?.user?.id]);
+
   const handleRatingSelect = (selectedRating: number) => {
     setRating(selectedRating);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // Prevent the form from causing a page reload
     if (session && !hasReviewed) {
       reviewMutation.mutate(
         {
@@ -45,8 +47,8 @@ export default function Review({ onClose }: ReviewProps) {
         },
         {
           onSuccess: () => {
-            onClose(); // Close the modal after submitting
-            window.location.reload(); // Refresh the page after submitting
+            onClose();
+            void placeQuery.refetch();
           },
         }
       );
@@ -62,7 +64,7 @@ export default function Review({ onClose }: ReviewProps) {
           </button>
         </div>
         <h2 className="text-lg font-semibold">Leave a Review</h2>
-        <div className="w-full max-w-md">
+        <form className="w-full max-w-md" onSubmit={handleSubmit}>
           <div>
             <InteractiveRatingBar onRatingSelected={handleRatingSelect} />
           </div>
@@ -81,17 +83,17 @@ export default function Review({ onClose }: ReviewProps) {
           />
           {session && !hasReviewed ? (
             <button
+              type="submit"
               className="mt-4 w-full rounded bg-blue-500 py-2 text-white"
-              onClick={handleSubmit}
             >
               Submit Review
             </button>
           ) : (
             <p className="mt-4 text-red-500">
-              You have already submitted a review on this place.
+              You have already submitted a review for this place.
             </p>
           )}
-        </div>
+        </form>
       </div>
     </>
   );
