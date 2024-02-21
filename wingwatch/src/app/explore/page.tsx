@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
-// import { unstable_noStore as noStore } from "next/cache";
 import { api } from "~/trpc/react";
 import Navbar from "../_components/Navbar";
-import useLocation from "../hooks/useLocation";
 import Link from "next/link";
+import { useState } from "react";
 
 declare global {
   interface Window {
@@ -13,19 +12,39 @@ declare global {
   }
 }
 
+interface ILocation {
+  latitude: number;
+  longitude: number;
+}
+
 export default function Explore() {
-  // noStore();
 
   const placesQuery = api.main.findPlaces.useQuery();
   const topPlacesQuery = api.main.findTopPlaces.useQuery();
   const pathsQuery = api.main.findPaths.useQuery();
-  const { location, error } = useLocation();
-  const closestPlacesQuery = api.main.findClosestPlaces.useQuery({
-    latitude: location.latitude!,
-    longitude: location.longitude!,
-  });
+
+  const [location, setLocation] = useState<ILocation | undefined>(undefined);
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(({ coords }) => {
+        setLocation({ latitude: coords.latitude, longitude: coords.longitude });
+      });
+    }
+  }, []);
+
+  const closestPlacesQuery = api.main.findClosestPlaces.useQuery(
+    {
+      latitude: location ? location.latitude : 0,
+      longitude: location ? location.longitude : 0,
+    },
+    {
+      // Only run the query if 'location' is defined
+      enabled: !!location,
+    },
+  );
 
   useEffect(() => {
+    if (!location) return;
     const center =
       location.latitude && location.longitude
         ? { lat: location.latitude, lng: location.longitude }
@@ -39,9 +58,6 @@ export default function Explore() {
 
     // Attach the initMap function to the window object
     window.initMap = function () {
-      if (error) {
-        console.log(error);
-      }
       const map = new google.maps.Map(document.getElementById("map")!, {
         center: center,
         zoom: 12,
@@ -116,7 +132,7 @@ export default function Explore() {
       document.body.removeChild(script);
       delete window.initMap;
     };
-  }, [placesQuery.data, pathsQuery.data, location, error]);
+  }, [placesQuery.data, pathsQuery.data, location]);
 
   return (
     <>
