@@ -19,34 +19,3 @@ CREATE TABLE places (
     distance_from_airport REAL NOT NULL,
     CONSTRAINT fk_path FOREIGN KEY (path_id) REFERENCES paths(path_id)
 );
-
-CREATE TABLE users (
-    user_id SERIAL PRIMARY KEY,
-    first_name VARCHAR(50),
-    last_name VARCHAR(50),
-    email VARCHAR(255),
-    username VARCHAR(50),
-    password VARCHAR(255),
-    user_type VARCHAR(10),
-    bio TEXT,
-    account_created TIMESTAMP
-);
-
-CREATE TABLE review (
-    review_id SERIAL PRIMARY KEY,
-    user_id SERIAL NOT NULL,
-    place_id SERIAL NOT NULL,
-    rating INT NOT NULL,
-    review TEXT NOT NULL,
-    timestamp TIMESTAMP NOT NULL,
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id),
-    CONSTRAINT fk_place FOREIGN KEY (place_id) REFERENCES places(place_id)
-);
-
-CREATE TABLE favorited (
-    favorited_id SERIAL PRIMARY KEY,
-    user_id SERIAL NOT NULL,
-    place_id SERIAL NOT NULL,
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id),
-    CONSTRAINT fk_place FOREIGN KEY (place_id) REFERENCES places(place_id)
-);
