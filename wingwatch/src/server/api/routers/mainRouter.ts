@@ -87,4 +87,21 @@ export const mainRouter = createTRPCRouter({
         },
       });
     }),
-}); // Input required for this procedure
+  editUser: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        email: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      await db.user.update({
+        where: { id: input.id },
+        data: {
+          name: input.name,
+          email: input.email,
+        },
+      });
+    }),
+}); 
