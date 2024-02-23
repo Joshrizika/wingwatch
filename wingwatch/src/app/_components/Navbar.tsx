@@ -29,7 +29,7 @@ export default function Navbar() {
   return (
     <nav
       className="bg-white shadow"
-      style={{ position: "relative", zIndex: 10 }}
+      style={{ zIndex: 10 }}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
         <div className="flex items-center space-x-4">
@@ -78,7 +78,7 @@ export default function Navbar() {
             </div>
             {dropdownOpen && (
               <div
-                className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="menu-button"
