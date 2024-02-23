@@ -31,6 +31,9 @@ export default function Explore() {
       });
     }
   }, []);
+  // useEffect(() => {
+  //   setLocation({ latitude: 37.7749, longitude: -122.4194 });
+  // }, []);
 
   const closestPlacesQuery = api.main.findClosestPlaces.useQuery(
     {
@@ -137,7 +140,7 @@ export default function Explore() {
   return (
     <>
       <Navbar />
-      <div className="flex flex-col">
+      <div className="mt-5 flex flex-col">
         <div className="flex flex-col md:flex-row">
           {/* Views Near Me Section */}
           <div className="w-full md:w-1/3" style={{ minHeight: "60vh" }}>
