@@ -104,4 +104,15 @@ export const mainRouter = createTRPCRouter({
         },
       });
     }),
-}); 
+  findSavedPlaces: publicProcedure
+    .input(z.object({ id: z.string() })) // Input required for this procedure
+    .query(async ({ input }) => {
+      const user = await db.user.findUnique({
+        where: { id: input.id },
+        include: {
+          savedPlaces: true
+        },
+      });
+      return user;
+    }),
+});
