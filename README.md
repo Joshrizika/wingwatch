@@ -42,7 +42,7 @@ Processes the .csv file to create an interactive map using Folium. Each flight d
 
 ### clusters.py
 
-Employs the sklearn DBSCAN clustering algorithm to categorize flight data points based on density. Clusters with fewer than 100 points are filtered out. For the remaining clusters, a linear regression model calculates the flight paths.
+Employs the sklearn DBSCAN clustering algorithm to categorize flight data points based on density. Clusters with fewer than 100 points are filtered out. For the remaining clusters, a logistic regression model calculates the flight paths.
 
 ### spots.py
 
