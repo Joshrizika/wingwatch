@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect } from "react";
+import { useEffect } from "react";
 import Navbar from "../_components/Navbar";
 import RatingBar from "../_components/RatingBar";
 import Review from "../_components/Review";
@@ -8,8 +8,18 @@ import { useSearchParams } from "next/navigation";
 import { api } from "~/trpc/react";
 import { format } from "date-fns";
 import { useState } from "react";
+import { Suspense } from "react";
 
 export default function Place() {
+  // Wrap the component or the specific logic that requires useSearchParams within Suspense
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PlaceContent />
+    </Suspense>
+  );
+}
+
+function PlaceContent() {
   const id = useSearchParams().get("id");
   const session = api.main.getSession.useQuery().data;
   const placeQuery = api.main.findPlace.useQuery({ id: id! });
@@ -83,7 +93,6 @@ export default function Place() {
 
   return (
     <>
-    <Suspense>
       <Navbar />
       <div className="mt-5 flex min-h-screen flex-col">
         <div className="flex flex-wrap md:flex-nowrap">
@@ -174,7 +183,6 @@ export default function Place() {
           )}
         </div>
       </div>
-      </Suspense>
     </>
   );
 }
