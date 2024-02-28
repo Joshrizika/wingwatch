@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import Navbar from "../_components/Navbar";
 import RatingBar from "../_components/RatingBar";
 import Review from "../_components/Review";
@@ -83,6 +83,7 @@ export default function Place() {
 
   return (
     <>
+    <Suspense>
       <Navbar />
       <div className="mt-5 flex min-h-screen flex-col">
         <div className="flex flex-wrap md:flex-nowrap">
@@ -173,6 +174,7 @@ export default function Place() {
           )}
         </div>
       </div>
+      </Suspense>
     </>
   );
 }
