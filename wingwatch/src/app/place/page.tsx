@@ -11,6 +11,15 @@ import { useState } from "react";
 import { Suspense } from "react";
 
 export default function Place() {
+  // Wrap the component or the specific logic that requires useSearchParams within Suspense
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PlaceContent />
+    </Suspense>
+  );
+}
+
+function PlaceContent() {
   const id = useSearchParams().get("id");
   const session = api.main.getSession.useQuery().data;
   const placeQuery = api.main.findPlace.useQuery({ id: id! });
@@ -84,98 +93,96 @@ export default function Place() {
 
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Navbar />
-        <div className="mt-5 flex min-h-screen flex-col">
-          <div className="flex flex-wrap md:flex-nowrap">
-            <div className="flex-1 p-5">
-              <div className="text-center">
-                <h1 className="text-xl font-bold">{placeQuery.data?.name}</h1>
-                {placeQuery.data?.description && (
-                  <p className="mt-2">{placeQuery.data?.description}</p>
-                )}
-              </div>
-              <p className="mt-2">Located at: {placeQuery.data?.address}</p>
-              <p className="mt-2">Airport: {placeQuery.data?.airport}</p>
-              <p className="mt-2">
-                Distance from the Flightpath:{" "}
-                {placeQuery.data?.distance_from_flightpath}
-              </p>
-              <p className="mt-2">
-                Average Altitude: {placeQuery.data?.average_altitude}
-              </p>
-              <p className="mt-2">
-                Distance from Airport: {placeQuery.data?.distance_from_airport}
-              </p>
-
-              {/* Gap and Rating section with header */}
-              <div className="mt-8 text-center">
-                <h2 className="mb-4 text-2xl font-bold">Rating</h2>
-                <div className="flex justify-center">
-                  <RatingBar rating={totalRating} />
-                </div>
-              </div>
+      <Navbar />
+      <div className="mt-5 flex min-h-screen flex-col">
+        <div className="flex flex-wrap md:flex-nowrap">
+          <div className="flex-1 p-5">
+            <div className="text-center">
+              <h1 className="text-xl font-bold">{placeQuery.data?.name}</h1>
+              {placeQuery.data?.description && (
+                <p className="mt-2">{placeQuery.data?.description}</p>
+              )}
             </div>
+            <p className="mt-2">Located at: {placeQuery.data?.address}</p>
+            <p className="mt-2">Airport: {placeQuery.data?.airport}</p>
+            <p className="mt-2">
+              Distance from the Flightpath:{" "}
+              {placeQuery.data?.distance_from_flightpath}
+            </p>
+            <p className="mt-2">
+              Average Altitude: {placeQuery.data?.average_altitude}
+            </p>
+            <p className="mt-2">
+              Distance from Airport: {placeQuery.data?.distance_from_airport}
+            </p>
 
-            <div className="w-full md:w-1/2">
-              <div id="map" className="h-full w-full"></div>
+            {/* Gap and Rating section with header */}
+            <div className="mt-8 text-center">
+              <h2 className="mb-4 text-2xl font-bold">Rating</h2>
+              <div className="flex justify-center">
+                <RatingBar rating={totalRating} />
+              </div>
             </div>
           </div>
 
-          {/* Review Section moved to ensure it's below all content */}
-          <div className="mt-10 w-full">
-            {session && (
-              <div className="mb-4 flex justify-start">
-                {/* Replace the Link and its child button with this button */}
-                <button
-                  className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-                  onClick={toggleReviewModal}
-                >
-                  Add Review
-                </button>
-              </div>
-            )}
-
-            {/* Modal display logic */}
-            {isReviewModalOpen && (
-              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                <Review onClose={toggleReviewModal} />
-              </div>
-            )}
-            <h2 className="mb-4 text-2xl font-bold">Reviews</h2>
-            {reviews && reviews.length > 0 ? (
-              reviews.map((review) => (
-                <div
-                  key={review.id}
-                  className="mb-4 rounded-lg border p-4 shadow-lg"
-                >
-                  <div className="flex">
-                    <div className="mr-4">
-                      <RatingBar rating={review.rating} />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold">
-                        {review.title ?? "No Title"}
-                      </h3>
-                      <p className="text-gray-700">
-                        {review.content ?? "No Content"}
-                      </p>
-                      <p className="mt-2 text-sm text-gray-500">
-                        User: {review.user?.name ?? "Unknown"}
-                      </p>
-                      <p className="mt-2 text-sm text-gray-500">
-                        Date: {format(new Date(review.timestamp), "PP")}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p>No reviews yet.</p>
-            )}
+          <div className="w-full md:w-1/2">
+            <div id="map" className="h-full w-full"></div>
           </div>
         </div>
-      </Suspense>
+
+        {/* Review Section moved to ensure it's below all content */}
+        <div className="mt-10 w-full">
+          {session && (
+            <div className="mb-4 flex justify-start">
+              {/* Replace the Link and its child button with this button */}
+              <button
+                className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+                onClick={toggleReviewModal}
+              >
+                Add Review
+              </button>
+            </div>
+          )}
+
+          {/* Modal display logic */}
+          {isReviewModalOpen && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <Review onClose={toggleReviewModal} />
+            </div>
+          )}
+          <h2 className="mb-4 text-2xl font-bold">Reviews</h2>
+          {reviews && reviews.length > 0 ? (
+            reviews.map((review) => (
+              <div
+                key={review.id}
+                className="mb-4 rounded-lg border p-4 shadow-lg"
+              >
+                <div className="flex">
+                  <div className="mr-4">
+                    <RatingBar rating={review.rating} />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold">
+                      {review.title ?? "No Title"}
+                    </h3>
+                    <p className="text-gray-700">
+                      {review.content ?? "No Content"}
+                    </p>
+                    <p className="mt-2 text-sm text-gray-500">
+                      User: {review.user?.name ?? "Unknown"}
+                    </p>
+                    <p className="mt-2 text-sm text-gray-500">
+                      Date: {format(new Date(review.timestamp), "PP")}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>No reviews yet.</p>
+          )}
+        </div>
+      </div>
     </>
   );
 }
