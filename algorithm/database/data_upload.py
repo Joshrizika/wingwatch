@@ -10,11 +10,12 @@ import sys
 #returns: nothing
 def insertSpots(iataCode):
     try:
-        connection = psycopg2.connect(database="wing-watch-db", #connect to database
-                                      host="localhost",
-                                      user="joshrizika",
-                                      password="wingpass",
-                                      port="5432")
+        connection = psycopg2.connect(database="defaultdb", #connect to the database
+                              host="wingwatch-do-user-15288104-0.c.db.ondigitalocean.com",
+                              user="doadmin",
+                              password="AVNS_nwxac_LLHhPIG0DV_4Y",
+                              port="25060")
+        
         cursor = connection.cursor() #create a cursor object
 
         #Add data to paths table

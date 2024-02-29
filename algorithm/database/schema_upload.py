@@ -1,13 +1,13 @@
 import psycopg2
 import re
 
-#this file connects to the database, removes any existing tables, and uploads the schema from the schema.sql file
+#this file is used to upload the schema to the database and overwrite the existing schema
 
-connection = psycopg2.connect(database="wing-watch-db", #connect to the database
-                              host="localhost",
-                              user="joshrizika",
-                              password="",
-                              port="5432")
+connection = psycopg2.connect(database="defaultdb", #connect to the database
+                              host="wingwatch-do-user-15288104-0.c.db.ondigitalocean.com",
+                              user="doadmin",
+                              password="AVNS_nwxac_LLHhPIG0DV_4Y",
+                              port="25060")
 
 cursor = connection.cursor() #create a cursor object to execute SQL commands
 
