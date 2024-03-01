@@ -62,7 +62,10 @@ export default function Review({ onClose }: ReviewProps) {
         onClick={onClose}
       >
         <div className="fixed inset-0 z-20 flex items-center justify-center">
-          <div className="mt-5 min-w-[300px] rounded bg-white p-5 shadow-lg">
+          <div
+            className="mt-5 min-w-[300px] rounded bg-white p-5 shadow-lg"
+            onClick={(e) => e.stopPropagation()} // Add this line to stop event propagation
+          >
             <div className="flex justify-end">
               <button onClick={onClose} className="text-lg font-bold">
                 &times;
