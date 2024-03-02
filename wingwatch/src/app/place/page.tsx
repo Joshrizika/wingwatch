@@ -23,6 +23,58 @@ function PlaceContent() {
   const id = useSearchParams().get("id");
   const session = api.main.getSession.useQuery().data;
   const placeQuery = api.main.findPlace.useQuery({ id: id! });
+  const isPlaceSavedQuery = api.main.isPlaceSavedByUser.useQuery(
+    {
+      userId: session?.user?.id ?? "",
+      placeId: id ?? "",
+    },
+    {
+      // This option ensures the query only runs if the userId and placeId are available
+      enabled: !!session?.user?.id && !!id,
+    },
+  );
+  const savePlaceMutation = api.main.savePlace.useMutation();
+  const unsavePlaceMutation = api.main.unsavePlace.useMutation();
+
+  // Continue with your existing code, using isPlaceSavedQuery.data to determine if the place is saved
+  const [isPlaceSaved, setIsPlaceSaved] = useState(false);
+  useEffect(() => {
+    setIsPlaceSaved(isPlaceSavedQuery.data ?? false);
+  }, [isPlaceSavedQuery.data]);
+
+  // Handle Save Place
+  const handleSavePlace = () => {
+    if (!session?.user?.id || !id) return;
+    savePlaceMutation.mutate(
+      {
+        userId: session.user.id,
+        placeId: id,
+      },
+      {
+        onSuccess: () => {
+          setIsPlaceSaved(true);
+          // Optionally, refetch queries or perform other actions on success
+        },
+      },
+    );
+  };
+
+  // Handle Unsave Place
+  const handleUnsavePlace = () => {
+    if (!session?.user?.id || !id) return;
+    unsavePlaceMutation.mutate(
+      {
+        userId: session.user.id,
+        placeId: id,
+      },
+      {
+        onSuccess: () => {
+          setIsPlaceSaved(false);
+          // Optionally, refetch queries or perform other actions on success
+        },
+      },
+    );
+  }
 
   const reviews = placeQuery.data?.reviews;
   let totalRating;
@@ -130,11 +182,20 @@ function PlaceContent() {
           </div>
         </div>
 
-        {/* Review Section moved to ensure it's below all content */}
+        {/* Save/Unsave Button */}
+        <div className="mb-2 flex justify-start">
+          <button
+            className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
+            onClick={isPlaceSaved ? handleUnsavePlace : handleSavePlace}
+          >
+            {isPlaceSaved ? "Unsave" : "Save"}
+          </button>
+        </div>
+
+        {/* Review Section */}
         <div className="mt-10 w-full">
           {session && (
             <div className="mb-4 flex justify-start">
-              {/* Replace the Link and its child button with this button */}
               <button
                 className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
                 onClick={toggleReviewModal}

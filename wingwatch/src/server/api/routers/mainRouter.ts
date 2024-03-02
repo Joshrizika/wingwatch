@@ -115,4 +115,41 @@ export const mainRouter = createTRPCRouter({
       });
       return user;
     }),
+  isPlaceSavedByUser: publicProcedure
+    .input(z.object({ userId: z.string(), placeId: z.string() }))
+    .query(async ({ input }) => {
+      const count = await db.user.count({
+        where: {
+          id: input.userId,
+          savedPlaces: {
+            some: { place_id: input.placeId },
+          },
+        },
+      });
+      return count > 0; // true if saved, false otherwise
+    }),
+  savePlace: publicProcedure
+    .input(z.object({ userId: z.string(), placeId: z.string() })) // Input required for this procedure
+    .mutation(async ({ input }) => {
+      await db.user.update({
+        where: { id: input.userId },
+        data: {
+          savedPlaces: {
+            connect: { place_id: input.placeId },
+          },
+        },
+      });
+    }),
+  unsavePlace: publicProcedure
+    .input(z.object({ userId: z.string(), placeId: z.string() })) // Input required for this procedure
+    .mutation(async ({ input }) => {
+      await db.user.update({
+        where: { id: input.userId },
+        data: {
+          savedPlaces: {
+            disconnect: { place_id: input.placeId },
+          },
+        },
+      });
+    }),
 });
