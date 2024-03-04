@@ -25,6 +25,7 @@ model places {
     path                     paths    @relation(fields: [path_id], references: [path_id])
     google_maps_uri          String
     airport                  String
+    airportDetails           airports @relation(fields: [airport], references: [iata_code])
     distance_from_flightpath Float
     average_altitude         Float
     distance_from_airport    Float
@@ -37,6 +38,16 @@ model paths {
     latitude  Float[]
     longitude Float[]
     places    places[]
+}
+
+model airports {
+    airport_id            String   @id @default(cuid())
+    name          String
+    iata_code     String   @unique
+    latitude      Float
+    longitude     Float
+    elevation     Float?
+    places        places[]
 }
 
 // Necessary for Next auth
