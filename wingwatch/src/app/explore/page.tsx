@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { api } from "~/trpc/react";
 import Navbar from "../_components/Navbar";
-import Link from "next/link";
-import { useState } from "react";
 
 declare global {
   interface Window {
@@ -18,12 +16,23 @@ interface ILocation {
 }
 
 export default function Explore() {
-
   const placesQuery = api.main.findPlaces.useQuery();
-  const topPlacesQuery = api.main.findTopPlaces.useQuery();
   const pathsQuery = api.main.findPaths.useQuery();
-
   const [location, setLocation] = useState<ILocation | undefined>(undefined);
+  const [radius, setRadius] = useState(30);
+  const [tempRadius, setTempRadius] = useState(radius); // Temporary radius state
+  const sliderRef = useRef(null); // Ref for the slider element
+
+  // Adjust handleSliderChange to update the radius immediately
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTempRadius(Number(e.target.value));
+  };
+
+  // Update radius when the user stops interacting with the slider
+  const handleSliderChangeComplete = () => {
+    setRadius(tempRadius);
+  };
+
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(({ coords }) => {
@@ -31,65 +40,60 @@ export default function Explore() {
       });
     }
   }, []);
-  // useEffect(() => {
-  //   setLocation({ latitude: 37.7749, longitude: -122.4194 });
-  // }, []);
 
   const closestPlacesQuery = api.main.findClosestPlaces.useQuery(
     {
       latitude: location ? location.latitude : 0,
       longitude: location ? location.longitude : 0,
+      radius: radius,
     },
     {
-      // Only run the query if 'location' is defined
       enabled: !!location,
     },
   );
 
   useEffect(() => {
     if (!location) return;
-    const center =
-      location.latitude && location.longitude
-        ? { lat: location.latitude, lng: location.longitude }
-        : { lat: -2.8203035410171496e46, lng: -118.4622 };
+    const center = {
+      lat: location?.latitude ?? 0,
+      lng: location?.longitude ?? 0,
+    };
 
-    // Dynamically load the Google Maps script with the initMap callback
     const script = document.createElement("script");
     script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAXt99dXCkF4UFgLWPckl6pKzfCwc792ts&loading=async&callback=initMap`;
     script.async = true;
     document.body.appendChild(script);
 
-    // Attach the initMap function to the window object
     window.initMap = function () {
       const map = new google.maps.Map(document.getElementById("map")!, {
-        center: center,
+        center,
         zoom: 12,
       });
 
-      if (location.latitude && location.longitude) {
-        new google.maps.Marker({
-          position: center,
-          map: map,
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 7, // Size of the dot
-            fillColor: "#4285F4", // Blue color
-            fillOpacity: 1,
-            strokeColor: "white",
-            strokeWeight: 2,
-          },
-          title: "You are here",
-        });
-      }
+      // Your location marker
+      new google.maps.Marker({
+        position: center,
+        map,
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 7,
+          fillColor: "#4285F4",
+          fillOpacity: 1,
+          strokeColor: "white",
+          strokeWeight: 2,
+        },
+        title: "You are here",
+      });
 
-      // Add markers to the map based on the places
+      // Place markers
       placesQuery.data?.forEach((place) => {
         const marker = new google.maps.Marker({
           position: { lat: place.latitude, lng: place.longitude },
-          map: map,
+          map,
           title: place.name,
         });
 
+        // Info window for each place
         const infowindow = new google.maps.InfoWindow({
           content: `<div><h1>${place.name}</h1>
                             <p>${place.address}</p>
@@ -99,38 +103,29 @@ export default function Explore() {
                             <p>Distance From Airport: ${place.distance_from_airport}</p></div>`,
         });
 
-        marker.addListener("mouseover", function () {
+        marker.addListener("click", () => {
           infowindow.open(map, marker);
-        });
-
-        marker.addListener("mouseout", function () {
-          infowindow.close();
         });
       });
 
-      // Adjust the forEach loop to include min and max latitude values
-      pathsQuery.data?.forEach(
-        (path: { latitude: number[]; longitude: number[] }) => {
-          const pathPoints: { lat: number; lng: number }[] = path.latitude.map(
-            (lat: number, index: number) => ({
-              lat: lat,
-              lng: path.longitude[index]!,
-            }),
-          );
+      // Path Polylines
+      pathsQuery.data?.forEach((path) => {
+        const pathPoints = path.latitude.map((lat, index) => ({
+          lat,
+          lng: path.longitude[index]!,
+        }));
 
-          const pathPolyline = new google.maps.Polyline({
-            path: pathPoints,
-            geodesic: true,
-            strokeColor: "#0000FF", // Customize color as needed
-            strokeOpacity: 1.0,
-            strokeWeight: 2,
-          });
-          pathPolyline.setMap(map);
-        },
-      );
+        new google.maps.Polyline({
+          path: pathPoints,
+          geodesic: true,
+          strokeColor: "#0000FF",
+          strokeOpacity: 1.0,
+          strokeWeight: 2,
+          map,
+        });
+      });
     };
 
-    // Cleanup: Remove the script and clean up the window object
     return () => {
       document.body.removeChild(script);
       delete window.initMap;
@@ -140,71 +135,85 @@ export default function Explore() {
   return (
     <>
       <Navbar />
-      <div className="mt-5 flex flex-col">
-        <div className="flex flex-col md:flex-row">
-          {/* Views Near Me Section */}
-          <div className="w-full md:w-1/3" style={{ minHeight: "60vh" }}>
-            <div className="sticky top-0 z-10 bg-white p-4">
-              <h2 className="mb-4 text-2xl font-bold">Views Near Me</h2>
-            </div>
-            <div
-              className="overflow-auto p-4 pt-0"
-              style={{ maxHeight: "50vh" }}
-            >
-              <div className="space-y-4">
-                {closestPlacesQuery.data?.map((place, index) => (
-                  <div key={index} className="border p-4">
-                    <h3>{place.name}</h3>
-                    {place.description ? (
-                      <p>Description: {place.description}</p>
-                    ) : null}
-                    <p>Address: {place.address}</p>
-                    <p>Airport: {place.airport}</p>
-                    <p>
-                      Distance from flightpath: {place.distance_from_flightpath}
-                    </p>
-                    <p>Average altitude: {place.average_altitude}</p>
-                    <Link href={`/place/?id=${place.place_id}`} passHref>
-                      <span>View Details</span>
-                    </Link>
-                  </div>
-                ))}
+      <div className="mt-5 flex flex-col gap-4 px-4 md:flex-row">
+        <div
+          className="w-full md:w-1/3 xl:w-1/4"
+          style={{ maxHeight: "80vh", minHeight: "80vh" }} // Updated to set both max and min height to 80vh
+        >
+          {/* Non-scrollable Header and Slider Bar */}
+          <div className="mb-4">
+            <h2 className="flex items-center justify-between text-xl font-bold">
+              Nearby Places
+              <div className="flex items-center gap-2">
+                <input
+                  type="range"
+                  min="5"
+                  max="100"
+                  value={tempRadius}
+                  onChange={handleSliderChange}
+                  onMouseUp={handleSliderChangeComplete}
+                  className="w-3/4"
+                  ref={sliderRef}
+                />
+                <span
+                  style={{
+                    fontWeight: "normal",
+                    fontSize: 15,
+                    width: "85px",
+                    textAlign: "right",
+                  }}
+                >
+                  {tempRadius} miles
+                </span>
               </div>
-            </div>
+            </h2>
           </div>
 
-          {/* Map Section */}
-          <div className="w-full md:h-auto md:w-2/3">
-            <div id="map" className="h-full w-full"></div>
-          </div>
-        </div>
-
-        {/* Best Views Section */}
-        <div className="w-full">
-          <div className="sticky top-0 z-10 bg-white p-4">
-            <h2 className="mb-4 text-2xl font-bold">Best Views</h2>
-          </div>
-          <div className="overflow-auto p-4 pt-0" style={{ maxHeight: "50vh" }}>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {topPlacesQuery.data?.map((place, index) => (
-                <div key={index} className="border p-4">
-                  <h3>{place.name}</h3>
-                  {place.description ? (
-                    <p>Description: {place.description}</p>
-                  ) : null}
+          {/* Scrollable Container for Places */}
+          <div
+            className="overflow-auto rounded-lg border p-4"
+            style={{
+              maxHeight: "75vh", // Updated to set max height to 80vh
+              minHeight: "75vh", // Updated to set min height to 80vh
+            }}
+          >
+            {/* Display of places */}
+            {closestPlacesQuery.data?.length ? (
+              closestPlacesQuery.data.map((place, index) => (
+                <div key={index} className="mb-4 rounded border p-4">
+                  <h3 className="font-semibold">{place.name}</h3>
+                  {place.description && <p>Description: {place.description}</p>}
                   <p>Address: {place.address}</p>
                   <p>Airport: {place.airport}</p>
                   <p>
                     Distance from flightpath: {place.distance_from_flightpath}
                   </p>
                   <p>Average altitude: {place.average_altitude}</p>
-                  <Link href={`/place/?id=${place.place_id}`} passHref>
-                    <span>View Details</span>
-                  </Link>
+                  <a
+                    href={`/place/?id=${place.place_id}`}
+                    className="text-blue-500 hover:text-blue-700"
+                  >
+                    View Details
+                  </a>
                 </div>
-              ))}
-            </div>
+              ))
+            ) : (
+              <div className="text-center">
+                No places found within the selected radius.
+              </div>
+            )}
           </div>
+        </div>
+
+        <div
+          className="flex-grow"
+          style={{ maxHeight: "80vh", minHeight: "80vh" }} // Updated to set both max and min height to 80vh
+        >
+          <div
+            id="map"
+            className="h-full rounded-lg border"
+            style={{ minHeight: "80vh" }} // Updated to set min height to 80vh
+          ></div>
         </div>
       </div>
     </>
