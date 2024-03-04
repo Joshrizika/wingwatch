@@ -18,15 +18,16 @@ interface ILocation {
 export default function Explore() {
   const placesQuery = api.main.findPlaces.useQuery();
   const pathsQuery = api.main.findPaths.useQuery();
+  const airportsQuery = api.main.findAirports.useQuery();
   const [location, setLocation] = useState<ILocation | undefined>(undefined);
 
   const [radius, setRadius] = useState(
-    Number(localStorage.getItem('radius')) || 30
+    Number(localStorage.getItem("radius")) || 30,
   );
   const [tempRadius, setTempRadius] = useState(radius); // Temporary radius state
   const sliderRef = useRef(null); // Ref for the slider element
   const [sortOption, setSortOption] = useState(
-    localStorage.getItem('sortOption') ?? "best"
+    localStorage.getItem("sortOption") ?? "best",
   );
 
   // Adjust handleSliderChange to update the radius immediately
@@ -37,13 +38,13 @@ export default function Explore() {
   // Update radius when the user stops interacting with the slider
   const handleSliderChangeComplete = () => {
     setRadius(tempRadius);
-    localStorage.setItem('radius', String(tempRadius));
+    localStorage.setItem("radius", String(tempRadius));
   };
 
   // Handle sort option change
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortOption(e.target.value);
-    localStorage.setItem('sortOption', e.target.value);
+    localStorage.setItem("sortOption", e.target.value);
   };
 
   useEffect(() => {
@@ -117,12 +118,15 @@ export default function Explore() {
                             <p>Distance From Airport: ${place.distance_from_airport}</p></div>`,
         });
 
-        marker.addListener("click", () => {
+        marker.addListener("mouseover", () => {
           infowindow.open(map, marker);
+        });
+
+        marker.addListener("mouseout", () => {
+          infowindow.close();
         });
       });
 
-      // Path Polylines
       pathsQuery.data?.forEach((path) => {
         const pathPoints = path.latitude.map((lat, index) => ({
           lat,
@@ -138,13 +142,40 @@ export default function Explore() {
           map,
         });
       });
+
+      airportsQuery.data?.forEach((airport) => {
+        console.log(airport);
+        const marker = new google.maps.Marker({
+          position: { lat: airport.latitude, lng: airport.longitude },
+          map,
+          title: airport.name,
+          icon: {
+            url: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
+          },
+        });
+
+        // Info window for each airport
+        const infowindow = new google.maps.InfoWindow({
+          content: `<div><h1>${airport.name}</h1>
+                            <p>IATA Code: ${airport.iata_code}</p>
+                            <p>Elevation: ${airport.elevation}</p></div>`,
+        });
+
+        marker.addListener("mouseover", () => {
+          infowindow.open(map, marker);
+        });
+
+        marker.addListener("mouseout", () => {
+          infowindow.close();
+        });
+      });
     };
 
     return () => {
       document.body.removeChild(script);
       delete window.initMap;
     };
-  }, [placesQuery.data, pathsQuery.data, location]);
+  }, [placesQuery.data, pathsQuery.data, location, airportsQuery.data]);
 
   return (
     <>
@@ -183,7 +214,9 @@ export default function Explore() {
             </h2>
             {/* Sort By Dropdown */}
             <div className="mb-4">
-              <label htmlFor="sort" className="mr-2">Sort by:</label>
+              <label htmlFor="sort" className="mr-2">
+                Sort by:
+              </label>
               <select id="sort" value={sortOption} onChange={handleSortChange}>
                 <option value="best">Best</option>
                 <option value="closest">Closest</option>

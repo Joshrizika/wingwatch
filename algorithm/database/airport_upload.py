@@ -13,6 +13,11 @@ PORT = "25060"
 connection = psycopg2.connect(database=DATABASE, host=HOST, user=USER, password=PASSWORD, port=PORT)
 cursor = connection.cursor()
 
+# Schema to drop the airports table if it exists
+drop_table_query = """
+DROP TABLE IF EXISTS airports CASCADE;
+"""
+
 # Schema to create the airports table
 create_table_query = """
 CREATE TABLE IF NOT EXISTS airports (
@@ -45,8 +50,8 @@ def insert_airport_data(airport_data):
         if airport["type"] == "large_airport":  # Ensure the airport is a large airport
             # Splitting coordinates into latitude and longitude
             coordinates = airport["coordinates"].split(", ")
-            latitude = float(coordinates[0])
-            longitude = float(coordinates[1])
+            latitude = float(coordinates[1])
+            longitude = float(coordinates[0])
             # Convert elevation to float, use 0 if None
             elevation = float(airport.get("elevation_ft", 0) or 0)
             # Extract name and IATA code
@@ -56,7 +61,8 @@ def insert_airport_data(airport_data):
             cursor.execute(insert_query, (name, iata_code, latitude, longitude, elevation))
 
 try:
-    cursor.execute(create_table_query)
+    cursor.execute(drop_table_query)  # Drop the existing table if it exists
+    cursor.execute(create_table_query)  # Create a new table
     airport_data = load_airport_data("data/airport_data.js")
     insert_airport_data(airport_data)
     connection.commit()
