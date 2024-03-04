@@ -19,6 +19,7 @@ export default function Review({ onClose }: ReviewProps) {
   const [content, setContent] = useState("");
   const [rating, setRating] = useState(0);
   const [hasReviewed, setHasReviewed] = useState(false);
+  const [ratingError, setRatingError] = useState(false); // New state for rating error
 
   useEffect(() => {
     // Check if the current user has already submitted a review
@@ -32,10 +33,15 @@ export default function Review({ onClose }: ReviewProps) {
 
   const handleRatingSelect = (selectedRating: number) => {
     setRating(selectedRating);
+    setRatingError(false); // Reset the error state when a rating is selected
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the form from causing a page reload
+    if (rating === 0) {
+      setRatingError(true); // Set the error state if no rating is selected
+      return;
+    }
     if (session && !hasReviewed) {
       reviewMutation.mutate(
         {
@@ -75,6 +81,7 @@ export default function Review({ onClose }: ReviewProps) {
             <form className="w-full max-w-md" onSubmit={handleSubmit}>
               <div>
                 <InteractiveRatingBar onRatingSelected={handleRatingSelect} />
+                {ratingError && <p className="text-red-500">Please enter a rating</p>} {/* Display error message if no rating is selected */}
               </div>
               <input
                 className="my-2 w-full border p-2"

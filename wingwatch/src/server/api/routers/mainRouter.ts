@@ -56,13 +56,22 @@ export const mainRouter = createTRPCRouter({
   //       .sort((a, b) => a.value - b.value);
   //     return sortedPlaces;
   //   }),
-  findClosestPlaces: publicProcedure
-    .input(z.object({ latitude: z.number(), longitude: z.number(), radius: z.number() })) // Input required for this procedure
+  findFilteredPlaces: publicProcedure
+    .input(
+      z.object({
+        latitude: z.number(),
+        longitude: z.number(),
+        radius: z.number(),
+        sort: z.string(),
+      }),
+    ) // Input required for this procedure
     .query(async ({ input }) => {
-      const places = await db.places.findMany();
+      const places = await db.places.findMany({
+        include: { reviews: true },
+      });
 
       // Filter and sort places within a 50 mile radius
-      const filteredAndSortedPlaces = places
+      let filteredAndSortedPlaces = places
         .map((place) => ({
           ...place,
           distance: calculateDistance(
@@ -72,8 +81,39 @@ export const mainRouter = createTRPCRouter({
             place.longitude,
           ),
         }))
-        .filter((place) => place.distance <= input.radius) // Keep only places within 50 miles
-        .sort((a, b) => a.distance - b.distance);
+        .filter((place) => place.distance <= input.radius); // Keep only places within 50 miles
+
+      // Sort the places based on the sort parameter
+      if (input.sort === "closest") {
+        filteredAndSortedPlaces = filteredAndSortedPlaces.sort(
+          (a, b) => a.distance - b.distance,
+        );
+      } else if (input.sort === "best") {
+        // 'best' means the lowest value of sqrt((average altitude)^2 + (distance_from_flightpath)^2)
+        filteredAndSortedPlaces = filteredAndSortedPlaces.sort((a, b) => {
+          const aValue = Math.sqrt(
+            Math.pow(a.average_altitude, 2) +
+              Math.pow(a.distance_from_flightpath, 2),
+          );
+          const bValue = Math.sqrt(
+            Math.pow(b.average_altitude, 2) +
+              Math.pow(b.distance_from_flightpath, 2),
+          );
+          return aValue - bValue;
+        });
+      } else if (input.sort === "rating") {
+        filteredAndSortedPlaces = filteredAndSortedPlaces
+          .map((place) => {
+            const totalRating = place.reviews.reduce(
+              (sum, review) => sum + review.rating,
+              0,
+            );
+            const averageRating =
+              place.reviews.length > 0 ? totalRating / place.reviews.length : 0;
+            return { ...place, averageRating };
+          })
+          .sort((a, b) => b.averageRating - a.averageRating);
+      }
 
       return filteredAndSortedPlaces;
     }),

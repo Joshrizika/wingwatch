@@ -22,6 +22,7 @@ export default function Explore() {
   const [radius, setRadius] = useState(30);
   const [tempRadius, setTempRadius] = useState(radius); // Temporary radius state
   const sliderRef = useRef(null); // Ref for the slider element
+  const [sortOption, setSortOption] = useState("best");
 
   // Adjust handleSliderChange to update the radius immediately
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,6 +34,11 @@ export default function Explore() {
     setRadius(tempRadius);
   };
 
+  // Handle sort option change
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortOption(e.target.value);
+  };
+
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(({ coords }) => {
@@ -41,11 +47,12 @@ export default function Explore() {
     }
   }, []);
 
-  const closestPlacesQuery = api.main.findClosestPlaces.useQuery(
+  const filteredPlacesQuery = api.main.findFilteredPlaces.useQuery(
     {
       latitude: location ? location.latitude : 0,
       longitude: location ? location.longitude : 0,
       radius: radius,
+      sort: sortOption,
     },
     {
       enabled: !!location,
@@ -137,7 +144,7 @@ export default function Explore() {
       <Navbar />
       <div className="mt-5 flex flex-col gap-4 px-4 md:flex-row">
         <div
-          className="w-full md:w-1/3 xl:w-1/4"
+          className="w-full md:w-1/3 xl:w-1/3"
           style={{ maxHeight: "80vh", minHeight: "80vh" }} // Updated to set both max and min height to 80vh
         >
           {/* Non-scrollable Header and Slider Bar */}
@@ -167,6 +174,15 @@ export default function Explore() {
                 </span>
               </div>
             </h2>
+            {/* Sort By Dropdown */}
+            <div className="mb-4">
+              <label htmlFor="sort" className="mr-2">Sort by:</label>
+              <select id="sort" value={sortOption} onChange={handleSortChange}>
+                <option value="best">Best</option>
+                <option value="closest">Closest</option>
+                <option value="rating">Rating</option>
+              </select>
+            </div>
           </div>
 
           {/* Scrollable Container for Places */}
@@ -178,8 +194,8 @@ export default function Explore() {
             }}
           >
             {/* Display of places */}
-            {closestPlacesQuery.data?.length ? (
-              closestPlacesQuery.data.map((place, index) => (
+            {filteredPlacesQuery.data?.length ? (
+              filteredPlacesQuery.data.map((place, index) => (
                 <div key={index} className="mb-4 rounded border p-4">
                   <h3 className="font-semibold">{place.name}</h3>
                   {place.description && <p>Description: {place.description}</p>}
