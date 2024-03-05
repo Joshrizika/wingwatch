@@ -16,7 +16,17 @@ interface ILocation {
 }
 
 export default function Explore() {
-  const placesQuery = api.main.findPlaces.useQuery();
+  const [selectedPath, setSelectedPath] = useState<string | null>(null);
+  const [selectedAirport, setSelectedAirport] = useState<string | null>(null);
+
+  const placesQuery = api.main.findPlaces.useQuery(
+    {
+      ...(selectedPath ? { pathId: selectedPath } : {}), // Only pass the parameter when it's not null
+      ...(selectedAirport ? { iata_code: selectedAirport } : {}), // Only pass the parameter when it's not null
+    },
+    { enabled: true }, // The query will always run
+  );
+
   const pathsQuery = api.main.findPaths.useQuery();
   const airportsQuery = api.main.findAirports.useQuery();
   const [location, setLocation] = useState<ILocation | undefined>(undefined);
@@ -61,6 +71,8 @@ export default function Explore() {
       longitude: location ? location.longitude : 0,
       radius: radius,
       sort: sortOption,
+      pathId: selectedPath ?? undefined,
+      iata_code: selectedAirport ?? undefined,
     },
     {
       enabled: !!location,
@@ -133,13 +145,18 @@ export default function Explore() {
           lng: path.longitude[index]!,
         }));
 
-        new google.maps.Polyline({
+        const polyline = new google.maps.Polyline({
           path: pathPoints,
           geodesic: true,
           strokeColor: "#0000FF",
           strokeOpacity: 1.0,
           strokeWeight: 2,
           map,
+        });
+
+        polyline.addListener("click", () => {
+          setSelectedPath(path.path_id);
+          setSelectedAirport(null);
         });
       });
 
@@ -152,6 +169,11 @@ export default function Explore() {
           icon: {
             url: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
           },
+        });
+
+        marker.addListener("click", () => {
+          setSelectedAirport(airport.iata_code);
+          setSelectedPath(null);
         });
 
         // Info window for each airport
@@ -175,7 +197,13 @@ export default function Explore() {
       document.body.removeChild(script);
       delete window.initMap;
     };
-  }, [placesQuery.data, pathsQuery.data, location, airportsQuery.data]);
+  }, [
+    placesQuery.data,
+    pathsQuery.data,
+    location,
+    airportsQuery.data,
+    selectedPath,
+  ]);
 
   return (
     <>

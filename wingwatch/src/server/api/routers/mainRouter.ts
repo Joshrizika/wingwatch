@@ -34,9 +34,17 @@ export const mainRouter = createTRPCRouter({
       return getServerAuthSession();
     }),
   findPlaces: publicProcedure
-    .input(z.void()) // No input required for this procedure
-    .query(async () => {
-      const places = await db.places.findMany();
+    .input(z.object({ pathId: z.string().optional(), iata_code: z.string().optional() })) // Input required for this procedure
+    .query(async ({ input }) => {
+      let whereClause = {};
+      if (input.pathId && input.pathId !== "") {
+        whereClause = { path: { path_id: input.pathId } };
+      } else if (input.iata_code && input.iata_code !== "") {
+        whereClause = { airport: input.iata_code };
+      }
+      const places = await db.places.findMany({
+        where: whereClause,
+      });
       return places;
     }),
   findFilteredPlaces: publicProcedure
@@ -46,11 +54,13 @@ export const mainRouter = createTRPCRouter({
         longitude: z.number(),
         radius: z.number(),
         sort: z.string(),
+        pathId: z.string().optional(),
+        iata_code: z.string().optional(),
       }),
     ) // Input required for this procedure
     .query(async ({ input }) => {
       const places = await db.places.findMany({
-        include: { reviews: true },
+        include: { reviews: true, path: true, airportDetails: true },
       });
 
       // Filter and sort places within a 50 mile radius
@@ -64,7 +74,13 @@ export const mainRouter = createTRPCRouter({
             place.longitude,
           ),
         }))
-        .filter((place) => place.distance <= input.radius); // Keep only places within 50 miles
+        .filter((place) => place.distance <= input.radius) // Keep only places within 50 miles
+        .filter((place) => !input.pathId || place.path.path_id === input.pathId) // Filter by pathId if provided
+        .filter(
+          (place) =>
+            !input.iata_code ||
+            place.airportDetails.iata_code === input.iata_code,
+        ); // Filter by iata_code if provided
 
       // Sort the places based on the sort parameter
       if (input.sort === "closest") {
