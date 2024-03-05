@@ -35,7 +35,9 @@ export default function Explore() {
   const [radius, setRadius] = useState(useSearchParams().get("radius") ?? 30);
   const [tempRadius, setTempRadius] = useState(radius); // Temporary radius state
   const sliderRef = useRef(null); // Ref for the slider element
-  const [sortOption, setSortOption] = useState(useSearchParams().get("sort") ?? "best");
+  const [sortOption, setSortOption] = useState(
+    useSearchParams().get("sort") ?? "best",
+  );
 
   // Adjust handleSliderChange to update the radius immediately
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +49,9 @@ export default function Explore() {
     setRadius(Number(tempRadius));
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set("radius", String(tempRadius));
-    window.history.pushState({}, '', "?" + urlParams.toString());
+    if (typeof window !== "undefined") {
+      window.history.pushState({}, "", "?" + urlParams.toString());
+    }
   };
 
   // Handle sort option change
@@ -55,7 +59,9 @@ export default function Explore() {
     setSortOption(e.target.value);
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set("sortOption", e.target.value);
-    window.history.pushState({}, '', "?" + urlParams.toString());
+    if (typeof window !== "undefined") {
+      window.history.pushState({}, "", "?" + urlParams.toString());
+    }
   };
 
   useEffect(() => {
