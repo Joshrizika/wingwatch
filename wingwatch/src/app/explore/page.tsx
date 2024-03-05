@@ -3,7 +3,6 @@
 import { useEffect, useState, useRef } from "react";
 import { api } from "~/trpc/react";
 import Navbar from "../_components/Navbar";
-import { useSearchParams } from "next/navigation";
 
 declare global {
   interface Window {
@@ -32,11 +31,15 @@ export default function Explore() {
   const airportsQuery = api.main.findAirports.useQuery();
   const [location, setLocation] = useState<ILocation | undefined>(undefined);
 
-  const [radius, setRadius] = useState(useSearchParams().get("radius") ?? 30);
+  
+  const [radius, setRadius] = useState(
+    typeof window !== "undefined" ? Number(localStorage.getItem("radius")) || 30 : 30,
+  );
+
   const [tempRadius, setTempRadius] = useState(radius); // Temporary radius state
   const sliderRef = useRef(null); // Ref for the slider element
   const [sortOption, setSortOption] = useState(
-    useSearchParams().get("sort") ?? "best",
+    typeof window !== "undefined" ? localStorage.getItem("sortOption") ?? "best" : "best",
   );
 
   // Adjust handleSliderChange to update the radius immediately
@@ -46,21 +49,17 @@ export default function Explore() {
 
   // Update radius when the user stops interacting with the slider
   const handleSliderChangeComplete = () => {
-    setRadius(Number(tempRadius));
-    const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set("radius", String(tempRadius));
+    setRadius(tempRadius);
     if (typeof window !== "undefined") {
-      window.history.pushState({}, "", "?" + urlParams.toString());
+      localStorage.setItem("radius", String(tempRadius));
     }
   };
 
   // Handle sort option change
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortOption(e.target.value);
-    const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set("sortOption", e.target.value);
     if (typeof window !== "undefined") {
-      window.history.pushState({}, "", "?" + urlParams.toString());
+      localStorage.setItem("sortOption", e.target.value);
     }
   };
 
@@ -76,7 +75,7 @@ export default function Explore() {
     {
       latitude: location ? location.latitude : 0,
       longitude: location ? location.longitude : 0,
-      radius: Number(radius),
+      radius: radius,
       sort: sortOption,
       pathId: selectedPath ?? undefined,
       iata_code: selectedAirport ?? undefined,
