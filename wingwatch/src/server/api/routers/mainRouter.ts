@@ -34,7 +34,12 @@ export const mainRouter = createTRPCRouter({
       return getServerAuthSession();
     }),
   findPlaces: publicProcedure
-    .input(z.object({ pathId: z.string().optional(), iata_code: z.string().optional() })) // Input required for this procedure
+    .input(
+      z.object({
+        pathId: z.string().optional(),
+        iata_code: z.string().optional(),
+      }),
+    ) // Input required for this procedure
     .query(async ({ input }) => {
       let whereClause = {};
       if (input.pathId && input.pathId !== "") {
