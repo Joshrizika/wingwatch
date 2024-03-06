@@ -6,7 +6,6 @@ import Navbar from "../_components/Navbar";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
-
 declare global {
   interface Window {
     initMap?: () => void;
@@ -31,13 +30,10 @@ function ExploreContent() {
   const [selectedPath, setSelectedPath] = useState<string | null>(null);
   const [selectedAirport, setSelectedAirport] = useState<string | null>(null);
 
-  const placesQuery = api.main.findPlaces.useQuery(
-    {
-      ...(selectedPath ? { pathId: selectedPath } : {}), // Only pass the parameter when it's not null
-      ...(selectedAirport ? { iata_code: selectedAirport } : {}), // Only pass the parameter when it's not null
-    },
-    { enabled: true }, // The query will always run
-  );
+  const removeFilters = () => {
+    setSelectedPath(null);
+    setSelectedAirport(null);
+  };
 
   const pathsQuery = api.main.findPaths.useQuery();
   const airportsQuery = api.main.findAirports.useQuery();
@@ -46,7 +42,9 @@ function ExploreContent() {
   const [radius, setRadius] = useState(useSearchParams().get("radius") ?? 30);
   const [tempRadius, setTempRadius] = useState(radius); // Temporary radius state
   const sliderRef = useRef(null); // Ref for the slider element
-  const [sortOption, setSortOption] = useState(useSearchParams().get("sort") ?? "best");
+  const [sortOption, setSortOption] = useState(
+    useSearchParams().get("sort") ?? "best",
+  );
 
   // Adjust handleSliderChange to update the radius immediately
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,15 +56,15 @@ function ExploreContent() {
     setRadius(Number(tempRadius));
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set("radius", String(tempRadius));
-    window.history.pushState({}, '', "?" + urlParams.toString());
+    window.history.pushState({}, "", "?" + urlParams.toString());
   };
 
   // Handle sort option change
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortOption(e.target.value);
     const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set("sortOption", e.target.value);
-    window.history.pushState({}, '', "?" + urlParams.toString());
+    urlParams.set("sort", e.target.value);
+    window.history.pushState({}, "", "?" + urlParams.toString());
   };
 
   useEffect(() => {
@@ -76,6 +74,14 @@ function ExploreContent() {
       });
     }
   }, []);
+
+  const placesQuery = api.main.findPlaces.useQuery(
+    {
+      ...(selectedPath ? { pathId: selectedPath } : {}), // Only pass the parameter when it's not null
+      ...(selectedAirport ? { iata_code: selectedAirport } : {}), // Only pass the parameter when it's not null
+    },
+    { enabled: true }, // The query will always run
+  );
 
   const filteredPlacesQuery = api.main.findFilteredPlaces.useQuery(
     {
@@ -223,7 +229,7 @@ function ExploreContent() {
       <div className="mt-5 flex flex-col gap-4 px-4 md:flex-row">
         <div
           className="w-full md:w-1/3 xl:w-1/3"
-          style={{ maxHeight: "80vh", minHeight: "80vh" }} // Updated to set both max and min height to 80vh
+          style={{ maxHeight: "80vh", minHeight: "80vh" }}
         >
           {/* Non-scrollable Header and Slider Bar */}
           <div className="mb-4">
@@ -269,8 +275,8 @@ function ExploreContent() {
           <div
             className="overflow-auto rounded-lg border p-4"
             style={{
-              maxHeight: "75vh", // Updated to set max height to 80vh
-              minHeight: "75vh", // Updated to set min height to 80vh
+              maxHeight: "75vh",
+              minHeight: "75vh",
             }}
           >
             {/* Display of places */}
@@ -302,14 +308,35 @@ function ExploreContent() {
         </div>
 
         <div
-          className="flex-grow"
-          style={{ maxHeight: "80vh", minHeight: "80vh" }} // Updated to set both max and min height to 80vh
+          className="relative flex-grow"
+          style={{ maxHeight: "80vh", minHeight: "80vh" }}
         >
           <div
             id="map"
             className="h-full rounded-lg border"
-            style={{ minHeight: "80vh" }} // Updated to set min height to 80vh
-          ></div>
+            style={{ minHeight: "80vh" }}
+          >
+            {/* Map content */}
+          </div>
+
+          {(selectedPath ?? selectedAirport) && (
+            <div className="absolute bottom-0 left-0 z-10 m-2 max-w-xs rounded bg-white p-4 shadow-lg">
+              <div className="flex flex-col">
+                <div className="absolute right-0 top-0">
+                  <button
+                    onClick={removeFilters}
+                    className="text-black hover:text-gray-700"
+                  >
+                    x
+                  </button>
+                </div>
+                <div>
+                  {selectedPath && `Selected Path: ${selectedPath}`}
+                  {selectedAirport && `Selected Airport: ${selectedAirport}`}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>
