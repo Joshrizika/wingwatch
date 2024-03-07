@@ -5,16 +5,32 @@ import { api } from "~/trpc/react";
 import Navbar from "../_components/Navbar";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-
+import LocationSearch from "../_components/LocationSearch";
 declare global {
   interface Window {
     initMap?: () => void;
   }
 }
-
 interface ILocation {
   latitude: number;
   longitude: number;
+}
+interface PlaceData {
+  formattedAddress: string;
+  location: {
+    latitude: number;
+    longitude: number;
+  };
+  viewport: {
+    high: {
+      latitude: number;
+      longitude: number;
+    };
+    low: {
+      latitude: number;
+      longitude: number;
+    };
+  };
 }
 
 export default function Explore() {
@@ -83,25 +99,73 @@ function ExploreContent() {
     { enabled: true }, // The query will always run
   );
 
-  const filteredPlacesQuery = api.main.findFilteredPlaces.useQuery(
-    {
-      latitude: location ? location.latitude : 0,
-      longitude: location ? location.longitude : 0,
-      radius: Number(radius),
-      sort: sortOption,
-      pathId: selectedPath ?? undefined,
-      iata_code: selectedAirport ?? undefined,
-    },
-    {
-      enabled: !!location,
-    },
+  const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(
+    useSearchParams().get("placeId"),
   );
+  const [placeLocation, setPlaceLocation] = useState<
+    PlaceData["location"] | null
+  >(null);
+  const [placeViewport, setPlaceViewport] = useState<
+    PlaceData["viewport"] | null
+  >(null);
+  const [placeData, setPlaceData] = useState<PlaceData | null>(null);
 
   useEffect(() => {
-    if (!location) return;
+    if (selectedPlaceId !== null) {
+      fetch(`https://places.googleapis.com/v1/places/${selectedPlaceId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "X-Goog-Api-Key": "AIzaSyAXt99dXCkF4UFgLWPckl6pKzfCwc792ts",
+          "X-Goog-FieldMask": "formattedAddress,location,viewport",
+        },
+      })
+        .then((response) => response.json())
+        .then((data: PlaceData) => {
+          setPlaceLocation(data.location);
+          setPlaceViewport(data.viewport);
+          setPlaceData(data);
+          console.log("Selected Place Name: ", data.formattedAddress);
+          console.log("selectedPlaceId: ", selectedPlaceId);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          setPlaceLocation(null);
+          setPlaceViewport(null);
+        });
+    } else {
+      setPlaceLocation(null);
+      setPlaceViewport(null);
+    }
+    const urlParams = new URLSearchParams(window.location.search);
+    if (selectedPlaceId) {
+      urlParams.set("placeId", selectedPlaceId);
+    } else {
+      urlParams.delete("placeId");
+    }
+    window.history.pushState({}, "", "?" + urlParams.toString());
+  }, [selectedPlaceId]);
+
+  const filteredPlacesQuery = api.main.findFilteredPlaces.useQuery({
+    latitude: placeLocation
+      ? placeLocation.latitude
+      : location
+        ? location.latitude
+        : 42.3601,
+    longitude: placeLocation
+      ? placeLocation.longitude
+      : location
+        ? location.longitude
+        : -71.0589,
+    radius: Number(radius),
+    sort: sortOption,
+    pathId: selectedPath ?? undefined,
+    iata_code: selectedAirport ?? undefined,
+  });
+
+  useEffect(() => {
     const center = {
-      lat: location?.latitude ?? 0,
-      lng: location?.longitude ?? 0,
+      lat: location?.latitude ?? 42.3601,
+      lng: location?.longitude ?? -71.0589,
     };
 
     const script = document.createElement("script");
@@ -110,25 +174,44 @@ function ExploreContent() {
     document.body.appendChild(script);
 
     window.initMap = function () {
-      const map = new google.maps.Map(document.getElementById("map")!, {
-        center,
-        zoom: 12,
-      });
+      let map: google.maps.Map | null = null;
+
+      const mapElement = document.getElementById("map")!;
+
+      if (mapElement) {
+        if (!placeViewport) {
+          // Initialize 'map' if 'placeViewport' is not available
+          map = new google.maps.Map(mapElement, {
+            center: center,
+            zoom: 12,
+          });
+        } else {
+          // Reinitialize 'map' if 'placeViewport' is available
+          map = new google.maps.Map(mapElement);
+          map.fitBounds({
+            east: placeViewport.high.longitude,
+            north: placeViewport.high.latitude,
+            south: placeViewport.low.latitude,
+            west: placeViewport.low.longitude,
+          });
+        }
+      }
 
       // Your location marker
-      new google.maps.Marker({
-        position: center,
-        map,
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 7,
-          fillColor: "#4285F4",
-          fillOpacity: 1,
-          strokeColor: "white",
-          strokeWeight: 2,
-        },
-        title: "You are here",
-      });
+      if (location)
+        new google.maps.Marker({
+          position: center,
+          map,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 7,
+            fillColor: "#4285F4",
+            fillOpacity: 1,
+            strokeColor: "white",
+            strokeWeight: 2,
+          },
+          title: "You are here",
+        });
 
       // Place markers
       placesQuery.data?.forEach((place) => {
@@ -179,7 +262,6 @@ function ExploreContent() {
       });
 
       airportsQuery.data?.forEach((airport) => {
-        console.log(airport);
         const marker = new google.maps.Marker({
           position: { lat: airport.latitude, lng: airport.longitude },
           map,
@@ -221,6 +303,7 @@ function ExploreContent() {
     location,
     airportsQuery.data,
     selectedPath,
+    placeViewport,
   ]);
 
   return (
@@ -236,6 +319,17 @@ function ExploreContent() {
             <h2 className="flex items-center justify-between text-xl font-bold">
               Nearby Places
               <div className="flex items-center gap-2">
+                <LocationSearch
+                  onSearch={(placeId) => {
+                    setSelectedPlaceId(placeId);
+                    if (placeId === null) {
+                      setPlaceLocation(null);
+                      setPlaceViewport(null);
+                    }
+                  }}
+                  formattedAddress={placeData?.formattedAddress ?? undefined}
+                />
+
                 <input
                   type="range"
                   min="5"
@@ -331,7 +425,7 @@ function ExploreContent() {
                   </button>
                 </div>
                 <div>
-                  {selectedPath && `Selected Path: ${selectedPath}`}
+                  {selectedPath && `Selected Flightpath: ${selectedPath}`}
                   {selectedAirport && `Selected Airport: ${selectedAirport}`}
                 </div>
               </div>
