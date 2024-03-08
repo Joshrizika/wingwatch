@@ -124,6 +124,10 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
       setSelectedPlace(suggestions[index]!.placePrediction.text.text);
       onSearch(suggestions[index]!.placePrediction.placeId);
       setCurrentInput(""); // Reset the currentInput to "" on click
+      const urlParams = new URLSearchParams(window.location.search);
+      urlParams.set("placeName", suggestions[index]!.placePrediction.text.text);
+      urlParams.set("placeId", suggestions[index]!.placePrediction.placeId);
+      window.history.replaceState({}, "", "?" + urlParams.toString());
     }
   };
 
@@ -133,7 +137,8 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
     onSearch("");
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.delete("placeName");
-    window.history.pushState({}, "", "?" + urlParams.toString());
+    urlParams.delete("placeId");
+    window.history.replaceState({}, "", "?" + urlParams.toString());
   };
 
   return (
@@ -143,6 +148,8 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
         value={currentInput}
         onChange={handleInputChange}
         onKeyDown={handleKeyPress}
+        onFocus={() => setShowSuggestions(true)}
+        onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
         placeholder="Search..."
         style={{ fontWeight: "normal", zIndex: 3, outline: "1px solid #000" }}
         ref={inputRef}
@@ -156,6 +163,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
               <li
                 key={index}
                 onClick={() => handleSuggestionClick(index)}
+                onMouseDown={event => event.preventDefault()}
                 style={{
                   backgroundColor: index === activeSuggestion ? "#eee" : "#fff",
                   fontWeight: "normal",
@@ -192,3 +200,4 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
 };
 
 export default LocationSearch;
+
