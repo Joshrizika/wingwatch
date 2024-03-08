@@ -6,6 +6,7 @@ import Navbar from "../_components/Navbar";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import LocationSearch from "../_components/LocationSearch";
+
 declare global {
   interface Window {
     initMap?: () => void;
@@ -43,6 +44,8 @@ export default function Explore() {
 }
 
 function ExploreContent() {
+  const searchParams = useSearchParams();
+
   const [selectedPath, setSelectedPath] = useState<string | null>(null);
   const [selectedAirport, setSelectedAirport] = useState<string | null>(null);
 
@@ -55,11 +58,11 @@ function ExploreContent() {
   const airportsQuery = api.main.findAirports.useQuery();
   const [location, setLocation] = useState<ILocation | undefined>(undefined);
 
-  const [radius, setRadius] = useState(useSearchParams().get("radius") ?? 30);
+  const [radius, setRadius] = useState(searchParams.get("radius") ?? 30);
   const [tempRadius, setTempRadius] = useState(radius); // Temporary radius state
   const sliderRef = useRef(null); // Ref for the slider element
   const [sortOption, setSortOption] = useState(
-    useSearchParams().get("sort") ?? "best",
+    searchParams.get("sort") ?? "best",
   );
 
   // Adjust handleSliderChange to update the radius immediately
@@ -100,7 +103,8 @@ function ExploreContent() {
   );
 
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(
-    useSearchParams().get("placeId"),
+    // useSearchParams().get("placeId"),
+    null,
   );
   const [placeLocation, setPlaceLocation] = useState<
     PlaceData["location"] | null
@@ -108,6 +112,17 @@ function ExploreContent() {
   const [placeViewport, setPlaceViewport] = useState<
     PlaceData["viewport"] | null
   >(null);
+
+  // useEffect(() => {
+  //   const urlParams = new URLSearchParams(window.location.search);
+  //   const placeId = urlParams.get("placeId");
+  //   setSelectedPlaceId(placeId);
+  // }, []);
+
+  useEffect(() => {
+    const placeId = searchParams.get("placeId");
+    setSelectedPlaceId(placeId);
+  }, [searchParams]);
 
   useEffect(() => {
     if (selectedPlaceId !== null) {
@@ -123,7 +138,6 @@ function ExploreContent() {
           setPlaceLocation(data.location);
           setPlaceViewport(data.viewport);
           console.log("Selected Place: ", data);
-          // console.log("selectedPlaceId: ", selectedPlaceId);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -140,7 +154,7 @@ function ExploreContent() {
     } else {
       urlParams.delete("placeId");
     }
-    window.history.pushState({}, "", "?" + urlParams.toString());
+    window.history.replaceState({}, "", "?" + urlParams.toString());
   }, [selectedPlaceId]);
 
   const filteredPlacesQuery = api.main.findFilteredPlaces.useQuery({
@@ -325,7 +339,7 @@ function ExploreContent() {
                       setPlaceViewport(null);
                     }
                   }}
-                  placeName={useSearchParams().get("placeName") ?? undefined}
+                  placeName={searchParams.get("placeName") ?? undefined}
                 />
 
                 <input
