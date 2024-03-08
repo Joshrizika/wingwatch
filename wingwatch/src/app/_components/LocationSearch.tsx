@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 
 interface LocationSearchProps {
   onSearch: (query: string) => void;
-  formattedAddress?: string; // Add this line
+  placeName?: string;
 }
 
 interface Place {
@@ -20,24 +20,32 @@ interface Suggestions {
 
 const LocationSearch: React.FC<LocationSearchProps> = ({
   onSearch,
-  formattedAddress,
+  placeName,
 }) => {
   const [currentInput, setCurrentInput] = useState<string>("");
   const [suggestions, setSuggestions] = useState<Place[]>([]);
-  const [activeSuggestion, setActiveSuggestion] = useState(0);
+  const [activeSuggestion, setActiveSuggestion] = useState(-1);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (formattedAddress) {
-      setSelectedPlace(formattedAddress);
+    if (placeName) {
+      setSelectedPlace(placeName);
     }
-  }, [formattedAddress]);
+  }, [placeName]);
+
+  useEffect(() => {
+    if (selectedPlace) {
+      const urlParams = new URLSearchParams(window.location.search);
+      urlParams.set("placeName", selectedPlace);
+      window.history.pushState({}, "", "?" + urlParams.toString());
+    }
+  }, [selectedPlace]);
 
   useEffect(() => {
     let isCancelled = false;
-    if (currentInput !== "" && !selectedPlace) {
+    if (currentInput !== "") {
       fetch("https://places.googleapis.com/v1/places:autocomplete", {
         method: "POST",
         headers: {
@@ -59,7 +67,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
             } else {
               setSuggestions([]);
               setShowSuggestions(false);
-              setActiveSuggestion(0);
+              setActiveSuggestion(-1);
             }
           }
         })
@@ -69,13 +77,13 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
     } else {
       setSuggestions([]);
       setShowSuggestions(false);
-      setActiveSuggestion(0);
+      setActiveSuggestion(-1);
     }
 
     return () => {
       isCancelled = true;
     };
-  }, [currentInput, selectedPlace]);
+  }, [currentInput]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedInput = event.target.value;
@@ -89,12 +97,14 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
         setSelectedPlace(
           suggestions[activeSuggestion]!.placePrediction.text.text,
         );
+        console.log(suggestions[activeSuggestion]?.placePrediction.text.text);
         onSearch(suggestions[activeSuggestion]!.placePrediction.placeId);
         setShowSuggestions(false);
+        setCurrentInput(""); // Reset the currentInput to "" on submit
       }
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
-      if (activeSuggestion === 0) {
+      if (activeSuggestion === -1) {
         return;
       }
       setActiveSuggestion(activeSuggestion - 1);
@@ -109,9 +119,11 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
 
   const handleSuggestionClick = (index: number) => {
     if (suggestions[index]) {
+      console.log(suggestions[index]);
       setActiveSuggestion(index);
       setSelectedPlace(suggestions[index]!.placePrediction.text.text);
       onSearch(suggestions[index]!.placePrediction.placeId);
+      setCurrentInput(""); // Reset the currentInput to "" on click
     }
   };
 
@@ -119,17 +131,50 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
     setSelectedPlace(null);
     setCurrentInput("");
     onSearch("");
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.delete("placeName");
+    window.history.pushState({}, "", "?" + urlParams.toString());
   };
 
   return (
     <form>
-      {selectedPlace ? (
+      <input
+        type="text"
+        value={currentInput}
+        onChange={handleInputChange}
+        onKeyDown={handleKeyPress}
+        placeholder="Search..."
+        style={{ fontWeight: "normal", zIndex: 3, outline: "1px solid #000" }}
+        ref={inputRef}
+      />
+      {showSuggestions && suggestions.length > 0 && (
+        <div
+          style={{ position: "absolute", zIndex: 4, border: "1px solid #000" }}
+        >
+          <ul>
+            {suggestions.map((place, index) => (
+              <li
+                key={index}
+                onClick={() => handleSuggestionClick(index)}
+                style={{
+                  backgroundColor: index === activeSuggestion ? "#eee" : "#fff",
+                  fontWeight: "normal",
+                }}
+              >
+                {place?.placePrediction?.text?.text}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {selectedPlace && (
         <div
           style={{
             border: "1px solid #000",
             padding: "10px",
             fontWeight: "normal",
             position: "relative",
+            zIndex: 2,
           }}
         >
           {selectedPlace}
@@ -140,33 +185,6 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
           >
             X
           </button>
-        </div>
-      ) : (
-        <input
-          type="text"
-          value={currentInput}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyPress}
-          placeholder="Search..."
-          style={{ fontWeight: "normal", zIndex: 1 }}
-          ref={inputRef}
-        />
-      )}
-      {showSuggestions && suggestions.length > 0 && (
-        <div style={{ position: "absolute", zIndex: 2 }}>
-          <ul>
-            {suggestions.map((place, index) => (
-              <li
-                key={index}
-                onClick={() => handleSuggestionClick(index)}
-                style={{
-                  backgroundColor: index === activeSuggestion ? "#eee" : "#fff",
-                }}
-              >
-                {place?.placePrediction?.text?.text}
-              </li>
-            ))}
-          </ul>
         </div>
       )}
     </form>

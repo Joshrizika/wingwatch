@@ -108,7 +108,6 @@ function ExploreContent() {
   const [placeViewport, setPlaceViewport] = useState<
     PlaceData["viewport"] | null
   >(null);
-  const [placeData, setPlaceData] = useState<PlaceData | null>(null);
 
   useEffect(() => {
     if (selectedPlaceId !== null) {
@@ -116,16 +115,15 @@ function ExploreContent() {
         headers: {
           "Content-Type": "application/json",
           "X-Goog-Api-Key": "AIzaSyAXt99dXCkF4UFgLWPckl6pKzfCwc792ts",
-          "X-Goog-FieldMask": "formattedAddress,location,viewport",
+          "X-Goog-FieldMask": "*",
         },
       })
         .then((response) => response.json())
         .then((data: PlaceData) => {
           setPlaceLocation(data.location);
           setPlaceViewport(data.viewport);
-          setPlaceData(data);
-          console.log("Selected Place Name: ", data.formattedAddress);
-          console.log("selectedPlaceId: ", selectedPlaceId);
+          console.log("Selected Place: ", data);
+          // console.log("selectedPlaceId: ", selectedPlaceId);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -327,7 +325,7 @@ function ExploreContent() {
                       setPlaceViewport(null);
                     }
                   }}
-                  formattedAddress={placeData?.formattedAddress ?? undefined}
+                  placeName={useSearchParams().get("placeName") ?? undefined}
                 />
 
                 <input
