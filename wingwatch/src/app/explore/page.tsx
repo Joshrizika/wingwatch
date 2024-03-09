@@ -113,12 +113,6 @@ function ExploreContent() {
     PlaceData["viewport"] | null
   >(null);
 
-  // useEffect(() => {
-  //   const urlParams = new URLSearchParams(window.location.search);
-  //   const placeId = urlParams.get("placeId");
-  //   setSelectedPlaceId(placeId);
-  // }, []);
-
   useEffect(() => {
     const placeId = searchParams.get("placeId");
     setSelectedPlaceId(placeId);
@@ -249,6 +243,10 @@ function ExploreContent() {
 
         marker.addListener("mouseout", () => {
           infowindow.close();
+        });
+
+        marker.addListener("click", () => {
+        window.location.href = `/place?id=${place.place_id}`;
         });
       });
 
