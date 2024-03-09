@@ -18,7 +18,7 @@ interface ILocation {
   latitude: number;
   longitude: number;
 }
-interface PlaceData {
+interface SearchOriginData {
   formattedAddress: string;
   location: {
     latitude: number;
@@ -109,11 +109,11 @@ function ExploreContent() {
     // useSearchParams().get("placeId"),
     null,
   );
-  const [placeLocation, setPlaceLocation] = useState<
-    PlaceData["location"] | null
+  const [searchOriginLocation, setSearchOriginLocation] = useState<
+    SearchOriginData["location"] | null
   >(null);
-  const [placeViewport, setPlaceViewport] = useState<
-    PlaceData["viewport"] | null
+  const [searchOriginViewport, setSearchOriginViewport] = useState<
+    SearchOriginData["viewport"] | null
   >(null);
 
   useEffect(() => {
@@ -131,19 +131,19 @@ function ExploreContent() {
         },
       })
         .then((response) => response.json())
-        .then((data: PlaceData) => {
-          setPlaceLocation(data.location);
-          setPlaceViewport(data.viewport);
+        .then((data: SearchOriginData) => {
+          setSearchOriginLocation(data.location);
+          setSearchOriginViewport(data.viewport);
           console.log("Selected Place: ", data);
         })
         .catch((error) => {
           console.error("Error:", error);
-          setPlaceLocation(null);
-          setPlaceViewport(null);
+          setSearchOriginLocation(null);
+          setSearchOriginViewport(null);
         });
     } else {
-      setPlaceLocation(null);
-      setPlaceViewport(null);
+      setSearchOriginLocation(null);
+      setSearchOriginViewport(null);
     }
     const urlParams = new URLSearchParams(window.location.search);
     if (selectedPlaceId) {
@@ -155,13 +155,13 @@ function ExploreContent() {
   }, [selectedPlaceId]);
 
   const filteredPlacesQuery = api.main.findFilteredPlaces.useQuery({
-    latitude: placeLocation
-      ? placeLocation.latitude
+    latitude: searchOriginLocation
+      ? searchOriginLocation.latitude
       : location
         ? location.latitude
         : 42.3601,
-    longitude: placeLocation
-      ? placeLocation.longitude
+    longitude: searchOriginLocation
+      ? searchOriginLocation.longitude
       : location
         ? location.longitude
         : -71.0589,
@@ -188,20 +188,20 @@ function ExploreContent() {
       const mapElement = document.getElementById("map")!;
 
       if (mapElement) {
-        if (!placeViewport) {
-          // Initialize 'map' if 'placeViewport' is not available
+        if (!searchOriginViewport) {
+          // Initialize 'map' if 'searchOriginViewport' is not available
           map = new google.maps.Map(mapElement, {
             center: center,
             zoom: 12,
           });
         } else {
-          // Reinitialize 'map' if 'placeViewport' is available
+          // Reinitialize 'map' if 'searchOriginViewport' is available
           map = new google.maps.Map(mapElement);
           map.fitBounds({
-            east: placeViewport.high.longitude,
-            north: placeViewport.high.latitude,
-            south: placeViewport.low.latitude,
-            west: placeViewport.low.longitude,
+            east: searchOriginViewport.high.longitude,
+            north: searchOriginViewport.high.latitude,
+            south: searchOriginViewport.low.latitude,
+            west: searchOriginViewport.low.longitude,
           });
         }
       }
@@ -249,7 +249,7 @@ function ExploreContent() {
         });
 
         marker.addListener("click", () => {
-        router.push(`/place?id=${place.place_id}`);
+          router.push(`/place?id=${place.place_id}`);
         });
       });
 
@@ -316,8 +316,8 @@ function ExploreContent() {
     location,
     airportsQuery.data,
     selectedPath,
-    placeViewport,
-    router
+    searchOriginViewport,
+    router,
   ]);
 
   return (
@@ -337,8 +337,8 @@ function ExploreContent() {
                   onSearch={(placeId) => {
                     setSelectedPlaceId(placeId);
                     if (placeId === null) {
-                      setPlaceLocation(null);
-                      setPlaceViewport(null);
+                      setSearchOriginLocation(null);
+                      setSearchOriginViewport(null);
                     }
                   }}
                   placeName={searchParams.get("placeName") ?? undefined}
@@ -362,7 +362,7 @@ function ExploreContent() {
                     textAlign: "right",
                   }}
                 >
-                  {tempRadius} {Number(tempRadius) > 1 ? 'miles' : 'mile'}
+                  {tempRadius} {Number(tempRadius) > 1 ? "miles" : "mile"}
                 </span>
               </div>
             </h2>
@@ -400,7 +400,7 @@ function ExploreContent() {
                   </p>
                   <p>Average altitude: {place.average_altitude}</p>
                   <Link href={`/place/?id=${place.place_id}`}>
-                    <span className="text-blue-500 hover:text-blue-700 cursor-pointer">
+                    <span className="cursor-pointer text-blue-500 hover:text-blue-700">
                       View Details
                     </span>
                   </Link>
@@ -449,4 +449,3 @@ function ExploreContent() {
     </>
   );
 }
-
