@@ -152,6 +152,21 @@ function ExploreContent() {
     iata_code: selectedAirport ?? undefined,
   });
 
+  function calculateZoomLevel(radiusInMiles: number, pixelHeight: number, latitude: number) {
+    const radiusInMeters = radiusInMiles * 1609.34; // Convert radius from miles to meters
+    const diameterInMeters = 2 * radiusInMeters; // Calculate the diameter
+  
+    // Assuming you want the diameter to fit into the height of the map window
+    const EARTH_CIRCUMFERENCE_IN_METERS = 156543.03392;
+    const zoom = Math.round(
+      Math.log2(
+        pixelHeight / diameterInMeters * EARTH_CIRCUMFERENCE_IN_METERS * Math.cos(latitude * Math.PI / 180)
+      )
+    );
+    return zoom;
+  }
+  
+
   useEffect(() => {
     const center = searchOriginLocation
       ? {
@@ -176,7 +191,7 @@ function ExploreContent() {
       if (mapElement) {
         map = new google.maps.Map(mapElement, {
           center: center,
-          zoom: 12,
+          zoom: calculateZoomLevel(Number(radius), mapElement.clientHeight, center.lat),
         });
       }
 
@@ -309,6 +324,7 @@ function ExploreContent() {
     selectedPath,
     searchOriginLocation,
     router,
+    radius,
   ]);
 
   return (
