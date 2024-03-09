@@ -6,6 +6,8 @@ import Navbar from "../_components/Navbar";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import LocationSearch from "../_components/LocationSearch";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 declare global {
   interface Window {
@@ -44,6 +46,7 @@ export default function Explore() {
 }
 
 function ExploreContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
 
   const [selectedPath, setSelectedPath] = useState<string | null>(null);
@@ -124,7 +127,7 @@ function ExploreContent() {
         headers: {
           "Content-Type": "application/json",
           "X-Goog-Api-Key": "AIzaSyAXt99dXCkF4UFgLWPckl6pKzfCwc792ts",
-          "X-Goog-FieldMask": "*",
+          "X-Goog-FieldMask": "location,viewport",
         },
       })
         .then((response) => response.json())
@@ -246,7 +249,7 @@ function ExploreContent() {
         });
 
         marker.addListener("click", () => {
-        window.location.href = `/place?id=${place.place_id}`;
+        router.push(`/place?id=${place.place_id}`);
         });
       });
 
@@ -314,6 +317,7 @@ function ExploreContent() {
     airportsQuery.data,
     selectedPath,
     placeViewport,
+    router
   ]);
 
   return (
@@ -395,12 +399,11 @@ function ExploreContent() {
                     Distance from flightpath: {place.distance_from_flightpath}
                   </p>
                   <p>Average altitude: {place.average_altitude}</p>
-                  <a
-                    href={`/place/?id=${place.place_id}`}
-                    className="text-blue-500 hover:text-blue-700"
-                  >
-                    View Details
-                  </a>
+                  <Link href={`/place/?id=${place.place_id}`}>
+                    <span className="text-blue-500 hover:text-blue-700 cursor-pointer">
+                      View Details
+                    </span>
+                  </Link>
                 </div>
               ))
             ) : (
@@ -446,3 +449,4 @@ function ExploreContent() {
     </>
   );
 }
+

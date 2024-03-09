@@ -2,6 +2,7 @@
 
 import { api } from "~/trpc/react";
 import Navbar from "../_components/Navbar";
+import Link from "next/link";
 
 export default function Saved() {
   const session = api.main.getSession.useQuery().data;
@@ -48,7 +49,9 @@ export default function Saved() {
                   <p>Address: {place.address}</p>
                   {/* Add more details as per your requirement */}
                   {/* Assuming you have a routing mechanism to view details */}
-                  <a href={`/place/?id=${place.place_id}`} className="text-blue-500 hover:text-blue-700">View Details</a>
+                  <Link href={`/place/?id=${place.place_id}`}>
+                    <span className="text-blue-500 hover:text-blue-700">View Details</span>
+                  </Link>
                 </div>
                 <button
                   onClick={() => handleUnsavePlace(place.place_id)}
