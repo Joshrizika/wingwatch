@@ -28,6 +28,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const suggestionsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (placeName) {
@@ -144,6 +145,19 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
     window.history.replaceState({}, "", "?" + urlParams.toString());
   };
 
+  const handleClickOutside = (event: MouseEvent) => {
+    if (inputRef.current && !inputRef.current.contains(event.target as Node) && suggestionsRef.current && !suggestionsRef.current.contains(event.target as Node)) {
+      setShowSuggestions(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <form>
       <input
@@ -151,6 +165,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
         value={currentInput}
         onChange={handleInputChange}
         onKeyDown={handleKeyPress}
+        onFocus={() => setShowSuggestions(true)}
         placeholder="Search..."
         style={{ fontWeight: "normal", zIndex: 3, outline: "1px solid #000" }}
         ref={inputRef}
@@ -158,6 +173,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
       {showSuggestions && suggestions.length > 0 && (
         <div
           style={{ position: "absolute", zIndex: 4, border: "1px solid #000" }}
+          ref={suggestionsRef}
         >
           <ul>
             {suggestions.map((place, index) => (
