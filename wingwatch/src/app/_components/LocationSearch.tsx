@@ -90,10 +90,8 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
     setCurrentInput(updatedInput);
   };
 
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      if (suggestions[activeSuggestion]) {
+  const handleSelection = () => {
+    if (suggestions[activeSuggestion]) {
         setSelectedPlace(
           suggestions[activeSuggestion]!.placePrediction.text.text,
         );
@@ -101,10 +99,22 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
         setShowSuggestions(false);
         setCurrentInput(""); // Reset the currentInput to "" on submit
         const urlParams = new URLSearchParams(window.location.search);
-      urlParams.set("placeName", suggestions[activeSuggestion]!.placePrediction.text.text);
-      urlParams.set("placeId", suggestions[activeSuggestion]!.placePrediction.placeId);
-      window.history.replaceState({}, "", "?" + urlParams.toString());
+        urlParams.set(
+          "placeName",
+          suggestions[activeSuggestion]!.placePrediction.text.text,
+        );
+        urlParams.set(
+          "placeId",
+          suggestions[activeSuggestion]!.placePrediction.placeId,
+        );
+        window.history.replaceState({}, "", "?" + urlParams.toString());
       }
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSelection();
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
       if (activeSuggestion === -1) {
@@ -120,17 +130,8 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
     }
   };
 
-  const handleSuggestionClick = (index: number) => {
-    if (suggestions[index]) {
-      setActiveSuggestion(index);
-      setSelectedPlace(suggestions[index]!.placePrediction.text.text);
-      onSearch(suggestions[index]!.placePrediction.placeId);
-      setCurrentInput(""); // Reset the currentInput to "" on click
-      const urlParams = new URLSearchParams(window.location.search);
-      urlParams.set("placeName", suggestions[index]!.placePrediction.text.text);
-      urlParams.set("placeId", suggestions[index]!.placePrediction.placeId);
-      window.history.replaceState({}, "", "?" + urlParams.toString());
-    }
+  const handleSuggestionHover = (index: number) => {
+    setActiveSuggestion(index);
   };
 
   const handleClearSelection = () => {
@@ -164,8 +165,9 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
                 key={index}
                 onClick={(e) => {
                   e.preventDefault();
-                  handleSuggestionClick(index);
+                  handleSelection();
                 }}
+                onMouseOver={() => handleSuggestionHover(index)}
                 style={{
                   backgroundColor: index === activeSuggestion ? "#eee" : "#fff",
                   fontWeight: "normal",
