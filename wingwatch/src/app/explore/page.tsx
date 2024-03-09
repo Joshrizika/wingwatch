@@ -344,7 +344,7 @@ function ExploreContent() {
 
                 <input
                   type="range"
-                  min="5"
+                  min="1"
                   max="100"
                   value={tempRadius}
                   onChange={handleSliderChange}
@@ -360,7 +360,7 @@ function ExploreContent() {
                     textAlign: "right",
                   }}
                 >
-                  {tempRadius} miles
+                  {tempRadius} {Number(tempRadius) > 1 ? 'miles' : 'mile'}
                 </span>
               </div>
             </h2>
