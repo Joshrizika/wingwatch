@@ -24,16 +24,6 @@ interface SearchOriginData {
     latitude: number;
     longitude: number;
   };
-  viewport: {
-    high: {
-      latitude: number;
-      longitude: number;
-    };
-    low: {
-      latitude: number;
-      longitude: number;
-    };
-  };
 }
 
 export default function Explore() {
@@ -105,15 +95,9 @@ function ExploreContent() {
     { enabled: true }, // The query will always run
   );
 
-  const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(
-    // useSearchParams().get("placeId"),
-    null,
-  );
+  const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
   const [searchOriginLocation, setSearchOriginLocation] = useState<
     SearchOriginData["location"] | null
-  >(null);
-  const [searchOriginViewport, setSearchOriginViewport] = useState<
-    SearchOriginData["viewport"] | null
   >(null);
 
   useEffect(() => {
@@ -127,23 +111,20 @@ function ExploreContent() {
         headers: {
           "Content-Type": "application/json",
           "X-Goog-Api-Key": "AIzaSyAXt99dXCkF4UFgLWPckl6pKzfCwc792ts",
-          "X-Goog-FieldMask": "location,viewport",
+          "X-Goog-FieldMask": "location",
         },
       })
         .then((response) => response.json())
         .then((data: SearchOriginData) => {
           setSearchOriginLocation(data.location);
-          setSearchOriginViewport(data.viewport);
           console.log("Selected Place: ", data);
         })
         .catch((error) => {
           console.error("Error:", error);
           setSearchOriginLocation(null);
-          setSearchOriginViewport(null);
         });
     } else {
       setSearchOriginLocation(null);
-      setSearchOriginViewport(null);
     }
     const urlParams = new URLSearchParams(window.location.search);
     if (selectedPlaceId) {
@@ -172,10 +153,15 @@ function ExploreContent() {
   });
 
   useEffect(() => {
-    const center = {
-      lat: location?.latitude ?? 42.3601,
-      lng: location?.longitude ?? -71.0589,
-    };
+    const center = searchOriginLocation
+      ? {
+          lat: searchOriginLocation.latitude,
+          lng: searchOriginLocation.longitude,
+        }
+      : {
+          lat: location?.latitude ?? 42.3601,
+          lng: location?.longitude ?? -71.0589,
+        };
 
     const script = document.createElement("script");
     script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAXt99dXCkF4UFgLWPckl6pKzfCwc792ts&loading=async&callback=initMap`;
@@ -188,28 +174,19 @@ function ExploreContent() {
       const mapElement = document.getElementById("map")!;
 
       if (mapElement) {
-        if (!searchOriginViewport) {
-          // Initialize 'map' if 'searchOriginViewport' is not available
-          map = new google.maps.Map(mapElement, {
-            center: center,
-            zoom: 12,
-          });
-        } else {
-          // Reinitialize 'map' if 'searchOriginViewport' is available
-          map = new google.maps.Map(mapElement);
-          map.fitBounds({
-            east: searchOriginViewport.high.longitude,
-            north: searchOriginViewport.high.latitude,
-            south: searchOriginViewport.low.latitude,
-            west: searchOriginViewport.low.longitude,
-          });
-        }
+        map = new google.maps.Map(mapElement, {
+          center: center,
+          zoom: 12,
+        });
       }
 
       // Your location marker
       if (location)
         new google.maps.Marker({
-          position: center,
+          position: {
+            lat: location.latitude,
+            lng: location.longitude,
+          },
           map,
           icon: {
             path: google.maps.SymbolPath.CIRCLE,
@@ -223,6 +200,20 @@ function ExploreContent() {
         });
 
       // Place markers
+        if (searchOriginLocation) {
+        new google.maps.Marker({
+          position: {
+            lat: searchOriginLocation.latitude,
+            lng: searchOriginLocation.longitude,
+          },
+          map,
+          icon: {
+            url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+          },
+          title: "Search Origin",
+        });
+      }
+
       placesQuery.data?.forEach((place) => {
         const marker = new google.maps.Marker({
           position: { lat: place.latitude, lng: place.longitude },
@@ -316,7 +307,7 @@ function ExploreContent() {
     location,
     airportsQuery.data,
     selectedPath,
-    searchOriginViewport,
+    searchOriginLocation,
     router,
   ]);
 
@@ -338,7 +329,6 @@ function ExploreContent() {
                     setSelectedPlaceId(placeId);
                     if (placeId === null) {
                       setSearchOriginLocation(null);
-                      setSearchOriginViewport(null);
                     }
                   }}
                   placeName={searchParams.get("placeName") ?? undefined}
@@ -422,9 +412,7 @@ function ExploreContent() {
             id="map"
             className="h-full rounded-lg border"
             style={{ minHeight: "80vh" }}
-          >
-            {/* Map content */}
-          </div>
+          ></div>
 
           {(selectedPath ?? selectedAirport) && (
             <div className="absolute bottom-0 left-0 z-10 m-2 max-w-xs rounded bg-white p-4 shadow-lg">
