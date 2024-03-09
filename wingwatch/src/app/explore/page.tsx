@@ -53,7 +53,7 @@ function ExploreContent() {
 
   const [radius, setRadius] = useState(searchParams.get("radius") ?? 30);
   const [tempRadius, setTempRadius] = useState(radius); // Temporary radius state
-  const sliderRef = useRef(null); // Ref for the slider element
+  const sliderRef = useRef<HTMLInputElement | null>(null); // Ref for the slider element
   const [sortOption, setSortOption] = useState(
     searchParams.get("sort") ?? "best",
   );
@@ -166,6 +166,7 @@ function ExploreContent() {
     return zoom;
   }
   
+  // let circle: google.maps.Circle | null = null; // Circle object
 
   useEffect(() => {
     const center = searchOriginLocation
@@ -226,6 +227,37 @@ function ExploreContent() {
             url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
           },
           title: "Search Origin",
+        });
+      }
+
+      // Circle
+      const circle = new google.maps.Circle({
+        strokeColor: "#0000FF",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: "#0000FF",
+        fillOpacity: 0.35,
+        map,
+        center: center,
+        radius: Number(radius) * 1609.34, // Convert radius from miles to meters
+        visible: false, // Initially hidden
+      });
+
+      // Show circle when the slider is clicked
+      if(sliderRef.current) {
+        sliderRef.current.addEventListener("mousedown", () => {
+          if (circle) circle.setVisible(true);
+        });
+
+        // Hide circle when the slider is released
+        sliderRef.current.addEventListener("mouseup", () => {
+          if (circle) circle.setVisible(false);
+        });
+
+        // Update circle radius when the slider is moved
+        sliderRef.current.addEventListener("input", (e: Event) => {
+          const target = e.target as HTMLInputElement;
+          if (circle && target) circle.setRadius(Number(target.value) * 1609.34);
         });
       }
 
