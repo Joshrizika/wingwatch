@@ -36,7 +36,7 @@ export default function Saved() {
     <>
       <Navbar />
       <div className="w-full mt-5">
-        <div className="sticky top-0 z-10 bg-white p-4">
+        <div className="sticky top-0 bg-white p-4">
           <h1 className="mb-4 text-2xl font-bold">Saved Places</h1>
         </div>
         <div className="overflow-auto p-4 pt-0" style={{ maxHeight: "calc(100vh - 64px)" }}>
@@ -67,3 +67,5 @@ export default function Saved() {
     </>
   );
 }
+
+
