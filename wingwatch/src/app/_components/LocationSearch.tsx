@@ -97,10 +97,13 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
         setSelectedPlace(
           suggestions[activeSuggestion]!.placePrediction.text.text,
         );
-        console.log(suggestions[activeSuggestion]?.placePrediction.text.text);
         onSearch(suggestions[activeSuggestion]!.placePrediction.placeId);
         setShowSuggestions(false);
         setCurrentInput(""); // Reset the currentInput to "" on submit
+        const urlParams = new URLSearchParams(window.location.search);
+      urlParams.set("placeName", suggestions[activeSuggestion]!.placePrediction.text.text);
+      urlParams.set("placeId", suggestions[activeSuggestion]!.placePrediction.placeId);
+      window.history.replaceState({}, "", "?" + urlParams.toString());
       }
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
@@ -119,7 +122,6 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
 
   const handleSuggestionClick = (index: number) => {
     if (suggestions[index]) {
-      console.log(suggestions[index]);
       setActiveSuggestion(index);
       setSelectedPlace(suggestions[index]!.placePrediction.text.text);
       onSearch(suggestions[index]!.placePrediction.placeId);
@@ -148,8 +150,6 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
         value={currentInput}
         onChange={handleInputChange}
         onKeyDown={handleKeyPress}
-        onFocus={() => setShowSuggestions(true)}
-        onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
         placeholder="Search..."
         style={{ fontWeight: "normal", zIndex: 3, outline: "1px solid #000" }}
         ref={inputRef}
@@ -162,8 +162,10 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
             {suggestions.map((place, index) => (
               <li
                 key={index}
-                onClick={() => handleSuggestionClick(index)}
-                onMouseDown={event => event.preventDefault()}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSuggestionClick(index);
+                }}
                 style={{
                   backgroundColor: index === activeSuggestion ? "#eee" : "#fff",
                   fontWeight: "normal",
@@ -200,4 +202,3 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
 };
 
 export default LocationSearch;
-
