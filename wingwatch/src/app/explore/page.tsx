@@ -166,8 +166,6 @@ function ExploreContent() {
     return zoom;
   }
   
-  // let circle: google.maps.Circle | null = null; // Circle object
-
   useEffect(() => {
     const center = searchOriginLocation
       ? {
