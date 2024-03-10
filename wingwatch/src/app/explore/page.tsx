@@ -152,20 +152,26 @@ function ExploreContent() {
     iata_code: selectedAirport ?? undefined,
   });
 
-  function calculateZoomLevel(radiusInMiles: number, pixelHeight: number, latitude: number) {
+  function calculateZoomLevel(
+    radiusInMiles: number,
+    pixelHeight: number,
+    latitude: number,
+  ) {
     const radiusInMeters = radiusInMiles * 1609.34; // Convert radius from miles to meters
     const diameterInMeters = 2 * radiusInMeters; // Calculate the diameter
-  
+
     // Assuming you want the diameter to fit into the height of the map window
     const EARTH_CIRCUMFERENCE_IN_METERS = 156543.03392;
     const zoom = Math.round(
       Math.log2(
-        pixelHeight / diameterInMeters * EARTH_CIRCUMFERENCE_IN_METERS * Math.cos(latitude * Math.PI / 180)
-      )
+        (pixelHeight / diameterInMeters) *
+          EARTH_CIRCUMFERENCE_IN_METERS *
+          Math.cos((latitude * Math.PI) / 180),
+      ),
     );
     return zoom;
   }
-  
+
   useEffect(() => {
     const center = searchOriginLocation
       ? {
@@ -190,7 +196,11 @@ function ExploreContent() {
       if (mapElement) {
         map = new google.maps.Map(mapElement, {
           center: center,
-          zoom: calculateZoomLevel(Number(radius), mapElement.clientHeight, center.lat),
+          zoom: calculateZoomLevel(
+            Number(radius),
+            mapElement.clientHeight,
+            center.lat,
+          ),
         });
       }
 
@@ -214,7 +224,7 @@ function ExploreContent() {
         });
 
       // Place markers
-        if (searchOriginLocation) {
+      if (searchOriginLocation) {
         new google.maps.Marker({
           position: {
             lat: searchOriginLocation.latitude,
@@ -242,7 +252,7 @@ function ExploreContent() {
       });
 
       // Show circle when the slider is clicked
-      if(sliderRef.current) {
+      if (sliderRef.current) {
         sliderRef.current.addEventListener("mousedown", () => {
           if (circle) circle.setVisible(true);
         });
@@ -255,16 +265,25 @@ function ExploreContent() {
         // Update circle radius when the slider is moved
         sliderRef.current.addEventListener("input", (e: Event) => {
           const target = e.target as HTMLInputElement;
-          if (circle && target) circle.setRadius(Number(target.value) * 1609.34);
+          if (circle && target)
+            circle.setRadius(Number(target.value) * 1609.34);
         });
       }
+
+      const markers = new Map(); // Store markers to access later
 
       placesQuery.data?.forEach((place) => {
         const marker = new google.maps.Marker({
           position: { lat: place.latitude, lng: place.longitude },
           map,
           title: place.name,
+          icon: {
+            url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+            scaledSize: new google.maps.Size(40, 40),
+          },
         });
+
+        markers.set(place.place_id, marker); // Store marker in the map
 
         // Info window for each place
         const infowindow = new google.maps.InfoWindow({
@@ -287,6 +306,36 @@ function ExploreContent() {
         marker.addListener("click", () => {
           router.push(`/place?id=${place.place_id}`);
         });
+      });
+
+      // Add hover event listener to each place card
+      filteredPlacesQuery.data?.forEach((place) => {
+        const placeCard = document.getElementById(`place-${place.place_id}`);
+        if (placeCard) {
+          placeCard.addEventListener("mouseover", () => {
+            const marker = markers.get(place.place_id) as
+              | google.maps.Marker
+              | undefined;
+            if (marker) {
+              marker.setIcon({
+                url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                scaledSize: new google.maps.Size(80, 80), // double the size
+              });
+            }
+          });
+
+          placeCard.addEventListener("mouseout", () => {
+            const marker = markers.get(place.place_id) as
+              | google.maps.Marker
+              | undefined;
+            if (marker) {
+              marker.setIcon({
+                url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                scaledSize: new google.maps.Size(40, 40), // back to normal size
+              });
+            }
+          });
+        }
       });
 
       pathsQuery.data?.forEach((path) => {
@@ -355,6 +404,7 @@ function ExploreContent() {
     searchOriginLocation,
     router,
     radius,
+    filteredPlacesQuery.data,
   ]);
 
   return (
@@ -426,7 +476,11 @@ function ExploreContent() {
             {/* Display of places */}
             {filteredPlacesQuery.data?.length ? (
               filteredPlacesQuery.data.map((place, index) => (
-                <div key={index} className="mb-4 rounded border p-4">
+                <div
+                  key={index}
+                  className="mb-4 rounded border p-4"
+                  id={`place-${place.place_id}`}
+                >
                   <h3 className="font-semibold">{place.name}</h3>
                   {place.description && <p>Description: {place.description}</p>}
                   <p>Address: {place.address}</p>
