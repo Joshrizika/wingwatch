@@ -121,6 +121,20 @@ export const mainRouter = createTRPCRouter({
 
       return filteredAndSortedPlaces;
     }),
+  findPlaceSearch: publicProcedure
+    .input(z.object({ query: z.string() })) // Input required for this procedure
+    .query(async ({ input }) => {
+      const places = await db.places.findMany({
+        where: {
+          name: {
+            contains: input.query,
+            mode: "insensitive",
+          },
+        },
+        take: 5, // Return only the top 5 results
+      });
+      return places;
+    }),
   findPlace: publicProcedure
     .input(z.object({ id: z.string() })) // Input required for this procedure
     .query(async ({ input }) => {

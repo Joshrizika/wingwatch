@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { api } from "~/trpc/react";
+import SearchBar from "./SearchBar";
 
 export default function Navbar() {
   const session = api.main.getSession.useQuery().data;
@@ -43,6 +44,7 @@ export default function Navbar() {
               Wing Watch
             </span>
           </Link>
+          <SearchBar />
         </div>
         <div className="flex items-center space-x-4">
           <Link href="/explore" passHref>
