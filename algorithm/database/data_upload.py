@@ -1,59 +1,65 @@
 import pandas as pd
-import numpy as np
 import psycopg2
 import sys
 
-#This file uploads data to the database
+# This file uploads data to the database.
 
-#function: inserts spot data into database
-#parameters: iataCode - string
-#returns: nothing
+# Function: Inserts spot data into the database.
+# Parameters: iataCode - string
+# Returns: nothing
 def insertSpots(iataCode):
     try:
-        connection = psycopg2.connect(database="defaultdb", #connect to the database
-                              host="wingwatch-do-user-15288104-0.c.db.ondigitalocean.com",
-                              user="doadmin",
-                              password="AVNS_nwxac_LLHhPIG0DV_4Y",
-                              port="25060")
+        # Connect to the database.
+        connection = psycopg2.connect(database="defaultdb",
+                                      host="wingwatch-do-user-15288104-0.c.db.ondigitalocean.com",
+                                      user="doadmin",
+                                      password="AVNS_nwxac_LLHhPIG0DV_4Y",
+                                      port="25060")
         
-        cursor = connection.cursor() #create a cursor object
+        cursor = connection.cursor()
 
-        #Add data to paths table
-        file_path = f'../algorithm/data/pathData/paths_{iataCode}.csv' #save file path to path data
-        df = pd.read_csv(file_path) #read csv file into df
+        # Add data to paths table.
+        file_path = f'../algorithm/data/pathData/paths_{iataCode}.csv'
+        df = pd.read_csv(file_path)
 
         aggregated_df = df.groupby('path_id').agg({
             'latitude': lambda x: list(x),
             'longitude': lambda x: list(x)
         }).reset_index()
 
-        # Convert aggregated DataFrame to list of tuples for database insertion
         data_tuples = [tuple(x) for x in aggregated_df.to_numpy()]
-        print(data_tuples)
+        cursor.executemany("INSERT INTO paths (path_id, latitude, longitude) VALUES (%s, %s, %s)", data_tuples)
 
-        cursor.executemany("INSERT INTO paths (path_id, latitude, longitude) VALUES (%s, %s, %s)", data_tuples) #insert data into database
+        # Add data to places table with duplicate filtering.
+        file_path = f'../algorithm/data/spotData/data/spots_{iataCode}.csv'
+        df = pd.read_csv(file_path)
+        df = df.where(pd.notnull(df), None) # Replace NaN with None
 
-        #Add data to places table
-        file_path = f'../algorithm/data/spotData/data/spots_{iataCode}.csv' #save file path to spot data
-        df = pd.read_csv(file_path) #read csv file into df
+        # Use the specific column names from the file for processing.
+        # Remove duplicates by keeping the row with the minimum averageAltitude for each place.
+        df['rank'] = df.groupby(['latitude', 'longitude', 'displayName'])['averageAltitude'].rank(method='first', ascending=True)
+        df_filtered = df[df['rank'] == 1].drop('rank', axis=1)
 
-        df = df.where(pd.notnull(df), None) #replace NaN values with None
+        # Prepare the data tuples, respecting the new column names.
+        columns = ['formattedAddress', 'googleMapsUri', 'airport', 'distanceFromFlightpath', 'averageAltitude', 
+                   'distanceFromAirport', 'path_id', 'latitude', 'longitude', 'displayName', 'editorialSummary']
+        data_tuples = [tuple(x) for x in df_filtered[columns].to_numpy()]
+        
+        insert_query = "INSERT INTO places (address, google_maps_uri, airport, distance_from_flightpath, average_altitude, " \
+                       "distance_from_airport, path_id, latitude, longitude, name, description) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        
+        cursor.executemany(insert_query, data_tuples)
 
-        data_tuples = [tuple(x) for x in df.to_numpy()] #convert df to list of tuples
-        cursor.executemany("INSERT INTO places (address, google_maps_uri, airport, distance_from_flightpath, average_altitude, distance_from_airport, path_id, latitude, longitude, name, description) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", data_tuples) #insert data into database
-
-        connection.commit() #commit changes
+        connection.commit()
 
     except psycopg2.Error as e:
         print(f"An error occurred: {e}")
-        connection.rollback() #rollback changes
+        connection.rollback()
         sys.exit(1)
     finally:
-        cursor.close() #close cursor
-        connection.close() #close connection
-
-    
-
+        # Ensure resources are released properly.
+        cursor.close()
+        connection.close()
 
 if __name__ == '__main__':
     iataCodes = ["ATL", "BOS", "DCA", "DFW", "EWR", "IAD", "JFK", "LAX", "LGA", "ORD", "PHL"]
