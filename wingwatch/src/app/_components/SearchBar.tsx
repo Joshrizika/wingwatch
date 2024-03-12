@@ -84,6 +84,7 @@ export default function SearchBar() {
         value={searchTerm}
         onChange={handleSearchChange}
         onClick={() => setIsDropdownVisible(true)}
+        style={{ border: "1px solid black" }}
       />
       {isDropdownVisible && placeSearchQuery.data && placeSearchQuery.data.length > 0 && (
         <ul
