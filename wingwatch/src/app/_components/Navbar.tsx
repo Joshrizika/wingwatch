@@ -76,7 +76,7 @@ export default function Navbar() {
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="flex cursor-pointer items-center space-x-2"
             >
-              <Image src="/user.png" alt="User" width={32} height={32} />
+              <Image src={session ? session.user.image! : "/user.png"} alt="User" width={32} height={32} className="rounded-full" />
             </div>
             {dropdownOpen && (
               <div
