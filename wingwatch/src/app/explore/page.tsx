@@ -129,9 +129,7 @@ function ExploreContent() {
     const urlParams = new URLSearchParams(window.location.search);
     if (selectedPlaceId) {
       urlParams.set("placeId", selectedPlaceId);
-    } else {
-      urlParams.delete("placeId");
-    }
+    } 
     window.history.replaceState({}, "", "?" + urlParams.toString());
   }, [selectedPlaceId]);
 
