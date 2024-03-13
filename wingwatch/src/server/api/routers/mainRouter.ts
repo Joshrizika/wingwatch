@@ -140,7 +140,7 @@ export const mainRouter = createTRPCRouter({
     .query(async ({ input }) => {
       const place = await db.places.findUnique({
         where: { place_id: input.id },
-        include: { path: true, reviews: { include: { user: true } } },
+        include: { path: true, airportDetails: true, reviews: { include: { user: true } } },
       });
       return place;
     }),

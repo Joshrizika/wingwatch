@@ -134,6 +134,18 @@ function PlaceContent() {
         strokeWeight: 2,
       });
       pathPolyline.setMap(map);
+
+      const airportMarker = new google.maps.Marker({
+        position: {
+          lat: placeQuery.data?.airportDetails.latitude ?? 0,
+          lng: placeQuery.data?.airportDetails.longitude ?? 0,
+        },
+        title: placeQuery.data?.airportDetails.name,
+        icon: {
+          url: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
+        },
+      });
+      airportMarker.setMap(map);
     };
 
     // Cleanup: Remove the script and clean up the window object
