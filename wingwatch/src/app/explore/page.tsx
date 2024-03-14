@@ -5,7 +5,7 @@ import { api } from "~/trpc/react";
 import Navbar from "../_components/Navbar";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import LocationSearch from "../_components/LocationSearch";
+import ExploreLocationSearch from "../_components/ExploreLocationSearch";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -419,7 +419,7 @@ function ExploreContent() {
             <h2 className="flex items-center justify-between text-xl font-bold">
               Nearby Places
               <div className="flex items-center gap-2">
-                <LocationSearch
+                <ExploreLocationSearch
                   onSearch={(placeId) => {
                     setSelectedPlaceId(placeId);
                     if (placeId === null) {
