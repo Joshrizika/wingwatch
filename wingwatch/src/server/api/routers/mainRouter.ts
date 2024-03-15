@@ -357,18 +357,82 @@ export const mainRouter = createTRPCRouter({
         csvStream.on("data", (data: CsvRow) => results.push(data));
         csvStream.on("end", () => {
           const filteredResults = results.filter((row) => {
-            const distance = calculateDistance(input.latitude, input.longitude, row.lat, row.lng);
+            const distance = calculateDistance(
+              input.latitude,
+              input.longitude,
+              row.lat,
+              row.lng,
+            );
             return distance <= 0.3;
           });
 
-          const averageAltitude =
-            filteredResults.reduce((sum, row) => sum + Number(row.alt), 0) / filteredResults.length;
+          console.log("filteredResults length: ", filteredResults.length);
+          console.log("filteredResults: ", filteredResults);
 
-          console.log(averageAltitude);
+          const altitudes = filteredResults
+            .map((item) => Number(item.alt))
+            .sort((a, b) => a - b);
+
+          const totalAltitude = altitudes.reduce((sum, alt) => sum + alt, 0);
+          const averageAltitude1 = totalAltitude / altitudes.length;
+          console.log("Actual average altitude: ", averageAltitude1);
+
+          const percentileThreshold = 50;
+
+          const index = Math.floor(
+            (altitudes.length * percentileThreshold) / 100,
+          );
+
+          // Get all altitudes below the calculated percentile
+          const filteredAltitudes = altitudes.slice(0, index);
+
+          // Calculate the average of these altitudes
+          const averageAltitude =
+            filteredAltitudes.reduce((sum, alt) => sum + alt, 0) /
+            filteredAltitudes.length;
+
+          console.log("averageAltitude: ", averageAltitude);
           resolve(averageAltitude);
         });
 
         csvStream.on("error", reject);
       });
     }),
+
+  getNearbyPlaces: publicProcedure.input(
+    z.object({
+      latitude: z.number(),
+      longitude: z.number(),
+    }),
+  ).mutation(async ({ input }) => {
+    const places = await db.places.findMany(); // Assuming getPlaces() is a function that fetches all places
+    let nearbyPlaces = places.filter((place) => {
+      const distance = calculateDistance(
+        input.latitude,
+        input.longitude,
+        place.latitude,
+        place.longitude,
+      );
+      return distance <= 0.1;
+    });
+
+    // Sort the nearby places by distance in ascending order
+    nearbyPlaces = nearbyPlaces.sort((placeA, placeB) => {
+      const distanceA = calculateDistance(
+        input.latitude,
+        input.longitude,
+        placeA.latitude,
+        placeA.longitude,
+      );
+      const distanceB = calculateDistance(
+        input.latitude,
+        input.longitude,
+        placeB.latitude,
+        placeB.longitude,
+      );
+      return distanceA - distanceB;
+    });
+
+    return nearbyPlaces;
+  }),
 });
