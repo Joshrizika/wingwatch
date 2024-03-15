@@ -366,16 +366,9 @@ export const mainRouter = createTRPCRouter({
             return distance <= 0.3;
           });
 
-          console.log("filteredResults length: ", filteredResults.length);
-          console.log("filteredResults: ", filteredResults);
-
           const altitudes = filteredResults
             .map((item) => Number(item.alt))
             .sort((a, b) => a - b);
-
-          const totalAltitude = altitudes.reduce((sum, alt) => sum + alt, 0);
-          const averageAltitude1 = totalAltitude / altitudes.length;
-          console.log("Actual average altitude: ", averageAltitude1);
 
           const percentileThreshold = 50;
 
@@ -391,7 +384,6 @@ export const mainRouter = createTRPCRouter({
             filteredAltitudes.reduce((sum, alt) => sum + alt, 0) /
             filteredAltitudes.length;
 
-          console.log("averageAltitude: ", averageAltitude);
           resolve(averageAltitude);
         });
 
