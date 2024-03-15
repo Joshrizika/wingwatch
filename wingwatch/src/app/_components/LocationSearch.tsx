@@ -1,8 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 
 interface LocationSearchProps {
-  onSearch: (query: string) => void;
-  placeName?: string;
+  onSearch: (placePrediction: PlaceInfo | null) => void;
+}
+
+interface PlaceInfo {
+  displayName: {
+    text: string;
+  };
+  formattedAddress: string;
+  googleMapsUri: string;
+  location: {
+    latitude: number;
+    longitude: number;
+  };
 }
 
 interface Place {
@@ -18,31 +29,13 @@ interface Suggestions {
   suggestions: Place[];
 }
 
-const LocationSearch: React.FC<LocationSearchProps> = ({
-  onSearch,
-  placeName,
-}) => {
+const ExploreLocationSearch: React.FC<LocationSearchProps> = ({ onSearch }) => {
   const [currentInput, setCurrentInput] = useState<string>("");
   const [suggestions, setSuggestions] = useState<Place[]>([]);
   const [activeSuggestion, setActiveSuggestion] = useState(-1);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [selectedPlace, setSelectedPlace] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (placeName) {
-      setSelectedPlace(placeName);
-    }
-  }, [placeName]);
-
-  useEffect(() => {
-    if (selectedPlace) {
-      const urlParams = new URLSearchParams(window.location.search);
-      urlParams.set("placeName", selectedPlace);
-      window.history.pushState({}, "", "?" + urlParams.toString());
-    }
-  }, [selectedPlace]);
 
   useEffect(() => {
     let isCancelled = false;
@@ -91,25 +84,42 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
     setCurrentInput(updatedInput);
   };
 
+  const getPlaceDetails = (placeId: string): Promise<PlaceInfo | null> => {
+    return new Promise((resolve, reject) => {
+      if (placeId !== null) {
+        fetch(`https://places.googleapis.com/v1/places/${placeId}`, {
+          headers: {
+            "Content-Type": "application/json",
+            "X-Goog-Api-Key": "AIzaSyAXt99dXCkF4UFgLWPckl6pKzfCwc792ts",
+            "X-Goog-FieldMask": "*",
+          },
+        })
+          .then((response) => response.json())
+          .then((data: PlaceInfo) => {
+            resolve(data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            reject(null);
+          });
+      } else {
+        resolve(null);
+      }
+    });
+  };
+
   const handleSelection = () => {
     if (suggestions[activeSuggestion]) {
-        setSelectedPlace(
-          suggestions[activeSuggestion]!.placePrediction.text.text,
-        );
-        onSearch(suggestions[activeSuggestion]!.placePrediction.placeId);
-        setShowSuggestions(false);
-        setCurrentInput(""); // Reset the currentInput to "" on submit
-        const urlParams = new URLSearchParams(window.location.search);
-        urlParams.set(
-          "placeName",
-          suggestions[activeSuggestion]!.placePrediction.text.text,
-        );
-        urlParams.set(
-          "placeId",
-          suggestions[activeSuggestion]!.placePrediction.placeId,
-        );
-        window.history.replaceState({}, "", "?" + urlParams.toString());
-      }
+      getPlaceDetails(suggestions[activeSuggestion]!.placePrediction.placeId)
+        .then((placeInfo) => {
+          onSearch(placeInfo);
+          setShowSuggestions(false);
+          setCurrentInput(""); // Reset the currentInput to "" on submit
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -135,18 +145,13 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
     setActiveSuggestion(index);
   };
 
-  const handleClearSelection = () => {
-    setSelectedPlace(null);
-    setCurrentInput("");
-    onSearch("");
-    const urlParams = new URLSearchParams(window.location.search);
-    urlParams.delete("placeName");
-    urlParams.delete("placeId");
-    window.history.replaceState({}, "", "?" + urlParams.toString());
-  };
-
   const handleClickOutside = (event: MouseEvent) => {
-    if (inputRef.current && !inputRef.current.contains(event.target as Node) && suggestionsRef.current && !suggestionsRef.current.contains(event.target as Node)) {
+    if (
+      inputRef.current &&
+      !inputRef.current.contains(event.target as Node) &&
+      suggestionsRef.current &&
+      !suggestionsRef.current.contains(event.target as Node)
+    ) {
       setShowSuggestions(false);
     }
   };
@@ -195,28 +200,8 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
           </ul>
         </div>
       )}
-      {selectedPlace && (
-        <div
-          style={{
-            border: "1px solid #000",
-            padding: "10px",
-            fontWeight: "normal",
-            position: "relative",
-            zIndex: 2,
-          }}
-        >
-          {selectedPlace}
-          <button
-            type="button"
-            onClick={handleClearSelection}
-            style={{ position: "absolute", right: "10px" }}
-          >
-            X
-          </button>
-        </div>
-      )}
     </form>
   );
 };
 
-export default LocationSearch;
+export default ExploreLocationSearch;
