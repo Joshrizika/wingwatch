@@ -34,24 +34,24 @@ model places {
 }
 
 model userSubmittedPlaces {
-    place_id                 String    @id
+    place_id                 String     @id @default(cuid())
     name                     String
     address                  String
     description              String?
     latitude                 Float
     longitude                Float
     path_id                  String?
-    path                     paths?    @relation(fields: [path_id], references: [path_id], onDelete: Cascade)
+    path                     paths?     @relation(fields: [path_id], references: [path_id], onDelete: Cascade)
     google_maps_uri          String?
     airport                  String?
-    airportDetails           airports? @relation(fields: [airport], references: [iata_code], onDelete: Cascade)
+    airportDetails           airports?  @relation(fields: [airport], references: [iata_code], onDelete: Cascade)
     distance_from_flightpath Float?
     average_altitude         Float
-    altitudeEstimated        Boolean
+    altitude_estimated        Boolean
     distance_from_airport    Float?
     userId                   String
-    user                     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-    verified                 Boolean   @default(false)
+    user                     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+    verified                 Boolean    @default(false)
 }
 
 model paths {
