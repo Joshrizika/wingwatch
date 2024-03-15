@@ -3,6 +3,7 @@ import pandas as pd
 import threading
 import requests
 import execjs
+import shutil
 import math
 import time
 import os
@@ -150,6 +151,9 @@ def trackFlights(iataCode):
         file_exists = False
         time.sleep(10) #wait 10 seconds then repeat
 
+    destination_dir = '../wingwatch/src/app/contribute/opt/flightDataStore' #set the destination directory
+    shutil.copy(log_file_name, destination_dir) #copy the file to the destination directory
+
 #function: collects data on all inputted airports simultaneously
 #parameters: iataCodes - list
 #returns: nothing
@@ -165,5 +169,5 @@ def collectAirportData(iataCodes):
 
 
 if __name__ == "__main__":
-    iataCodes = ["LHR"]
+    iataCodes = ['ATL', 'BOS', 'DCA', 'DEN', 'DFW', 'EWR', 'IAD', 'JFK', 'LAX', 'LGA', 'ORD', 'PHL']
     collectAirportData(iataCodes)
