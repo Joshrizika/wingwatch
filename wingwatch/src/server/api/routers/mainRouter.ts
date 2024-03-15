@@ -435,4 +435,42 @@ export const mainRouter = createTRPCRouter({
 
     return nearbyPlaces;
   }),
+
+  addPlace: publicProcedure
+    .input(
+      z.object({
+        name: z.string(),
+        address: z.string(),
+        description: z.string(),
+        latitude: z.number(),
+        longitude: z.number(),
+        pathId: z.string(),
+        googleMapsURI: z.string(),
+        iataCode: z.string(),
+        distanceFromFlightpath: z.number(),
+        averageAltitude: z.number(),
+        altitudeEstimated: z.boolean(),
+        distanceFromAirport: z.number(),
+        userId: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      await db.userSubmittedPlaces.create({
+        data: {
+          name: input.name,
+          address: input.address,
+          description: input.description,
+          latitude: input.latitude,
+          longitude: input.longitude,
+          path_id: input.pathId,
+          google_maps_uri: input.googleMapsURI,
+          airport: input.iataCode,
+          distance_from_flightpath: input.distanceFromFlightpath,
+          average_altitude: input.averageAltitude,
+          altitude_estimated: input.altitudeEstimated,
+          distance_from_airport: input.distanceFromAirport,
+          userId: input.userId,
+        },
+      });
+    }),
 });
