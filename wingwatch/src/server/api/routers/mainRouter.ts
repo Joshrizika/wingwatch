@@ -2,6 +2,8 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { db } from "~/server/db";
 import { getServerAuthSession } from "~/server/auth";
+import fs from "fs";
+import csv from "csv-parser";
 
 function calculateDistance(
   lat1: number,
@@ -33,6 +35,27 @@ export const mainRouter = createTRPCRouter({
     .query(async () => {
       return getServerAuthSession();
     }),
+  findPaths: publicProcedure
+    .input(z.void()) // No input required for this procedure
+    .query(async () => {
+      const paths = await db.paths.findMany();
+      return paths;
+    }),
+  findAirports: publicProcedure
+    .input(z.void()) // No input required for this procedure
+    .query(async () => {
+      const airports = await db.airports.findMany({
+        where: {
+          places: {
+            some: {},
+          },
+        },
+      });
+      return airports;
+    }),
+
+  //Explore Page
+
   findPlaces: publicProcedure
     .input(
       z.object({
@@ -135,32 +158,21 @@ export const mainRouter = createTRPCRouter({
       });
       return places;
     }),
+
+  //Place Page
+
   findPlace: publicProcedure
     .input(z.object({ id: z.string() })) // Input required for this procedure
     .query(async ({ input }) => {
       const place = await db.places.findUnique({
         where: { place_id: input.id },
-        include: { path: true, airportDetails: true, reviews: { include: { user: true } } },
-      });
-      return place;
-    }),
-  findPaths: publicProcedure
-    .input(z.void()) // No input required for this procedure
-    .query(async () => {
-      const paths = await db.paths.findMany();
-      return paths;
-    }),
-  findAirports: publicProcedure
-    .input(z.void()) // No input required for this procedure
-    .query(async () => {
-      const airports = await db.airports.findMany({
-        where: {
-          places: {
-            some: {},
-          },
+        include: {
+          path: true,
+          airportDetails: true,
+          reviews: { include: { user: true } },
         },
       });
-      return airports;
+      return place;
     }),
   addReview: publicProcedure
     .input(
@@ -184,6 +196,9 @@ export const mainRouter = createTRPCRouter({
         },
       });
     }),
+
+  //Account Page
+
   editUser: publicProcedure
     .input(
       z.object({
@@ -201,6 +216,9 @@ export const mainRouter = createTRPCRouter({
         },
       });
     }),
+
+  //Saved Page
+
   findSavedPlaces: publicProcedure
     .input(z.object({ id: z.string() })) // Input required for this procedure
     .query(async ({ input }) => {
@@ -247,6 +265,110 @@ export const mainRouter = createTRPCRouter({
             disconnect: { place_id: input.placeId },
           },
         },
+      });
+    }),
+
+  //Contribute Page
+
+  getClosestPath: publicProcedure
+    .input(z.object({ latitude: z.number(), longitude: z.number() }))
+    .mutation(async ({ input }) => {
+      const paths = await db.paths.findMany();
+      let closestPath = null;
+      let minDistance = Infinity;
+
+      paths.forEach((path) => {
+        path.latitude.forEach((lat, index) => {
+          const lon = path.longitude[index];
+          if (lat !== undefined && lon !== undefined) {
+            const distance = calculateDistance(
+              input.latitude,
+              input.longitude,
+              lat,
+              lon,
+            );
+
+            if (distance < minDistance) {
+              minDistance = distance;
+              closestPath = path;
+            }
+          }
+        });
+      });
+
+      return {
+        path: closestPath,
+        distance: minDistance,
+      };
+    }),
+
+  getClosestAirport: publicProcedure
+    .input(z.object({ latitude: z.number(), longitude: z.number() }))
+    .mutation(async ({ input }) => {
+      const airports = await db.airports.findMany();
+      let closestAirport = null;
+      let minDistance = Infinity;
+
+      airports.forEach((airport) => {
+        const distance = calculateDistance(
+          input.latitude,
+          input.longitude,
+          airport.latitude,
+          airport.longitude,
+        );
+
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestAirport = airport;
+        }
+      });
+
+      return {
+        airport: closestAirport,
+        distance: minDistance,
+      };
+    }),
+
+  getAverageAltitude: publicProcedure
+    .input(
+      z.object({
+        latitude: z.number(),
+        longitude: z.number(),
+        iataCode: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      interface CsvRow {
+        lat: number;
+        lng: number;
+        alt: number;
+        dep_iata: string;
+        arr_iata: string;
+      }
+
+      const filePath = `../wingwatch/src/server/api/opt/flightDataStore/flight_log_${input.iataCode}.csv`;
+      return new Promise((resolve, reject) => {
+        const results: CsvRow[] = [];
+        const readStream = fs.createReadStream(filePath);
+        const csvStream = csv();
+
+        readStream.pipe(csvStream);
+
+        csvStream.on("data", (data: CsvRow) => results.push(data));
+        csvStream.on("end", () => {
+          const filteredResults = results.filter((row) => {
+            const distance = calculateDistance(input.latitude, input.longitude, row.lat, row.lng);
+            return distance <= 0.3;
+          });
+
+          const averageAltitude =
+            filteredResults.reduce((sum, row) => sum + Number(row.alt), 0) / filteredResults.length;
+
+          console.log(averageAltitude);
+          resolve(averageAltitude);
+        });
+
+        csvStream.on("error", reject);
       });
     }),
 });
