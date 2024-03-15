@@ -149,9 +149,9 @@ def trackFlights(iataCode):
             include_headers = False
 
         file_exists = False
-        time.sleep(10) #wait 10 seconds then repeat
+        # time.sleep(10) #wait 10 seconds then repeat
 
-    destination_dir = '../wingwatch/src/app/contribute/opt/flightDataStore' #set the destination directory
+    destination_dir = '../wingwatch/src/server/api/opt/flightDataStore' #set the destination directory
     shutil.copy(log_file_name, destination_dir) #copy the file to the destination directory
 
 #function: collects data on all inputted airports simultaneously
