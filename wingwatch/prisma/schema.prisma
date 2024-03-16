@@ -21,37 +21,21 @@ model places {
     description              String?
     latitude                 Float
     longitude                Float
-    path_id                  String
-    path                     paths    @relation(fields: [path_id], references: [path_id], onDelete: Cascade)
-    google_maps_uri          String
-    airport                  String
-    airportDetails           airports @relation(fields: [airport], references: [iata_code], onDelete: Cascade)
-    distance_from_flightpath Float
-    average_altitude         Float
-    distance_from_airport    Float
-    reviews                  Review[]
-    savedByUsers             User[]   @relation("UserSavedPlaces")
-}
-
-model userSubmittedPlaces {
-    place_id                 String     @id @default(cuid())
-    name                     String
-    address                  String
-    description              String?
-    latitude                 Float
-    longitude                Float
     path_id                  String?
-    path                     paths?     @relation(fields: [path_id], references: [path_id], onDelete: Cascade)
+    path                     paths?    @relation(fields: [path_id], references: [path_id], onDelete: Cascade)
     google_maps_uri          String?
     airport                  String?
-    airportDetails           airports?  @relation(fields: [airport], references: [iata_code], onDelete: Cascade)
+    airportDetails           airports? @relation(fields: [airport], references: [iata_code], onDelete: Cascade)
     distance_from_flightpath Float?
     average_altitude         Float
-    altitude_estimated        Boolean
+    altitude_estimated       Boolean @default(false)
     distance_from_airport    Float?
-    userId                   String
-    user                     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-    verified                 Boolean    @default(false)
+    reviews                  Review[]
+    savedByUsers             User[]   @relation("UserSavedPlaces")
+    isUserSubmitted          Boolean  @default(false)
+    submittedUserId          String?
+    submittedUser            User?    @relation(fields: [submittedUserId], references: [id], onDelete: Cascade)
+    isVerified               Boolean  @default(true)
 }
 
 model paths {
@@ -59,7 +43,6 @@ model paths {
     latitude            Float[]
     longitude           Float[]
     places              places[]
-    userSubmittedPlaces userSubmittedPlaces[]
 }
 
 model airports {
@@ -70,7 +53,6 @@ model airports {
     longitude           Float
     elevation           Float?
     places              places[]
-    userSubmittedPlaces userSubmittedPlaces[]
 }
 
 // Necessary for Next auth
@@ -102,16 +84,16 @@ model Session {
 }
 
 model User {
-    id              String    @id @default(cuid())
-    name            String
-    email           String    @unique
-    emailVerified   DateTime?
-    image           String?
-    accounts        Account[]
-    sessions        Session[]
-    reviews         Review[]
-    savedPlaces     places[] @relation("UserSavedPlaces")
-    submittedPlaces userSubmittedPlaces[]
+    id                      String    @id @default(cuid())
+    name                    String
+    email                   String    @unique
+    emailVerified           DateTime?
+    image                   String?
+    accounts                Account[]
+    sessions                Session[]
+    reviews                 Review[]
+    savedPlaces             places[] @relation("UserSavedPlaces")
+    submittedPlaces         places[]
 }
 
 model Review {
