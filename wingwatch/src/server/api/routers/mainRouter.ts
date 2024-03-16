@@ -71,7 +71,10 @@ export const mainRouter = createTRPCRouter({
         whereClause = { airport: input.iata_code };
       }
       const places = await db.places.findMany({
-        where: whereClause,
+        where: {
+          ...whereClause,
+          isVerified: true,
+        },
       });
       return places;
     }),
@@ -88,10 +91,11 @@ export const mainRouter = createTRPCRouter({
     ) // Input required for this procedure
     .query(async ({ input }) => {
       const places = await db.places.findMany({
+        where: { isVerified: true },
         include: { reviews: true, path: true, airportDetails: true },
       });
 
-      // Filter and sort places within a 50 mile radius
+      // Filter and sort places within a radius
       let filteredAndSortedPlaces = places
         .map((place) => ({
           ...place,
@@ -102,13 +106,18 @@ export const mainRouter = createTRPCRouter({
             place.longitude,
           ),
         }))
-        .filter((place) => place.distance <= input.radius) // Keep only places within 50 miles
-        .filter((place) => !input.pathId || place.path.path_id === input.pathId) // Filter by pathId if provided
+        .filter((place) => place.distance <= input.radius) // Keep only places within the radius
         .filter(
           (place) =>
-            !input.iata_code ||
-            place.airportDetails.iata_code === input.iata_code,
-        ); // Filter by iata_code if provided
+            place.path &&
+            (!input.pathId || place.path.path_id === input.pathId),
+        ) // Filter by pathId if provided
+        .filter(
+          (place) =>
+            place.airportDetails &&
+            (!input.iata_code ||
+              place.airportDetails.iata_code === input.iata_code),
+        ); // Filter by iata_code if provided and ensure place has airport details
 
       // Sort the places based on the sort parameter
       if (input.sort === "closest") {
@@ -120,11 +129,11 @@ export const mainRouter = createTRPCRouter({
         filteredAndSortedPlaces = filteredAndSortedPlaces.sort((a, b) => {
           const aValue = Math.sqrt(
             Math.pow(a.average_altitude, 2) +
-              Math.pow(a.distance_from_flightpath, 2),
+              Math.pow(a.distance_from_flightpath ?? 0.15, 2),
           );
           const bValue = Math.sqrt(
             Math.pow(b.average_altitude, 2) +
-              Math.pow(b.distance_from_flightpath, 2),
+              Math.pow(b.distance_from_flightpath ?? 0.15, 2),
           );
           return aValue - bValue;
         });
@@ -153,6 +162,7 @@ export const mainRouter = createTRPCRouter({
             contains: input.query,
             mode: "insensitive",
           },
+          isVerified: true,
         },
         take: 5, // Return only the top 5 results
       });
@@ -177,8 +187,8 @@ export const mainRouter = createTRPCRouter({
   addReview: publicProcedure
     .input(
       z.object({
-        title: z.string(),
-        content: z.string(),
+        title: z.string().optional(),
+        content: z.string().optional(),
         rating: z.number(),
         userId: z.string(),
         placeId: z.string(),
@@ -391,63 +401,65 @@ export const mainRouter = createTRPCRouter({
       });
     }),
 
-  getNearbyPlaces: publicProcedure.input(
-    z.object({
-      latitude: z.number(),
-      longitude: z.number(),
+  getNearbyPlaces: publicProcedure
+    .input(
+      z.object({
+        latitude: z.number(),
+        longitude: z.number(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const places = await db.places.findMany({ where: { isVerified: true } }); 
+      let nearbyPlaces = places.filter((place) => {
+        const distance = calculateDistance(
+          input.latitude,
+          input.longitude,
+          place.latitude,
+          place.longitude,
+        );
+        return distance <= 0.15;
+      });
+
+      // Sort the nearby places by distance in ascending order
+      nearbyPlaces = nearbyPlaces.sort((placeA, placeB) => {
+        const distanceA = calculateDistance(
+          input.latitude,
+          input.longitude,
+          placeA.latitude,
+          placeA.longitude,
+        );
+        const distanceB = calculateDistance(
+          input.latitude,
+          input.longitude,
+          placeB.latitude,
+          placeB.longitude,
+        );
+        return distanceA - distanceB;
+      });
+
+      return nearbyPlaces;
     }),
-  ).mutation(async ({ input }) => {
-    const places = await db.places.findMany(); // Assuming getPlaces() is a function that fetches all places
-    let nearbyPlaces = places.filter((place) => {
-      const distance = calculateDistance(
-        input.latitude,
-        input.longitude,
-        place.latitude,
-        place.longitude,
-      );
-      return distance <= 0.1;
-    });
-
-    // Sort the nearby places by distance in ascending order
-    nearbyPlaces = nearbyPlaces.sort((placeA, placeB) => {
-      const distanceA = calculateDistance(
-        input.latitude,
-        input.longitude,
-        placeA.latitude,
-        placeA.longitude,
-      );
-      const distanceB = calculateDistance(
-        input.latitude,
-        input.longitude,
-        placeB.latitude,
-        placeB.longitude,
-      );
-      return distanceA - distanceB;
-    });
-
-    return nearbyPlaces;
-  }),
 
   addPlace: publicProcedure
     .input(
       z.object({
         name: z.string(),
         address: z.string(),
-        description: z.string(),
+        description: z.string().optional(),
         latitude: z.number(),
         longitude: z.number(),
-        pathId: z.string(),
-        googleMapsURI: z.string(),
-        iataCode: z.string(),
-        distanceFromFlightpath: z.number(),
+        pathId: z.string().optional(),
+        googleMapsURI: z.string().optional(),
+        iataCode: z.string().optional(),
+        distanceFromFlightpath: z.number().optional(),
         averageAltitude: z.number(),
         altitudeEstimated: z.boolean(),
-        distanceFromAirport: z.number(),
+        distanceFromAirport: z.number().optional(),
         userId: z.string(),
       }),
     )
     .mutation(async ({ input }) => {
-      await db.userSubmittedPlaces.create({
+      await db.places.create({
         data: {
           name: input.name,
           address: input.address,
@@ -461,7 +473,9 @@ export const mainRouter = createTRPCRouter({
           average_altitude: input.averageAltitude,
           altitude_estimated: input.altitudeEstimated,
           distance_from_airport: input.distanceFromAirport,
-          userId: input.userId,
+          isUserSubmitted: true,
+          submittedUserId: input.userId,
+          isVerified: false,
         },
       });
     }),
