@@ -1,8 +1,14 @@
+from cuid2 import cuid_wrapper
+from typing import Callable
 import pandas as pd
 import psycopg2
 import sys
 
 # This file uploads data to the database.
+
+# Generate a unique identifier for the path.
+cuid_generator: Callable[[], str] = cuid_wrapper()
+
 
 # Function: Inserts spot data into the database.
 # Parameters: iataCode - string
@@ -43,10 +49,10 @@ def insertSpots(iataCode):
         # Prepare the data tuples, respecting the new column names.
         columns = ['formattedAddress', 'googleMapsUri', 'airport', 'distanceFromFlightpath', 'averageAltitude', 
                    'distanceFromAirport', 'path_id', 'latitude', 'longitude', 'displayName', 'editorialSummary']
-        data_tuples = [tuple(x) for x in df_filtered[columns].to_numpy()]
+        data_tuples = [(cuid_generator(),) + tuple(x) for x in df_filtered[columns].to_numpy()]
         
-        insert_query = "INSERT INTO places (address, google_maps_uri, airport, distance_from_flightpath, average_altitude, " \
-                       "distance_from_airport, path_id, latitude, longitude, name, description) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        insert_query = "INSERT INTO places (place_id, address, google_maps_uri, airport, distance_from_flightpath, average_altitude, " \
+                       "distance_from_airport, path_id, latitude, longitude, name, description) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         
         cursor.executemany(insert_query, data_tuples)
 

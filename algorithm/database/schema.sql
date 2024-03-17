@@ -5,7 +5,7 @@ CREATE TABLE paths (
 );
 
 CREATE TABLE places (
-    place_id SERIAL PRIMARY KEY,
+    place_id VARCHAR(25) PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     address VARCHAR(255), 
     description TEXT,
