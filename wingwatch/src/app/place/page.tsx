@@ -121,9 +121,9 @@ function PlaceContent() {
       marker.setMap(map);
 
       const pathPoints: { lat: number; lng: number }[] =
-        placeQuery.data?.path.latitude?.map((lat: number, index: number) => ({
+        placeQuery.data?.path?.latitude?.map((lat: number, index: number) => ({
           lat: lat,
-          lng: placeQuery.data?.path.longitude?.[index] ?? 0,
+          lng: placeQuery.data?.path?.longitude?.[index] ?? 0,
         })) ?? [];
 
       const pathPolyline = new google.maps.Polyline({
@@ -137,10 +137,10 @@ function PlaceContent() {
 
       const airportMarker = new google.maps.Marker({
         position: {
-          lat: placeQuery.data?.airportDetails.latitude ?? 0,
-          lng: placeQuery.data?.airportDetails.longitude ?? 0,
+          lat: placeQuery.data?.airportDetails?.latitude ?? 0,
+          lng: placeQuery.data?.airportDetails?.longitude ?? 0,
         },
-        title: placeQuery.data?.airportDetails.name,
+        title: placeQuery.data?.airportDetails?.name,
         icon: {
           url: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
         },
