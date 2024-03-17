@@ -56,6 +56,21 @@ export default function Contribute() {
   const [averageAltitude, setAverageAltitude] = useState<number | null>(null);
 
   useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(({ coords }) => {
+        const newLocation = { latitude: coords.latitude, longitude: coords.longitude };
+        if (mapRef.current) {
+          const newCenter = {
+            lat: newLocation.latitude,
+            lng: newLocation.longitude,
+          };
+          mapRef.current.setCenter(newCenter);
+        }
+      });
+    }
+  }, []);
+
+  useEffect(() => {
     if (place) {
       setName(place.displayName.text);
       setMarkerPosition(place.location);
