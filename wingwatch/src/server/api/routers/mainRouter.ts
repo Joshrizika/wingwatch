@@ -409,7 +409,7 @@ export const mainRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      const places = await db.places.findMany({ where: { isVerified: true } }); 
+      const places = await db.places.findMany(); 
       let nearbyPlaces = places.filter((place) => {
         const distance = calculateDistance(
           input.latitude,
