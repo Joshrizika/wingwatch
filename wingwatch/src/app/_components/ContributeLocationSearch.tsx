@@ -29,7 +29,7 @@ interface Suggestions {
   suggestions: Place[];
 }
 
-const ExploreLocationSearch: React.FC<LocationSearchProps> = ({ onSearch }) => {
+const ContributeLocationSearch: React.FC<LocationSearchProps> = ({ onSearch }) => {
   const [currentInput, setCurrentInput] = useState<string>("");
   const [suggestions, setSuggestions] = useState<Place[]>([]);
   const [activeSuggestion, setActiveSuggestion] = useState(-1);
@@ -204,4 +204,4 @@ const ExploreLocationSearch: React.FC<LocationSearchProps> = ({ onSearch }) => {
   );
 };
 
-export default ExploreLocationSearch;
+export default ContributeLocationSearch;

@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Navbar from "../_components/Navbar";
 import { api } from "~/trpc/react";
-import LocationSearch from "../_components/LocationSearch";
+import ContributeLocationSearch from "../_components/ContributeLocationSearch";
 
 interface ILocation {
   latitude: number;
@@ -546,7 +546,7 @@ export default function Contribute() {
             <div style={{ color: "red" }}>{nearbyPlaceError}</div>
           )}
           <h2>Search for a place</h2>
-          <LocationSearch onSearch={handlePlaceSelection} />
+          <ContributeLocationSearch onSearch={handlePlaceSelection} />
           <h2>Or select the location on the map</h2>
           <div
             id="map"
