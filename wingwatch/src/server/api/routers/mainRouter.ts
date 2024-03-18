@@ -227,7 +227,7 @@ export const mainRouter = createTRPCRouter({
       });
     }),
 
-  //Saved Page
+  //My Places Page
 
   findSavedPlaces: publicProcedure
     .input(z.object({ id: z.string() })) // Input required for this procedure
@@ -276,6 +276,16 @@ export const mainRouter = createTRPCRouter({
           },
         },
       });
+    }),
+  findContributedPlaces: publicProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ input }) => {
+      const places = await db.places.findMany({
+        where: {
+          submittedUserId: input.userId,
+        },
+      });
+      return places;
     }),
 
   //Contribute Page
