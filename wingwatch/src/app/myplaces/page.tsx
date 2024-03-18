@@ -4,10 +4,10 @@ import { api } from "~/trpc/react";
 import Navbar from "../_components/Navbar";
 import Link from "next/link";
 
-export default function Saved() {
+export default function MyPlaces() {
   const session = api.main.getSession.useQuery().data;
   const userId = session?.user?.id;
-  const { data: savedPlaces, isLoading, refetch } = api.main.findSavedPlaces.useQuery(
+  const { data: savedPlaces, isLoading: savedLoading, refetch } = api.main.findSavedPlaces.useQuery(
     { id: userId! },
     { enabled: !!userId },
   );
@@ -22,8 +22,12 @@ export default function Saved() {
       },
     );
   };
+  const { data: contributedPlaces, isLoading: contributedLoading } = api.main.findContributedPlaces.useQuery(
+    { userId: userId! },
+    { enabled: !!userId },
+  );
 
-  if (isLoading) {
+  if (savedLoading || contributedLoading) {
     return (
       <>
         <Navbar />
@@ -59,6 +63,36 @@ export default function Saved() {
                 >
                   Unsave
                 </button>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="sticky top-0 bg-white p-4">
+          <h1 className="mb-4 text-2xl font-bold">Contributed Places</h1>
+        </div>
+        <div className="overflow-auto p-4 pt-0" style={{ maxHeight: "calc(100vh - 64px)" }}>
+          <div className="space-y-4">
+            {contributedPlaces?.map((place) => (
+              <div key={place.place_id} className="flex items-center justify-between border p-4">
+                <div>
+                  <h3>{place.name}</h3>
+                  {place.description && <p>Description: {place.description}</p>}
+                  <p>Address: {place.address}</p>
+                  {/* Add more details as per your requirement */}
+                  {/* Assuming you have a routing mechanism to view details */}
+                  <Link href={`/place/?id=${place.place_id}`}>
+                    <span className="text-blue-500 hover:text-blue-700">View Details</span>
+                  </Link>
+                </div>
+              {place.isVerified ? (
+                <span className="bg-green-500 text-white px-2 py-1 rounded">
+                  Verified
+                </span>
+              ) : (
+                <span className="bg-yellow-500 text-white px-2 py-1 rounded">
+                  Under Review
+                </span>
+              )}
               </div>
             ))}
           </div>

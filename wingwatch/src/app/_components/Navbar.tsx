@@ -50,7 +50,7 @@ export default function Navbar() {
             </span>
           </Link>
           {session && (
-            <Link href="/saved" passHref>
+            <Link href="/myplaces" passHref>
               <span className="text-gray-800 transition duration-300 ease-in-out hover:text-blue-500">
                 My Places
               </span>
