@@ -6,6 +6,7 @@ import SearchBar from "./SearchBar";
 
 export default function Navbar() {
   const session = api.main.getSession.useQuery().data;
+  console.log(session);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -89,7 +90,19 @@ export default function Navbar() {
                   {session && (
                     <Link href="/account" passHref>
                       <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        Manage Account
+                        Account
+                      </span>
+                    </Link>
+                  )}
+                  <Link href="/contributions" passHref>
+                      <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Contributed places
+                      </span>
+                    </Link>
+                  {session?.user.isAdmin && (
+                    <Link href="/approvals" passHref>
+                      <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Approve places
                       </span>
                     </Link>
                   )}
