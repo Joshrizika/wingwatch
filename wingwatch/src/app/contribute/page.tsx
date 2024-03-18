@@ -472,92 +472,99 @@ export default function Contribute() {
       <div
         style={{
           display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
           height: "100vh",
           padding: "20px",
         }}
       >
-        <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-            await handleSubmit();
-          }}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            marginRight: "20px",
-            border: "1px solid #ccc",
-            padding: "10px",
-            borderRadius: "5px",
-          }}
-        >
-          <label style={{ marginBottom: "10px" }}>
-            <div>Name:</div>
-            <input
-              type="text"
-              value={name}
-              onChange={handleNameChange}
-              style={{
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-                padding: "5px",
-                marginTop: "5px",
-              }}
-            />
-            {nameError && <div style={{ color: "red" }}>{nameError}</div>}
-          </label>
-          <label style={{ marginBottom: "10px" }}>
-            <div>Description:</div>
-            <textarea
-              value={description}
-              onChange={handleDescriptionChange}
-              style={{
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-                padding: "5px",
-                marginTop: "5px",
-              }}
-            />
-          </label>
-          <button
-            type="submit"
+        <h1 style={{ fontWeight: "bold", fontSize: "2em", marginBottom: "20px" }}>
+          Help us expand our database by contributing your own favorite planespotting locations
+        </h1>
+        <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              await handleSubmit();
+            }}
             style={{
+              display: "flex",
+              flexDirection: "column",
+              marginRight: "20px",
               border: "1px solid #ccc",
+              padding: "10px",
               borderRadius: "5px",
-              padding: "5px",
-              marginTop: "5px",
-              backgroundColor: "#0000FF",
-              color: "white",
+              height: "50%", // Set a fixed height for the form
             }}
           >
-            Submit
-          </button>
-        </form>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          {markerError && <div style={{ color: "red" }}>{markerError}</div>}
-          {nearbyPlaceError && (
-            <div style={{ color: "red" }}>{nearbyPlaceError}</div>
-          )}
-          <h2>Search for a place</h2>
-          <ContributeLocationSearch onSearch={handlePlaceSelection} />
-          <h2>Or select the location on the map</h2>
+            <label style={{ marginBottom: "10px" }}>
+              <div>Name:</div>
+              <input
+                type="text"
+                value={name}
+                onChange={handleNameChange}
+                style={{
+                  border: "1px solid #ccc",
+                  borderRadius: "5px",
+                  padding: "5px",
+                  marginTop: "5px",
+                }}
+              />
+              {nameError && <div style={{ color: "red" }}>{nameError}</div>}
+            </label>
+            <label style={{ marginBottom: "10px" }}>
+              <div>Description:</div>
+              <textarea
+                value={description}
+                onChange={handleDescriptionChange}
+                style={{
+                  border: "1px solid #ccc",
+                  borderRadius: "5px",
+                  padding: "5px",
+                  marginTop: "5px",
+                }}
+              />
+            </label>
+            <button
+              type="submit"
+              style={{
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+                padding: "5px",
+                marginTop: "5px",
+                backgroundColor: "#0000FF",
+                color: "white",
+              }}
+            >
+              Submit
+            </button>
+          </form>
           <div
-            id="map"
-            className="h-full rounded-lg border"
             style={{
-              height: "50vh",
-              width: "70vh",
-              border: "1px solid #ccc",
-              borderRadius: "5px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
-          ></div>
+          >
+            {markerError && <div style={{ color: "red" }}>{markerError}</div>}
+            {nearbyPlaceError && (
+              <div style={{ color: "red" }}>{nearbyPlaceError}</div>
+            )}
+            <h2>Search for a place</h2>
+            <ContributeLocationSearch onSearch={handlePlaceSelection} />
+            <h2>Or select the location on the map</h2>
+            <div
+              id="map"
+              className="h-full rounded-lg border"
+              style={{
+                height: "50vh",
+                width: "70vh",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            ></div>
+          </div>
         </div>
       </div>
       {popUpOpen && (
