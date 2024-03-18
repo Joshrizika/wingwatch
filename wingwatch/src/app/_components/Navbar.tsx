@@ -10,7 +10,6 @@ export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -29,10 +28,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav
-      className="bg-white shadow"
-      style={{ zIndex: 10 }}
-    >
+    <nav className="bg-white shadow" style={{ zIndex: 10 }}>
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
         <div className="flex items-center space-x-4">
           <Link href="/" passHref>
@@ -56,7 +52,7 @@ export default function Navbar() {
           {session && (
             <Link href="/saved" passHref>
               <span className="text-gray-800 transition duration-300 ease-in-out hover:text-blue-500">
-                Saved
+                My Places
               </span>
             </Link>
           )}
@@ -77,11 +73,17 @@ export default function Navbar() {
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="flex cursor-pointer items-center space-x-2"
             >
-              <Image src={session ? session.user.image! : "/user.png"} alt="User" width={32} height={32} className="rounded-full" />
+              <Image
+                src={session ? session.user.image! : "/user.png"}
+                alt="User"
+                width={32}
+                height={32}
+                className="rounded-full"
+              />
             </div>
             {dropdownOpen && (
               <div
-                className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10"
+                className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="menu-button"
@@ -94,11 +96,6 @@ export default function Navbar() {
                       </span>
                     </Link>
                   )}
-                  <Link href="/contributions" passHref>
-                      <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        Contributed places
-                      </span>
-                    </Link>
                   {session?.user.isAdmin && (
                     <Link href="/approvals" passHref>
                       <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
