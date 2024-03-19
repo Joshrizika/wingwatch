@@ -8,8 +8,6 @@ import { Suspense } from "react";
 import ExploreLocationSearch from "../_components/ExploreLocationSearch";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Analytics } from '@vercel/analytics/react';
-
 
 declare global {
   interface Window {
@@ -410,7 +408,6 @@ function ExploreContent() {
 
   return (
     <>
-      <Analytics />
       <Navbar />
       <div className="mt-5 flex flex-col gap-4 px-4 md:flex-row">
         <div
