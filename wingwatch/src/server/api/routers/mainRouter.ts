@@ -377,8 +377,10 @@ export const mainRouter = createTRPCRouter({
 
       const filePath = `src/server/api/opt/flightDataStore/flight_log_${input.iataCode}.csv`;
       if (!fs.existsSync(filePath)) {
+        console.error(`File not found: ${filePath}`);
         return null;
       }
+      console.log(`Reading file: ${filePath}`);
       return new Promise((resolve, reject) => {
         const results: CsvRow[] = [];
         const readStream = fs.createReadStream(filePath);
