@@ -8,6 +8,8 @@ import { Suspense } from "react";
 import ExploreLocationSearch from "../_components/ExploreLocationSearch";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Analytics } from '@vercel/analytics/react';
+
 
 declare global {
   interface Window {
@@ -409,6 +411,7 @@ function ExploreContent() {
   return (
     <>
       <Navbar />
+      <Analytics />
       <div className="mt-5 flex flex-col gap-4 px-4 md:flex-row">
         <div
           className="w-full md:w-1/3 xl:w-1/3"
@@ -433,6 +436,7 @@ function ExploreContent() {
                   type="range"
                   min="1"
                   max="100"
+                  step=".1"
                   value={tempRadius}
                   onChange={handleSliderChange}
                   onMouseUp={handleSliderChangeComplete}
@@ -484,7 +488,7 @@ function ExploreContent() {
                     <h3 className="font-semibold">{place.name}</h3>
                     {place.isUserSubmitted && (
                       <span className="text-yellow-500 bg-yellow-200 px-2 py-1 rounded ml-2">
-                        User Submitted
+                        User Recommended
                       </span>
                     )}
                   </div>
