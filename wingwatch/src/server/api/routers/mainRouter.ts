@@ -47,7 +47,9 @@ export const mainRouter = createTRPCRouter({
       const airports = await db.airports.findMany({
         where: {
           places: {
-            some: {},
+            some: {
+              isVerified: true,
+            },
           },
         },
       });
