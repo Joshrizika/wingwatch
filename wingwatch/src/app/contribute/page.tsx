@@ -58,7 +58,10 @@ export default function Contribute() {
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(({ coords }) => {
-        const newLocation = { latitude: coords.latitude, longitude: coords.longitude };
+        const newLocation = {
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+        };
         if (mapRef.current) {
           const newCenter = {
             lat: newLocation.latitude,
@@ -475,14 +478,37 @@ export default function Contribute() {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          height: "100vh",
+          height: "calc(100vh - 80px)", // Subtract the height of the Navbar
           padding: "20px",
         }}
       >
-        <h1 style={{ fontWeight: "bold", fontSize: "2em", marginBottom: "20px" }}>
-          Help us expand our database by contributing your own favorite planespotting locations
+        <h1
+          style={{
+            position: "absolute",
+            top: "80px",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            fontWeight: "bold",
+            fontSize: "2em",
+            margin: "20px 0",
+            textAlign: "center",
+            width: "80%",
+          }}
+        >
+          Help us expand our database by contributing your own favorite
+          planespotting locations
         </h1>
-        <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            width: "100%",
+            alignItems: "center",
+            // marginTop: "-200px",
+            overflowY: "auto", // Add a scrollbar to the inner div if necessary
+            maxHeight: "calc(100vh - 80px)", // Subtract the height of the Navbar
+          }}
+        >
           <form
             onSubmit={async (e) => {
               e.preventDefault();
@@ -495,7 +521,7 @@ export default function Contribute() {
               border: "1px solid #ccc",
               padding: "10px",
               borderRadius: "5px",
-              height: "50%", // Set a fixed height for the form
+              height: "50%", // Adjust if necessary
             }}
           >
             <label style={{ marginBottom: "10px" }}>
@@ -545,6 +571,7 @@ export default function Contribute() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              justifyContent: "center",
             }}
           >
             {markerError && <div style={{ color: "red" }}>{markerError}</div>}
