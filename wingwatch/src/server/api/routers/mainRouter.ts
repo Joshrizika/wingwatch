@@ -375,7 +375,7 @@ export const mainRouter = createTRPCRouter({
         arr_iata: string;
       }
 
-      const filePath = `../wingwatch/src/server/api/opt/flightDataStore/flight_log_${input.iataCode}.csv`;
+      const filePath = `src/server/api/opt/flightDataStore/flight_log_${input.iataCode}.csv`;
       if (!fs.existsSync(filePath)) {
         return null;
       }
