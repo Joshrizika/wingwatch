@@ -235,7 +235,11 @@ export const mainRouter = createTRPCRouter({
       const user = await db.user.findUnique({
         where: { id: input.id },
         include: {
-          savedPlaces: true,
+          savedPlaces: {
+            include: {
+              airportDetails: true,
+            },
+          },
         },
       });
       return user;
@@ -283,6 +287,9 @@ export const mainRouter = createTRPCRouter({
       const places = await db.places.findMany({
         where: {
           submittedUserId: input.userId,
+        },
+        include: {
+          airportDetails: true,
         },
       });
       return places;
@@ -422,7 +429,7 @@ export const mainRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      const places = await db.places.findMany(); 
+      const places = await db.places.findMany();
       let nearbyPlaces = places.filter((place) => {
         const distance = calculateDistance(
           input.latitude,
@@ -489,6 +496,77 @@ export const mainRouter = createTRPCRouter({
           isUserSubmitted: true,
           submittedUserId: input.userId,
           isVerified: false,
+        },
+      });
+    }),
+
+  //Submissions Page
+
+  findSubmittedPlaces: publicProcedure
+    .input(z.void()) // No input required for this procedure
+    .query(async () => {
+      const places = await db.places.findMany({
+        where: {
+          isUserSubmitted: true,
+          isVerified: false,
+        },
+        include: {
+          airportDetails: true,
+          submittedUser: true,
+        },
+      });
+      return places;
+    }),
+
+  approvePlace: publicProcedure
+    .input(z.object({ placeId: z.string() }))
+    .mutation(async ({ input }) => {
+      await db.places.update({
+        where: { place_id: input.placeId },
+        data: {
+          isVerified: true,
+        },
+      });
+    }),
+
+  rejectPlace: publicProcedure
+    .input(z.object({ placeId: z.string() }))
+    .mutation(async ({ input }) => {
+      await db.places.delete({
+        where: { place_id: input.placeId },
+      });
+    }),
+    
+  updatePlace: publicProcedure
+    .input(
+      z.object({
+        placeId: z.string(),
+        name: z.string(),
+        address: z.string(),
+        description: z.string().optional(),
+        pathId: z.string().optional(),
+        googleMapsURI: z.string().optional(),
+        iataCode: z.string().optional(),
+        distanceFromFlightpath: z.number().optional(),
+        averageAltitude: z.number(),
+        altitudeEstimated: z.boolean().optional(),
+        distanceFromAirport: z.number().optional(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      await db.places.update({
+        where: { place_id: input.placeId },
+        data: {
+          name: input.name,
+          address: input.address,
+          description: input.description,
+          path_id: input.pathId,
+          google_maps_uri: input.googleMapsURI,
+          airport: input.iataCode,
+          distance_from_flightpath: input.distanceFromFlightpath,
+          average_altitude: input.averageAltitude,
+          altitude_estimated: input.altitudeEstimated,
+          distance_from_airport: input.distanceFromAirport,
         },
       });
     }),
