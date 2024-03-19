@@ -97,9 +97,9 @@ export default function Navbar() {
                     </Link>
                   )}
                   {session?.user.isAdmin && (
-                    <Link href="/approvals" passHref>
+                    <Link href="/submissions" passHref>
                       <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        Approve places
+                        Submission Review
                       </span>
                     </Link>
                   )}
