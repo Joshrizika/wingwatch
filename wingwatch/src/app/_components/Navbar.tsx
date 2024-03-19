@@ -6,7 +6,6 @@ import SearchBar from "./SearchBar";
 
 export default function Navbar() {
   const session = api.main.getSession.useQuery().data;
-  console.log(session);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 

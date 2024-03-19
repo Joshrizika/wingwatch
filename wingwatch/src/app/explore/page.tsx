@@ -117,7 +117,6 @@ function ExploreContent() {
         .then((response) => response.json())
         .then((data: SearchOriginData) => {
           setSearchOriginLocation(data.location);
-          console.log("Selected Place: ", data);
         })
         .catch((error) => {
           console.error("Error:", error);
