@@ -8,7 +8,6 @@ import { Suspense } from "react";
 import ExploreLocationSearch from "../_components/ExploreLocationSearch";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-// eslint-disable-next-line import/no-unresolved
 import { Analytics } from '@vercel/analytics/react';
 
 
