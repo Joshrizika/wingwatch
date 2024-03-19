@@ -129,7 +129,7 @@ function ExploreContent() {
     const urlParams = new URLSearchParams(window.location.search);
     if (selectedPlaceId) {
       urlParams.set("placeId", selectedPlaceId);
-    } 
+    }
     window.history.replaceState({}, "", "?" + urlParams.toString());
   }, [selectedPlaceId]);
 
@@ -480,14 +480,29 @@ function ExploreContent() {
                   className="mb-4 rounded border p-4"
                   id={`place-${place.place_id}`}
                 >
-                  <h3 className="font-semibold">{place.name}</h3>
+                  <div className="flex items-center">
+                    <h3 className="font-semibold">{place.name}</h3>
+                    {place.isUserSubmitted && (
+                      <span className="text-yellow-500 bg-yellow-200 px-2 py-1 rounded ml-2">
+                        User Submitted
+                      </span>
+                    )}
+                  </div>
                   {place.description && <p>Description: {place.description}</p>}
                   <p>Address: {place.address}</p>
-                  <p>Airport: {place.airport}</p>
+                  {place.airport && (
+                    <p>Airport: {place.airportDetails?.name}</p>
+                  )}
+                  {place.distance_from_flightpath && (
+                    <p>
+                      Distance from Flight Path:{" "}
+                      {place.distance_from_flightpath}
+                    </p>
+                  )}
                   <p>
-                    Distance from flightpath: {place.distance_from_flightpath}
+                    Average Altitude: {place.altitude_estimated && "~"}
+                    {place.average_altitude}
                   </p>
-                  <p>Average altitude: {place.average_altitude}</p>
                   <Link href={`/place/?id=${place.place_id}`}>
                     <span className="cursor-pointer text-blue-500 hover:text-blue-700">
                       View Details
