@@ -410,8 +410,8 @@ function ExploreContent() {
 
   return (
     <>
-      <Navbar />
       <Analytics />
+      <Navbar />
       <div className="mt-5 flex flex-col gap-4 px-4 md:flex-row">
         <div
           className="w-full md:w-1/3 xl:w-1/3"
