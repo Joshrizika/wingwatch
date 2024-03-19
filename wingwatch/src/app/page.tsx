@@ -3,8 +3,7 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { api } from "~/trpc/react";
 import Navbar from "./_components/Navbar";
-import { Analytics } from '@vercel/analytics/react';
-
+import { Analytics } from "@vercel/analytics/react";
 
 export default function Home() {
   noStore();
@@ -12,8 +11,7 @@ export default function Home() {
 
   return (
     <>
-          <Analytics />
-
+      <Analytics />
       <Navbar />
       <main className="flex min-h-screen flex-col items-center justify-center bg-gray-100">
         <div className="text-center">
