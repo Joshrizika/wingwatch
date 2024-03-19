@@ -7,10 +7,11 @@ import Link from "next/link";
 export default function MyPlaces() {
   const session = api.main.getSession.useQuery().data;
   const userId = session?.user?.id;
-  const { data: savedPlaces, isLoading: savedLoading, refetch } = api.main.findSavedPlaces.useQuery(
-    { id: userId! },
-    { enabled: !!userId },
-  );
+  const {
+    data: savedPlaces,
+    isLoading: savedLoading,
+    refetch,
+  } = api.main.findSavedPlaces.useQuery({ id: userId! }, { enabled: !!userId });
   const unsavePlaceMutation = api.main.unsavePlace.useMutation();
   const handleUnsavePlace = (placeId: string) => {
     unsavePlaceMutation.mutate(
@@ -22,10 +23,11 @@ export default function MyPlaces() {
       },
     );
   };
-  const { data: contributedPlaces, isLoading: contributedLoading } = api.main.findContributedPlaces.useQuery(
-    { userId: userId! },
-    { enabled: !!userId },
-  );
+  const { data: contributedPlaces, isLoading: contributedLoading } =
+    api.main.findContributedPlaces.useQuery(
+      { userId: userId! },
+      { enabled: !!userId },
+    );
 
   if (savedLoading || contributedLoading) {
     return (
@@ -39,22 +41,41 @@ export default function MyPlaces() {
   return (
     <>
       <Navbar />
-      <div className="w-full mt-5">
+      <div className="mt-5 w-full">
         <div className="sticky top-0 bg-white p-4">
           <h1 className="mb-4 text-2xl font-bold">Saved Places</h1>
         </div>
-        <div className="overflow-auto p-4 pt-0" style={{ maxHeight: "calc(100vh - 64px)" }}>
+        <div
+          className="overflow-auto p-4 pt-0"
+          style={{ maxHeight: "calc(100vh - 64px)" }}
+        >
           <div className="space-y-4">
             {savedPlaces?.savedPlaces.map((place) => (
-              <div key={place.place_id} className="flex items-center justify-between border p-4">
+              <div
+                key={place.place_id}
+                className="flex items-center justify-between border p-4"
+              >
                 <div>
-                  <h3>{place.name}</h3>
+                  <h3 className="font-semibold">{place.name}</h3>
                   {place.description && <p>Description: {place.description}</p>}
                   <p>Address: {place.address}</p>
-                  {/* Add more details as per your requirement */}
-                  {/* Assuming you have a routing mechanism to view details */}
+                  {place.airport && (
+                    <p>Airport: {place.airportDetails?.name}</p>
+                  )}
+                  {place.distance_from_flightpath && (
+                    <p>
+                      Distance from Flight Path:{" "}
+                      {place.distance_from_flightpath}
+                    </p>
+                  )}
+                  <p>
+                    Average Altitude: {place.altitude_estimated && "~"}
+                    {place.average_altitude}
+                  </p>
                   <Link href={`/place/?id=${place.place_id}`}>
-                    <span className="text-blue-500 hover:text-blue-700">View Details</span>
+                    <span className="text-blue-500 hover:text-blue-700">
+                      View Details
+                    </span>
                   </Link>
                 </div>
                 <button
@@ -70,29 +91,48 @@ export default function MyPlaces() {
         <div className="sticky top-0 bg-white p-4">
           <h1 className="mb-4 text-2xl font-bold">Contributed Places</h1>
         </div>
-        <div className="overflow-auto p-4 pt-0" style={{ maxHeight: "calc(100vh - 64px)" }}>
+        <div
+          className="overflow-auto p-4 pt-0"
+          style={{ maxHeight: "calc(100vh - 64px)" }}
+        >
           <div className="space-y-4">
             {contributedPlaces?.map((place) => (
-              <div key={place.place_id} className="flex items-center justify-between border p-4">
+              <div
+                key={place.place_id}
+                className="flex items-center justify-between border p-4"
+              >
                 <div>
-                  <h3>{place.name}</h3>
+                  <h3 className="font-semibold">{place.name}</h3>
                   {place.description && <p>Description: {place.description}</p>}
                   <p>Address: {place.address}</p>
-                  {/* Add more details as per your requirement */}
-                  {/* Assuming you have a routing mechanism to view details */}
+                  {place.airport && (
+                    <p>Airport: {place.airportDetails?.name}</p>
+                  )}
+                  {place.distance_from_flightpath && (
+                    <p>
+                      Distance from Flight Path:{" "}
+                      {place.distance_from_flightpath}
+                    </p>
+                  )}
+                  <p>
+                    Average Altitude: {place.altitude_estimated && "~"}
+                    {place.average_altitude}
+                  </p>
                   <Link href={`/place/?id=${place.place_id}`}>
-                    <span className="text-blue-500 hover:text-blue-700">View Details</span>
+                    <span className="text-blue-500 hover:text-blue-700">
+                      View Details
+                    </span>
                   </Link>
                 </div>
-              {place.isVerified ? (
-                <span className="bg-green-500 text-white px-2 py-1 rounded">
-                  Verified
-                </span>
-              ) : (
-                <span className="bg-yellow-500 text-white px-2 py-1 rounded">
-                  Under Review
-                </span>
-              )}
+                {place.isVerified ? (
+                  <span className="rounded bg-green-500 px-2 py-1 text-white">
+                    Verified
+                  </span>
+                ) : (
+                  <span className="rounded bg-yellow-500 px-2 py-1 text-white">
+                    Under Review
+                  </span>
+                )}
               </div>
             ))}
           </div>
@@ -101,5 +141,3 @@ export default function MyPlaces() {
     </>
   );
 }
-
-
