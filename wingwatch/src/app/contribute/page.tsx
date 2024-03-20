@@ -261,7 +261,6 @@ export default function Contribute() {
       if (response.results[0]) {
         return response.results[0];
       } else {
-        console.log("No results found");
         return null;
       }
     } catch (error) {
