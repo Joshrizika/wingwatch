@@ -34,7 +34,7 @@ model places {
     savedByUsers             User[]   @relation("UserSavedPlaces")
     isUserSubmitted          Boolean  @default(false)
     submittedUserId          String?
-    submittedUser            User?    @relation(fields: [submittedUserId], references: [id], onDelete: Cascade)
+    submittedUser            User?    @relation(fields: [submittedUserId], references: [id], onDelete: SetNull)
     isVerified               Boolean  @default(true)
 }
 
@@ -103,8 +103,8 @@ model Review {
     content   String?
     rating    Int
     timestamp DateTime
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId    String
-    place     places   @relation(fields: [placeId], references: [place_id], onDelete: Cascade)
+    userId    String?
+    user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
     placeId   String
+    place     places   @relation(fields: [placeId], references: [place_id], onDelete: Cascade)
 }
