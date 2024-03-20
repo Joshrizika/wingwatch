@@ -4,6 +4,7 @@ import { db } from "~/server/db";
 import { getServerAuthSession } from "~/server/auth";
 import fs from "fs";
 import csv from "csv-parser";
+import path from "path";
 
 function calculateDistance(
   lat1: number,
@@ -375,12 +376,21 @@ export const mainRouter = createTRPCRouter({
         arr_iata: string;
       }
 
-      const filePath = `src/server/api/opt/flightDataStore/flight_log_${input.iataCode}.csv`;
+      const basePath = path.join(
+        process.cwd(),
+        "src",
+        "server",
+        "api",
+        "opt",
+        "flightDataStore",
+      );
+
+      const filePath = path.join(basePath, `flight_log_${input.iataCode}.csv`);
       if (!fs.existsSync(filePath)) {
-        console.error(`File not found: ${filePath}`);
+        console.error(`\n\nFile not found: ${filePath}\n\n`);
         return null;
       }
-      console.log(`Reading file: ${filePath}`);
+      console.log(`\n\nReading file: ${filePath}\n\n`);
       return new Promise((resolve, reject) => {
         const results: CsvRow[] = [];
         const readStream = fs.createReadStream(filePath);
@@ -540,7 +550,7 @@ export const mainRouter = createTRPCRouter({
         where: { place_id: input.placeId },
       });
     }),
-    
+
   updatePlace: publicProcedure
     .input(
       z.object({
