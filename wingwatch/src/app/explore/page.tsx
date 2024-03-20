@@ -67,7 +67,7 @@ function ExploreContent() {
   const handleSliderChangeComplete = () => {
     setRadius(Number(tempRadius));
     const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set("radius", String(tempRadius));
+    urlParams.set("radius", String(Math.round(Number(tempRadius))));
     window.history.pushState({}, "", "?" + urlParams.toString());
   };
 
@@ -287,9 +287,9 @@ function ExploreContent() {
           content: `<div><h1>${place.name}</h1>
                             <p>${place.address}</p>
                             <p>Airport: ${place.airport}</p>
-                            <p>Distance From Flightpath: ${place.distance_from_flightpath}</p>
-                            <p>Average Altitude: ${place.average_altitude}</p>
-                            <p>Distance From Airport: ${place.distance_from_airport}</p></div>`,
+                            ${place.distance_from_flightpath !== null ? `<p>Distance From Flightpath: ${(Math.round(place.distance_from_flightpath * 100) / 100).toFixed(2)} ${(Math.round(place.distance_from_flightpath * 100) / 100) === 1 ? 'mile' : 'miles'}</p>` : ''}
+                            <p>Average Altitude: ${Math.round(place.average_altitude)} ${Math.round(place.average_altitude) === 1 ? 'foot' : 'feet'}</p>
+                            ${place.distance_from_airport !== null ? `<p>Distance From Airport: ${(Math.round(place.distance_from_airport * 100) / 100).toFixed(2)} ${(Math.round(place.distance_from_airport * 100) / 100) === 1 ? 'mile' : 'miles'}</p>` : ''}</div>`,
         });
 
         marker.addListener("mouseover", () => {
@@ -447,7 +447,7 @@ function ExploreContent() {
                     textAlign: "right",
                   }}
                 >
-                  {tempRadius} {Number(tempRadius) > 1 ? "miles" : "mile"}
+                  {Math.round(Number(tempRadius))} {Math.round(Number(tempRadius)) > 1 ? "miles" : "mile"}
                 </span>
               </div>
             </h2>
@@ -496,12 +496,12 @@ function ExploreContent() {
                   {place.distance_from_flightpath && (
                     <p>
                       Distance from Flight Path:{" "}
-                      {place.distance_from_flightpath}
+                      {Math.round(place.distance_from_flightpath * 100) / 100} {Math.round(place.distance_from_flightpath * 100) / 100 === 1 ? "mile" : "miles"}
                     </p>
                   )}
                   <p>
                     Average Altitude: {place.altitude_estimated && "~"}
-                    {place.average_altitude}
+                    {Math.round(place.average_altitude)} {Math.round(place.average_altitude) === 1 ? "foot" : "feet"}
                   </p>
                   <Link href={`/place/?id=${place.place_id}`}>
                     <span className="cursor-pointer text-blue-500 hover:text-blue-700">

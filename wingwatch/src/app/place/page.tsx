@@ -74,7 +74,7 @@ function PlaceContent() {
         },
       },
     );
-  }
+  };
 
   const reviews = placeQuery.data?.reviews;
   let totalRating;
@@ -169,16 +169,24 @@ function PlaceContent() {
             </div>
             <p className="mt-2">Located at: {placeQuery.data?.address}</p>
             <p className="mt-2">Airport: {placeQuery.data?.airport}</p>
-            <p className="mt-2">
-              Distance from the Flightpath:{" "}
-              {placeQuery.data?.distance_from_flightpath}
-            </p>
-            <p className="mt-2">
-              Average Altitude: {placeQuery.data?.average_altitude}
-            </p>
-            <p className="mt-2">
-              Distance from Airport: {placeQuery.data?.distance_from_airport}
-            </p>
+            {placeQuery.data?.distance_from_flightpath && (
+              <p className="mt-2">
+                Distance from Flightpath {placeQuery.data?.path_id}:{" "}
+                {Math.round(placeQuery.data.distance_from_flightpath * 100) /
+                  100} {Math.round(placeQuery.data.distance_from_flightpath * 100) / 100 === 1 ? "mile" : "miles"}
+              </p>
+            )}
+            {placeQuery.data?.average_altitude && (
+              <p>
+                Average Altitude: {placeQuery.data?.altitude_estimated && "~"}
+                {Math.round(placeQuery.data?.average_altitude)} {Math.round(placeQuery.data?.average_altitude) === 1 ? "foot" : "feet"}
+              </p>
+            )}
+            {placeQuery.data?.distance_from_airport && (
+              <p className="mt-2">
+                Distance from Airport: {Math.round(placeQuery.data.distance_from_airport * 100) / 100} {Math.round(placeQuery.data.distance_from_airport * 100) / 100 === 1 ? "mile" : "miles"}
+              </p>
+            )}
 
             {/* Gap and Rating section with header */}
             <div className="mt-8 text-center">

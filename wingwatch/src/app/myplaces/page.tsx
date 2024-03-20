@@ -65,12 +65,18 @@ export default function MyPlaces() {
                   {place.distance_from_flightpath && (
                     <p>
                       Distance from Flight Path:{" "}
-                      {place.distance_from_flightpath}
+                      {Math.round(place.distance_from_flightpath * 100) / 100}{" "}
+                      {Math.round(place.distance_from_flightpath * 100) /
+                        100 ===
+                      1
+                        ? "mile"
+                        : "miles"}
                     </p>
                   )}
                   <p>
                     Average Altitude: {place.altitude_estimated && "~"}
-                    {place.average_altitude}
+                    {Math.round(place.average_altitude)}{" "}
+                    {Math.round(place.average_altitude) === 1 ? "foot" : "feet"}
                   </p>
                   <Link href={`/place/?id=${place.place_id}`}>
                     <span className="text-blue-500 hover:text-blue-700">
@@ -111,12 +117,18 @@ export default function MyPlaces() {
                   {place.distance_from_flightpath && (
                     <p>
                       Distance from Flight Path:{" "}
-                      {place.distance_from_flightpath}
+                      {Math.round(place.distance_from_flightpath * 100) / 100}{" "}
+                      {Math.round(place.distance_from_flightpath * 100) /
+                        100 ===
+                      1
+                        ? "mile"
+                        : "miles"}
                     </p>
                   )}
                   <p>
                     Average Altitude: {place.altitude_estimated && "~"}
-                    {place.average_altitude}
+                    {Math.round(place.average_altitude)}{" "}
+                    {Math.round(place.average_altitude) === 1 ? "foot" : "feet"}
                   </p>
                   <Link href={`/place/?id=${place.place_id}`}>
                     <span className="text-blue-500 hover:text-blue-700">

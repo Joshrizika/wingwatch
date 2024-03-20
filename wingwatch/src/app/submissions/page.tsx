@@ -89,7 +89,8 @@ export default function Submissions() {
           ? popUpPlace.distance_from_flightpath
           : undefined,
         averageAltitude: popUpPlace.average_altitude,
-        altitudeEstimated: popUpPlace.average_altitude !== submittedAltitude ? true : undefined,
+        altitudeEstimated:
+          popUpPlace.average_altitude !== submittedAltitude ? true : undefined,
         distanceFromAirport: popUpPlace.distance_from_airport
           ? popUpPlace.distance_from_airport
           : undefined,
@@ -124,12 +125,18 @@ export default function Submissions() {
                 {place.airport && <p>Airport: {place.airportDetails?.name}</p>}
                 {place.distance_from_flightpath && (
                   <p>
-                    Distance from Flight Path: {place.distance_from_flightpath}
+                    Distance from Flight Path:{" "}
+                    {Math.round(place.distance_from_flightpath * 100) / 100}{" "}
+                    {Math.round(place.distance_from_flightpath * 100) / 100 ===
+                    1
+                      ? "mile"
+                      : "miles"}
                   </p>
                 )}
                 <p>
                   Average Altitude: {place.altitude_estimated && "~"}
-                  {place.average_altitude}
+                  {Math.round(place.average_altitude)}{" "}
+                  {Math.round(place.average_altitude) === 1 ? "foot" : "feet"}
                 </p>
                 {place.isUserSubmitted && (
                   <p>Submitted By: {place.submittedUser?.name}</p>
