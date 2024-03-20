@@ -229,6 +229,13 @@ export const mainRouter = createTRPCRouter({
         },
       });
     }),
+  deleteUser: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input }) => {
+      await db.user.delete({
+        where: { id: input.id },
+      });
+    }),
 
   //My Places Page
 
@@ -555,14 +562,14 @@ export const mainRouter = createTRPCRouter({
         placeId: z.string(),
         name: z.string(),
         address: z.string(),
-        description: z.string().optional(),
-        pathId: z.string().optional(),
-        googleMapsURI: z.string().optional(),
-        iataCode: z.string().optional(),
-        distanceFromFlightpath: z.number().optional(),
+        description: z.string().nullable(),
+        pathId: z.string().nullable(),
+        googleMapsURI: z.string().nullable(),
+        iataCode: z.string().nullable(),
+        distanceFromFlightpath: z.number().nullable(),
         averageAltitude: z.number(),
-        altitudeEstimated: z.boolean().optional(),
-        distanceFromAirport: z.number().optional(),
+        altitudeEstimated: z.boolean(),
+        distanceFromAirport: z.number().nullable(),
       }),
     )
     .mutation(async ({ input }) => {

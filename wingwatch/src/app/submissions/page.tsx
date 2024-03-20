@@ -52,6 +52,9 @@ export default function Submissions() {
   const [submittedAltitude, setSubmittedAltitude] = useState<number | null>(
     null,
   );
+  const [nameError, setNameError] = useState<string | null>(null);
+  const [pathError, setPathError] = useState<string | null>(null);
+  const [iataError, setIataError] = useState<string | null>(null);
 
   if (sessionLoading || submittedPlacesQuery.isLoading) {
     return <div>Loading...</div>;
@@ -73,32 +76,64 @@ export default function Submissions() {
 
   const updatePlace = async () => {
     if (popUpPlace) {
-      await updatePlaceMutation.mutateAsync({
-        placeId: popUpPlace.place_id,
-        name: popUpPlace.name,
-        address: popUpPlace.address,
-        description: popUpPlace.description
-          ? popUpPlace.description
-          : undefined,
-        pathId: popUpPlace.path_id ? popUpPlace.path_id : undefined,
-        googleMapsURI: popUpPlace.google_maps_uri
-          ? popUpPlace.google_maps_uri
-          : undefined,
-        iataCode: popUpPlace.airport ? popUpPlace.airport : undefined,
-        distanceFromFlightpath: popUpPlace.distance_from_flightpath
-          ? popUpPlace.distance_from_flightpath
-          : undefined,
-        averageAltitude: popUpPlace.average_altitude,
-        altitudeEstimated:
-          popUpPlace.average_altitude !== submittedAltitude ? true : undefined,
-        distanceFromAirport: popUpPlace.distance_from_airport
-          ? popUpPlace.distance_from_airport
-          : undefined,
-      });
-      void submittedPlacesQuery.refetch();
-      setPopUpOpen(false);
-      setPopUpPlace(null);
-      setSubmittedAltitude(null);
+      try {
+        if (!popUpPlace.name) {
+          setNameError("Name is required");
+          return;
+        }
+        if (popUpPlace.path_id && popUpPlace.airport) {
+          if (popUpPlace.path_id.slice(0, 3) !== popUpPlace.airport) {
+            setPathError(`Path ID and IATA Code do not match`);
+            return;
+          }
+        }
+
+        await updatePlaceMutation.mutateAsync({
+          placeId: popUpPlace.place_id,
+          name: popUpPlace.name,
+          address: popUpPlace.address,
+          description: popUpPlace.description ? popUpPlace.description : null,
+          pathId: popUpPlace.path_id ? popUpPlace.path_id : null,
+          googleMapsURI: popUpPlace.google_maps_uri
+            ? popUpPlace.google_maps_uri
+            : null,
+          iataCode: popUpPlace.airport ? popUpPlace.airport : null,
+          distanceFromFlightpath: popUpPlace.distance_from_flightpath
+            ? popUpPlace.distance_from_flightpath
+            : null,
+          averageAltitude: popUpPlace.average_altitude,
+          altitudeEstimated:
+            popUpPlace.average_altitude !== submittedAltitude
+              ? true
+              : false,
+          distanceFromAirport: popUpPlace.distance_from_airport
+            ? popUpPlace.distance_from_airport
+            : null,
+        });
+        void submittedPlacesQuery.refetch();
+        setPopUpOpen(false);
+        setPopUpPlace(null);
+        setSubmittedAltitude(null);
+        setNameError(null);
+        setPathError(null);
+        setIataError(null);
+      } catch (error) {
+        setNameError(null);
+        setPathError(null);
+        setIataError(null);
+        if (
+          error instanceof Error &&
+          error.message.includes("places_path_id_fkey")
+        ) {
+          setPathError("Please enter a valid Path ID");
+        }
+        if (
+          error instanceof Error &&
+          error.message.includes("places_airport_fkey")
+        ) {
+          setIataError("Please enter a valid IATA Code");
+        }
+      }
     }
   };
 
@@ -197,6 +232,9 @@ export default function Submissions() {
                 setPopUpOpen(false);
                 setPopUpPlace(null);
                 setSubmittedAltitude(null);
+                setNameError(null);
+                setPathError(null);
+                setIataError(null);
               }}
               style={{
                 position: "absolute",
@@ -235,6 +273,7 @@ export default function Submissions() {
                         minWidth: "400px",
                       }}
                     />
+                    {nameError && <p style={{ color: "red" }}>{nameError}</p>}
                     <label>Address:</label>
                     <input
                       type="text"
@@ -278,7 +317,7 @@ export default function Submissions() {
                       onChange={(e) =>
                         setPopUpPlace({
                           ...popUpPlace,
-                          path_id: e.target.value,
+                          path_id: e.target.value ?? null,
                         })
                       }
                       style={{
@@ -287,6 +326,7 @@ export default function Submissions() {
                         minWidth: "400px",
                       }}
                     />
+                    {pathError && <p style={{ color: "red" }}>{pathError}</p>}
                     <label>Google Maps URI:</label>
                     <input
                       type="text"
@@ -319,6 +359,7 @@ export default function Submissions() {
                         minWidth: "400px",
                       }}
                     />
+                    {iataError && <p style={{ color: "red" }}>{iataError}</p>}
                     <label>Distance from Flightpath:</label>
                     <input
                       type="number"
