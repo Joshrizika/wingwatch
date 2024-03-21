@@ -112,7 +112,6 @@ export default function Place() {
   return (
     <>
       <Navbar />
-
       <div className="mx-auto max-w-4xl p-4">
         <section className="mb-8">
           <h2 className="mb-2 text-2xl font-bold">

@@ -9,11 +9,12 @@ import { api } from "~/trpc/react";
 import { format } from "date-fns";
 import { useState } from "react";
 import { Suspense } from "react";
+import Loading from "../_components/Loading";
 
 export default function Place() {
   // Wrap the component or the specific logic that requires useSearchParams within Suspense
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loading />}>
       <PlaceContent />
     </Suspense>
   );
@@ -21,7 +22,8 @@ export default function Place() {
 
 function PlaceContent() {
   const id = useSearchParams().get("id");
-  const session = api.main.getSession.useQuery().data;
+  const sessionQuery = api.main.getSession.useQuery();
+  const session = sessionQuery.data;
   const placeQuery = api.main.findPlace.useQuery({ id: id! });
   const isPlaceSavedQuery = api.main.isPlaceSavedByUser.useQuery(
     {
@@ -153,7 +155,11 @@ function PlaceContent() {
       document.body.removeChild(script);
       delete window.initMap;
     };
-  }, [placeQuery.data]);
+  }, [placeQuery.data, isPlaceSavedQuery.data]);
+
+  if (placeQuery.isLoading || isPlaceSavedQuery.isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -173,18 +179,32 @@ function PlaceContent() {
               <p className="mt-2">
                 Distance from Flightpath {placeQuery.data?.path_id}:{" "}
                 {Math.round(placeQuery.data.distance_from_flightpath * 100) /
-                  100} {Math.round(placeQuery.data.distance_from_flightpath * 100) / 100 === 1 ? "mile" : "miles"}
+                  100}{" "}
+                {Math.round(placeQuery.data.distance_from_flightpath * 100) /
+                  100 ===
+                1
+                  ? "mile"
+                  : "miles"}
               </p>
             )}
             {placeQuery.data?.average_altitude && (
               <p>
                 Average Altitude: {placeQuery.data?.altitude_estimated && "~"}
-                {Math.round(placeQuery.data?.average_altitude)} {Math.round(placeQuery.data?.average_altitude) === 1 ? "foot" : "feet"}
+                {Math.round(placeQuery.data?.average_altitude)}{" "}
+                {Math.round(placeQuery.data?.average_altitude) === 1
+                  ? "foot"
+                  : "feet"}
               </p>
             )}
             {placeQuery.data?.distance_from_airport && (
               <p className="mt-2">
-                Distance from Airport: {Math.round(placeQuery.data.distance_from_airport * 100) / 100} {Math.round(placeQuery.data.distance_from_airport * 100) / 100 === 1 ? "mile" : "miles"}
+                Distance from Airport:{" "}
+                {Math.round(placeQuery.data.distance_from_airport * 100) / 100}{" "}
+                {Math.round(placeQuery.data.distance_from_airport * 100) /
+                  100 ===
+                1
+                  ? "mile"
+                  : "miles"}
               </p>
             )}
 

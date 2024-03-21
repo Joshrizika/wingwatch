@@ -3,6 +3,7 @@
 import { api } from "~/trpc/react";
 import Navbar from "../_components/Navbar";
 import Link from "next/link";
+import Loading from "../_components/Loading";
 
 export default function MyPlaces() {
   const session = api.main.getSession.useQuery().data;
@@ -32,8 +33,7 @@ export default function MyPlaces() {
   if (savedLoading || contributedLoading) {
     return (
       <>
-        <Navbar />
-        <div>Loading...</div>
+        <Loading />
       </>
     );
   }

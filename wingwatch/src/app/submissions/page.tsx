@@ -4,7 +4,7 @@ import Navbar from "../_components/Navbar";
 import { api } from "~/trpc/react";
 import React, { useState } from "react";
 import Image from "next/image";
-
+import Loading from "../_components/Loading";
 interface Place {
   place_id: string;
   name: string;
@@ -57,7 +57,7 @@ export default function Submissions() {
   const [iataError, setIataError] = useState<string | null>(null);
 
   if (sessionLoading || submittedPlacesQuery.isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (!session?.user?.isAdmin) {

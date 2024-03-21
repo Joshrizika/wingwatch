@@ -4,6 +4,7 @@ import Navbar from "../_components/Navbar";
 import { api } from "~/trpc/react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Loading from "../_components/Loading";
 
 export default function Account() {
   const router = useRouter();
@@ -59,7 +60,7 @@ export default function Account() {
 
   // Optionally show a loading state or prevent form display until session data is loaded
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (

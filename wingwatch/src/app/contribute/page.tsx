@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Navbar from "../_components/Navbar";
 import { api } from "~/trpc/react";
 import ContributeLocationSearch from "../_components/ContributeLocationSearch";
+import Loading from "../_components/Loading";
 
 interface ILocation {
   latitude: number;
@@ -467,6 +468,10 @@ export default function Contribute() {
       setAverageAltitude(null);
     }
   };
+
+  if (pathsQuery.isLoading || airportsQuery.isLoading || getClosestPathMutation.isLoading || getClosestAirportMutation.isLoading || getAverageAltitudeMutation.isLoading || getNearbyPlacesMutation.isLoading || addPlaceMutation.isLoading) {
+    return <Loading />; 
+  }
 
   return (
     <>

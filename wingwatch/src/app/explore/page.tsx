@@ -8,6 +8,7 @@ import { Suspense } from "react";
 import ExploreLocationSearch from "../_components/ExploreLocationSearch";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Loading from "../_components/Loading";
 
 declare global {
   interface Window {
@@ -29,7 +30,7 @@ interface SearchOriginData {
 export default function Explore() {
   // Wrap the component or the specific logic that requires useSearchParams within Suspense
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loading />}>
       <ExploreContent />
     </Suspense>
   );
@@ -83,6 +84,13 @@ function ExploreContent() {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(({ coords }) => {
         setLocation({ latitude: coords.latitude, longitude: coords.longitude });
+      }, 
+      (error) => {
+        console.error('Geolocation Error:', error);
+      }, 
+      {
+        enableHighAccuracy: false,
+        maximumAge: Infinity
       });
     }
   }, []);
@@ -404,6 +412,10 @@ function ExploreContent() {
     radius,
     filteredPlacesQuery.data,
   ]);
+
+  if (pathsQuery.isLoading || airportsQuery.isLoading || placesQuery.isLoading || filteredPlacesQuery.isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
