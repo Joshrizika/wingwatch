@@ -51,6 +51,9 @@ function ExploreContent() {
   const pathsQuery = api.main.findPaths.useQuery();
   const airportsQuery = api.main.findAirports.useQuery();
   const [location, setLocation] = useState<ILocation | undefined>(undefined);
+  const [ipLocation, setIpLocation] = useState<ILocation | undefined>(
+    undefined,
+  );
 
   const [radius, setRadius] = useState(searchParams.get("radius") ?? 30);
   const [tempRadius, setTempRadius] = useState(radius); // Temporary radius state
@@ -81,19 +84,42 @@ function ExploreContent() {
   };
 
   useEffect(() => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(({ coords }) => {
-        setLocation({ latitude: coords.latitude, longitude: coords.longitude });
-      }, 
-      (error) => {
-        console.error('Geolocation Error:', error);
-      }, 
-      {
-        enableHighAccuracy: false,
-        maximumAge: Infinity
+    fetch("https://get.geojs.io/v1/ip/geo.json")
+      .then((response) => response.json())
+      .then((data: { latitude: string; longitude: string }) => {
+        setIpLocation({
+          latitude: parseFloat(data.latitude),
+          longitude: parseFloat(data.longitude),
+        });
+      })
+      .catch((error) => {
+        console.error("IP Location Error:", error);
+        // Use Boston as fallback if IP location fails
+        setIpLocation({ latitude: 42.3601, longitude: -71.0589 });
       });
+  }, []);
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        ({ coords }) => {
+          setLocation({
+            latitude: coords.latitude,
+            longitude: coords.longitude,
+          });
+        },
+        (error) => {
+          console.error("Geolocation Error:", error);
+        },
+        {
+          enableHighAccuracy: false,
+          maximumAge: Infinity,
+        },
+      );
     }
   }, []);
+
+  const effectiveLocation = location ?? ipLocation;
 
   const placesQuery = api.main.findPlaces.useQuery(
     {
@@ -178,230 +204,234 @@ function ExploreContent() {
   }
 
   useEffect(() => {
-    const center = searchOriginLocation
-      ? {
-          lat: searchOriginLocation.latitude,
-          lng: searchOriginLocation.longitude,
-        }
-      : {
-          lat: location?.latitude ?? 42.3601,
-          lng: location?.longitude ?? -71.0589,
-        };
-
-    const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAXt99dXCkF4UFgLWPckl6pKzfCwc792ts&loading=async&callback=initMap`;
-    script.async = true;
-    document.body.appendChild(script);
-
-    window.initMap = function () {
-      let map: google.maps.Map | null = null;
-
-      const mapElement = document.getElementById("map")!;
-
-      if (mapElement) {
-        map = new google.maps.Map(mapElement, {
-          center: center,
-          zoom: calculateZoomLevel(
-            Number(radius),
-            mapElement.clientHeight,
-            center.lat,
-          ),
-        });
-      }
-
-      // Your location marker
-      if (location)
-        new google.maps.Marker({
-          position: {
-            lat: location.latitude,
-            lng: location.longitude,
-          },
-          map,
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 7,
-            fillColor: "#4285F4",
-            fillOpacity: 1,
-            strokeColor: "white",
-            strokeWeight: 2,
-          },
-          title: "You are here",
-        });
-
-      // Place markers
-      if (searchOriginLocation) {
-        new google.maps.Marker({
-          position: {
+    if (effectiveLocation) {
+      const center = searchOriginLocation
+        ? {
             lat: searchOriginLocation.latitude,
             lng: searchOriginLocation.longitude,
-          },
-          map,
-          icon: {
-            url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
-          },
-          title: "Search Origin",
-        });
-      }
+          }
+        : {
+            lat: location?.latitude ?? ipLocation?.latitude ?? 50.3601,
+            lng: location?.longitude ?? ipLocation?.longitude ?? -71.0589,
+          };
 
-      // Circle
-      const circle = new google.maps.Circle({
-        strokeColor: "#0000FF",
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: "#0000FF",
-        fillOpacity: 0.35,
-        map,
-        center: center,
-        radius: Number(radius) * 1609.34, // Convert radius from miles to meters
-        visible: false, // Initially hidden
-      });
+      const script = document.createElement("script");
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAXt99dXCkF4UFgLWPckl6pKzfCwc792ts&loading=async&callback=initMap`;
+      script.async = true;
+      document.body.appendChild(script);
 
-      // Show circle when the slider is clicked
-      if (sliderRef.current) {
-        sliderRef.current.addEventListener("mousedown", () => {
-          if (circle) circle.setVisible(true);
-        });
+      window.initMap = function () {
+        let map: google.maps.Map | null = null;
 
-        // Hide circle when the slider is released
-        sliderRef.current.addEventListener("mouseup", () => {
-          if (circle) circle.setVisible(false);
-        });
+        const mapElement = document.getElementById("map")!;
 
-        // Update circle radius when the slider is moved
-        sliderRef.current.addEventListener("input", (e: Event) => {
-          const target = e.target as HTMLInputElement;
-          if (circle && target)
-            circle.setRadius(Number(target.value) * 1609.34);
-        });
-      }
-
-      const markers = new Map(); // Store markers to access later
-
-      placesQuery.data?.forEach((place) => {
-        const marker = new google.maps.Marker({
-          position: { lat: place.latitude, lng: place.longitude },
-          map,
-          title: place.name,
-          icon: {
-            url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-            scaledSize: new google.maps.Size(40, 40),
-          },
-        });
-
-        markers.set(place.place_id, marker); // Store marker in the map
-
-        // Info window for each place
-        const infowindow = new google.maps.InfoWindow({
-          content: `<div><h1>${place.name}</h1>
-                            <p>${place.address}</p>
-                            <p>Airport: ${place.airport}</p>
-                            ${place.distance_from_flightpath !== null ? `<p>Distance From Flightpath: ${(Math.round(place.distance_from_flightpath * 100) / 100).toFixed(2)} ${(Math.round(place.distance_from_flightpath * 100) / 100) === 1 ? 'mile' : 'miles'}</p>` : ''}
-                            <p>Average Altitude: ${Math.round(place.average_altitude)} ${Math.round(place.average_altitude) === 1 ? 'foot' : 'feet'}</p>
-                            ${place.distance_from_airport !== null ? `<p>Distance From Airport: ${(Math.round(place.distance_from_airport * 100) / 100).toFixed(2)} ${(Math.round(place.distance_from_airport * 100) / 100) === 1 ? 'mile' : 'miles'}</p>` : ''}</div>`,
-        });
-
-        marker.addListener("mouseover", () => {
-          infowindow.open(map, marker);
-        });
-
-        marker.addListener("mouseout", () => {
-          infowindow.close();
-        });
-
-        marker.addListener("click", () => {
-          router.push(`/place?id=${place.place_id}`);
-        });
-      });
-
-      // Add hover event listener to each place card
-      filteredPlacesQuery.data?.forEach((place) => {
-        const placeCard = document.getElementById(`place-${place.place_id}`);
-        if (placeCard) {
-          placeCard.addEventListener("mouseover", () => {
-            const marker = markers.get(place.place_id) as
-              | google.maps.Marker
-              | undefined;
-            if (marker) {
-              marker.setIcon({
-                url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                scaledSize: new google.maps.Size(80, 80), // double the size
-              });
-            }
-          });
-
-          placeCard.addEventListener("mouseout", () => {
-            const marker = markers.get(place.place_id) as
-              | google.maps.Marker
-              | undefined;
-            if (marker) {
-              marker.setIcon({
-                url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                scaledSize: new google.maps.Size(40, 40), // back to normal size
-              });
-            }
+        if (mapElement) {
+          map = new google.maps.Map(mapElement, {
+            center: center,
+            zoom: calculateZoomLevel(
+              Number(radius),
+              mapElement.clientHeight,
+              center.lat,
+            ),
           });
         }
-      });
 
-      pathsQuery.data?.forEach((path) => {
-        const pathPoints = path.latitude.map((lat, index) => ({
-          lat,
-          lng: path.longitude[index]!,
-        }));
+        // Your location marker
+        if (location)
+          new google.maps.Marker({
+            position: {
+              lat: location.latitude,
+              lng: location.longitude,
+            },
+            map,
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 7,
+              fillColor: "#4285F4",
+              fillOpacity: 1,
+              strokeColor: "white",
+              strokeWeight: 2,
+            },
+            title: "You are here",
+          });
 
-        const polyline = new google.maps.Polyline({
-          path: pathPoints,
-          geodesic: true,
+        // Place markers
+        if (searchOriginLocation) {
+          new google.maps.Marker({
+            position: {
+              lat: searchOriginLocation.latitude,
+              lng: searchOriginLocation.longitude,
+            },
+            map,
+            icon: {
+              url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+            },
+            title: "Search Origin",
+          });
+        }
+
+        // Circle
+        const circle = new google.maps.Circle({
           strokeColor: "#0000FF",
-          strokeOpacity: 1.0,
+          strokeOpacity: 0.8,
           strokeWeight: 2,
+          fillColor: "#0000FF",
+          fillOpacity: 0.35,
           map,
+          center: center,
+          radius: Number(radius) * 1609.34, // Convert radius from miles to meters
+          visible: false, // Initially hidden
         });
 
-        polyline.addListener("click", () => {
-          setSelectedPath(path.path_id);
-          setSelectedAirport(null);
-        });
-      });
+        // Show circle when the slider is clicked
+        if (sliderRef.current) {
+          sliderRef.current.addEventListener("mousedown", () => {
+            if (circle) circle.setVisible(true);
+          });
 
-      airportsQuery.data?.forEach((airport) => {
-        const marker = new google.maps.Marker({
-          position: { lat: airport.latitude, lng: airport.longitude },
-          map,
-          title: airport.name,
-          icon: {
-            url: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
-            scaledSize: new google.maps.Size(50, 50), // back to normal size
-          },
+          // Hide circle when the slider is released
+          sliderRef.current.addEventListener("mouseup", () => {
+            if (circle) circle.setVisible(false);
+          });
+
+          // Update circle radius when the slider is moved
+          sliderRef.current.addEventListener("input", (e: Event) => {
+            const target = e.target as HTMLInputElement;
+            if (circle && target)
+              circle.setRadius(Number(target.value) * 1609.34);
+          });
+        }
+
+        const markers = new Map(); // Store markers to access later
+
+        placesQuery.data?.forEach((place) => {
+          const marker = new google.maps.Marker({
+            position: { lat: place.latitude, lng: place.longitude },
+            map,
+            title: place.name,
+            icon: {
+              url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+              scaledSize: new google.maps.Size(40, 40),
+            },
+          });
+
+          markers.set(place.place_id, marker); // Store marker in the map
+
+          // Info window for each place
+          const infowindow = new google.maps.InfoWindow({
+            content: `<div><h1>${place.name}</h1>
+                            <p>${place.address}</p>
+                            <p>Airport: ${place.airport}</p>
+                            ${place.distance_from_flightpath !== null ? `<p>Distance From Flightpath: ${(Math.round(place.distance_from_flightpath * 100) / 100).toFixed(2)} ${Math.round(place.distance_from_flightpath * 100) / 100 === 1 ? "mile" : "miles"}</p>` : ""}
+                            <p>Average Altitude: ${Math.round(place.average_altitude)} ${Math.round(place.average_altitude) === 1 ? "foot" : "feet"}</p>
+                            ${place.distance_from_airport !== null ? `<p>Distance From Airport: ${(Math.round(place.distance_from_airport * 100) / 100).toFixed(2)} ${Math.round(place.distance_from_airport * 100) / 100 === 1 ? "mile" : "miles"}</p>` : ""}</div>`,
+          });
+
+          marker.addListener("mouseover", () => {
+            infowindow.open(map, marker);
+          });
+
+          marker.addListener("mouseout", () => {
+            infowindow.close();
+          });
+
+          marker.addListener("click", () => {
+            router.push(`/place?id=${place.place_id}`);
+          });
         });
 
-        marker.addListener("click", () => {
-          setSelectedAirport(airport.iata_code);
-          setSelectedPath(null);
+        // Add hover event listener to each place card
+        filteredPlacesQuery.data?.forEach((place) => {
+          const placeCard = document.getElementById(`place-${place.place_id}`);
+          if (placeCard) {
+            placeCard.addEventListener("mouseover", () => {
+              const marker = markers.get(place.place_id) as
+                | google.maps.Marker
+                | undefined;
+              if (marker) {
+                marker.setIcon({
+                  url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                  scaledSize: new google.maps.Size(80, 80), // double the size
+                });
+              }
+            });
+
+            placeCard.addEventListener("mouseout", () => {
+              const marker = markers.get(place.place_id) as
+                | google.maps.Marker
+                | undefined;
+              if (marker) {
+                marker.setIcon({
+                  url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                  scaledSize: new google.maps.Size(40, 40), // back to normal size
+                });
+              }
+            });
+          }
         });
 
-        // Info window for each airport
-        const infowindow = new google.maps.InfoWindow({
-          content: `<div><h1>${airport.name}</h1>
+        pathsQuery.data?.forEach((path) => {
+          const pathPoints = path.latitude.map((lat, index) => ({
+            lat,
+            lng: path.longitude[index]!,
+          }));
+
+          const polyline = new google.maps.Polyline({
+            path: pathPoints,
+            geodesic: true,
+            strokeColor: "#0000FF",
+            strokeOpacity: 1.0,
+            strokeWeight: 2,
+            map,
+          });
+
+          polyline.addListener("click", () => {
+            setSelectedPath(path.path_id);
+            setSelectedAirport(null);
+          });
+        });
+
+        airportsQuery.data?.forEach((airport) => {
+          const marker = new google.maps.Marker({
+            position: { lat: airport.latitude, lng: airport.longitude },
+            map,
+            title: airport.name,
+            icon: {
+              url: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
+              scaledSize: new google.maps.Size(50, 50), // back to normal size
+            },
+          });
+
+          marker.addListener("click", () => {
+            setSelectedAirport(airport.iata_code);
+            setSelectedPath(null);
+          });
+
+          // Info window for each airport
+          const infowindow = new google.maps.InfoWindow({
+            content: `<div><h1>${airport.name}</h1>
                             <p>IATA Code: ${airport.iata_code}</p>
                             <p>Elevation: ${airport.elevation}</p></div>`,
-        });
+          });
 
-        marker.addListener("mouseover", () => {
-          infowindow.open(map, marker);
-        });
+          marker.addListener("mouseover", () => {
+            infowindow.open(map, marker);
+          });
 
-        marker.addListener("mouseout", () => {
-          infowindow.close();
+          marker.addListener("mouseout", () => {
+            infowindow.close();
+          });
         });
-      });
-    };
+      };
 
-    return () => {
-      document.body.removeChild(script);
-      delete window.initMap;
-    };
+      return () => {
+        document.body.removeChild(script);
+        delete window.initMap;
+      };
+    }
   }, [
+    effectiveLocation,
+    ipLocation,
     placesQuery.data,
     pathsQuery.data,
     location,
@@ -413,7 +443,12 @@ function ExploreContent() {
     filteredPlacesQuery.data,
   ]);
 
-  if (pathsQuery.isLoading || airportsQuery.isLoading || placesQuery.isLoading || filteredPlacesQuery.isLoading) {
+  if (
+    pathsQuery.isLoading ||
+    airportsQuery.isLoading ||
+    placesQuery.isLoading ||
+    filteredPlacesQuery.isLoading
+  ) {
     return <Loading />;
   }
 
@@ -459,7 +494,8 @@ function ExploreContent() {
                     textAlign: "right",
                   }}
                 >
-                  {Math.round(Number(tempRadius))} {Math.round(Number(tempRadius)) > 1 ? "miles" : "mile"}
+                  {Math.round(Number(tempRadius))}{" "}
+                  {Math.round(Number(tempRadius)) > 1 ? "miles" : "mile"}
                 </span>
               </div>
             </h2>
@@ -495,7 +531,7 @@ function ExploreContent() {
                   <div className="flex items-center">
                     <h3 className="font-semibold">{place.name}</h3>
                     {place.isUserSubmitted && (
-                      <span className="text-yellow-500 bg-yellow-200 px-2 py-1 rounded ml-2">
+                      <span className="ml-2 rounded bg-yellow-200 px-2 py-1 text-yellow-500">
                         User Recommended
                       </span>
                     )}
@@ -508,12 +544,18 @@ function ExploreContent() {
                   {place.distance_from_flightpath && (
                     <p>
                       Distance from Flight Path:{" "}
-                      {Math.round(place.distance_from_flightpath * 100) / 100} {Math.round(place.distance_from_flightpath * 100) / 100 === 1 ? "mile" : "miles"}
+                      {Math.round(place.distance_from_flightpath * 100) / 100}{" "}
+                      {Math.round(place.distance_from_flightpath * 100) /
+                        100 ===
+                      1
+                        ? "mile"
+                        : "miles"}
                     </p>
                   )}
                   <p>
                     Average Altitude: {place.altitude_estimated && "~"}
-                    {Math.round(place.average_altitude)} {Math.round(place.average_altitude) === 1 ? "foot" : "feet"}
+                    {Math.round(place.average_altitude)}{" "}
+                    {Math.round(place.average_altitude) === 1 ? "foot" : "feet"}
                   </p>
                   <Link href={`/place/?id=${place.place_id}`}>
                     <span className="cursor-pointer text-blue-500 hover:text-blue-700">
