@@ -5,7 +5,7 @@ import Navbar from "../_components/Navbar";
 import { unstable_noStore as noStore } from "next/cache";
 import Image from "next/image";
 import { useState } from "react";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 interface Document {
   name: string;
@@ -208,12 +208,14 @@ export default function Place() {
           <h2 className="mb-2 text-2xl font-bold">GitHub</h2>
           <p className="text-gray-700">
             Visit our{" "}
-            <span 
-              onClick={() => router.push('https://github.com/GW-CS-SD-23-24/sd-team-josh')}
-              className="text-blue-600 transition duration-150 ease-in-out hover:text-blue-800 cursor-pointer"
+            <span
+              onClick={() =>
+                router.push("https://github.com/GW-CS-SD-23-24/sd-team-josh")
+              }
+              className="cursor-pointer text-blue-600 transition duration-150 ease-in-out hover:text-blue-800"
             >
               GitHub
-            </span>
+            </span>{" "}
             to learn more about the algorithms and structure that made this
             project possible.
           </p>
