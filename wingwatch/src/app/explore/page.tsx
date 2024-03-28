@@ -173,6 +173,30 @@ function ExploreContent() {
     iata_code: selectedAirport ?? undefined,
   });
 
+  function calculateDistance(
+    lat1: number,
+    lon1: number,
+    lat2: number,
+    lon2: number,
+  ): number {
+    const R = 3958.8; // Earth radius in miles
+    const dLat = toRadians(lat2 - lat1);
+    const dLon = toRadians(lon2 - lon1);
+    lat1 = toRadians(lat1);
+    lat2 = toRadians(lat2);
+  
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
+  
+  // Convert degree to radians
+  function toRadians(degree: number): number {
+    return degree * (Math.PI / 180);
+  }
+
   const [pageIsLoading, setPageIsLoading] = useState(true);
 
   const placesQuery = api.main.findPlaces.useQuery();
@@ -318,6 +342,12 @@ function ExploreContent() {
                           ? "foot"
                           : "feet"}
                       </p>
+                      <p>Distance: {(() => {
+                        const originLat = searchOriginLocation ? searchOriginLocation.latitude : location.latitude;
+                        const originLon = searchOriginLocation ? searchOriginLocation.longitude : location.longitude;
+                        const distance = calculateDistance(originLat, originLon, place.latitude, place.longitude);
+                        return `${distance.toFixed(2)} ${distance.toFixed(2) === "1" ? "mile" : "miles"}`;
+                      })()}</p>
                       <Link href={`/place/?id=${place.place_id}`}>
                         <span className="cursor-pointer text-blue-500 hover:text-blue-700">
                           View Details
