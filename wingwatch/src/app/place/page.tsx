@@ -98,7 +98,7 @@ function PlaceContent() {
   useEffect(() => {
     // Dynamically load the Google Maps script with the initMap callback
     const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAXt99dXCkF4UFgLWPckl6pKzfCwc792ts&loading=async&callback=initMap`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&loading=async&callback=initMap`;
     script.async = true;
     document.body.appendChild(script);
 

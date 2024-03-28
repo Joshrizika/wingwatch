@@ -134,7 +134,7 @@ function ExploreContent() {
       fetch(`https://places.googleapis.com/v1/places/${selectedPlaceId}`, {
         headers: {
           "Content-Type": "application/json",
-          "X-Goog-Api-Key": "AIzaSyAXt99dXCkF4UFgLWPckl6pKzfCwc792ts",
+          "X-Goog-Api-Key": process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
           "X-Goog-FieldMask": "location",
         },
       })

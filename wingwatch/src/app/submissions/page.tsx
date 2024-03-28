@@ -413,7 +413,7 @@ export default function Submissions() {
                   </div>
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     <Image
-                      src={`https://maps.googleapis.com/maps/api/staticmap?center=${popUpPlace?.latitude},${popUpPlace?.longitude}&zoom=12&size=700x700&markers=color:red%7C${popUpPlace?.latitude},${popUpPlace?.longitude}&key=AIzaSyAXt99dXCkF4UFgLWPckl6pKzfCwc792ts`}
+                      src={`https://maps.googleapis.com/maps/api/staticmap?center=${popUpPlace?.latitude},${popUpPlace?.longitude}&zoom=12&size=700x700&markers=color:red%7C${popUpPlace?.latitude},${popUpPlace?.longitude}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`}
                       alt="Map"
                       width="600"
                       height="300"

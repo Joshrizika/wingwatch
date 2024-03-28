@@ -66,7 +66,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
   useEffect(() => {
     const initializeMap = (latitude: number, longitude: number) => {
       const loader = new Loader({
-        apiKey: "AIzaSyAXt99dXCkF4UFgLWPckl6pKzfCwc792ts",
+        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
         version: "weekly",
         libraries: ["places", "marker"],
       });
