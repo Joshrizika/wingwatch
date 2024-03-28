@@ -275,58 +275,64 @@ function ExploreContent() {
               }}
             >
               {/* Display of places */}
-              {filteredPlacesQuery.data?.length ? (
-                filteredPlacesQuery.data.map((place, index) => (
-                  <div
-                    key={index}
-                    className="mb-4 rounded border p-4"
-                    id={`place-${place.place_id}`}
-                    onMouseEnter={() => setHoveredPlace(place.place_id)} // Set hoveredPlace to the id of the place card
-                    onMouseLeave={() => setHoveredPlace(null)} // Set hoveredPlace back to null when not hovering
-                  >
-                    <div className="flex items-center">
-                      <h3 className="font-semibold">{place.name}</h3>
-                      {place.isUserSubmitted && (
-                        <span className="ml-2 rounded bg-yellow-200 px-2 py-1 text-yellow-500">
-                          User Recommended
-                        </span>
+              {location ? (
+                filteredPlacesQuery.data?.length ? (
+                  filteredPlacesQuery.data.map((place, index) => (
+                    <div
+                      key={index}
+                      className="mb-4 rounded border p-4"
+                      id={`place-${place.place_id}`}
+                      onMouseEnter={() => setHoveredPlace(place.place_id)}
+                      onMouseLeave={() => setHoveredPlace(null)}
+                    >
+                      <div className="flex items-center">
+                        <h3 className="font-semibold">{place.name}</h3>
+                        {place.isUserSubmitted && (
+                          <span className="ml-2 rounded bg-yellow-200 px-2 py-1 text-yellow-500">
+                            User Recommended
+                          </span>
+                        )}
+                      </div>
+                      {place.description && (
+                        <p>Description: {place.description}</p>
                       )}
-                    </div>
-                    {place.description && (
-                      <p>Description: {place.description}</p>
-                    )}
-                    <p>Address: {place.address}</p>
-                    {place.airport && (
-                      <p>Airport: {place.airportDetails?.name}</p>
-                    )}
-                    {place.distance_from_flightpath && (
+                      <p>Address: {place.address}</p>
+                      {place.airport && (
+                        <p>Airport: {place.airportDetails?.name}</p>
+                      )}
+                      {place.distance_from_flightpath && (
+                        <p>
+                          Distance from Flight Path:{" "}
+                          {Math.round(place.distance_from_flightpath * 100) / 100}{" "}
+                          {Math.round(place.distance_from_flightpath * 100) /
+                            100 ===
+                          1
+                            ? "mile"
+                            : "miles"}
+                        </p>
+                      )}
                       <p>
-                        Distance from Flight Path:{" "}
-                        {Math.round(place.distance_from_flightpath * 100) / 100}{" "}
-                        {Math.round(place.distance_from_flightpath * 100) /
-                          100 ===
-                        1
-                          ? "mile"
-                          : "miles"}
+                        Average Altitude: {place.altitude_estimated && "~"}
+                        {Math.round(place.average_altitude)}{" "}
+                        {Math.round(place.average_altitude) === 1
+                          ? "foot"
+                          : "feet"}
                       </p>
-                    )}
-                    <p>
-                      Average Altitude: {place.altitude_estimated && "~"}
-                      {Math.round(place.average_altitude)}{" "}
-                      {Math.round(place.average_altitude) === 1
-                        ? "foot"
-                        : "feet"}
-                    </p>
-                    <Link href={`/place/?id=${place.place_id}`}>
-                      <span className="cursor-pointer text-blue-500 hover:text-blue-700">
-                        View Details
-                      </span>
-                    </Link>
+                      <Link href={`/place/?id=${place.place_id}`}>
+                        <span className="cursor-pointer text-blue-500 hover:text-blue-700">
+                          View Details
+                        </span>
+                      </Link>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center">
+                    No places found within the selected radius.
                   </div>
-                ))
+                )
               ) : (
                 <div className="text-center">
-                  No places found within the selected radius.
+                  Finding your location...
                 </div>
               )}
             </div>
