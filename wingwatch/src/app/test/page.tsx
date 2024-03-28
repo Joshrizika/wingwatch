@@ -43,11 +43,6 @@ function ExploreContent() {
   const [selectedPath, setSelectedPath] = useState<string | null>(null);
   const [selectedAirport, setSelectedAirport] = useState<string | null>(null);
 
-  const removeFilters = () => {
-    setSelectedPath(null);
-    setSelectedAirport(null);
-  };
-
   const [radius, setRadius] = useState(searchParams.get("radius") ?? 30);
   const [tempRadius, setTempRadius] = useState(radius); // Temporary radius state
   const sliderRef = useRef<HTMLInputElement | null>(null); // Ref for the slider element
@@ -101,9 +96,7 @@ function ExploreContent() {
     }
   }, []);
 
-  const [ipLocation, setIpLocation] = useState<ILocation | undefined>(
-    undefined,
-  );
+  const [ipLocation, setIpLocation] = useState<ILocation | undefined>(undefined);
 
   useEffect(() => {
     fetch("https://get.geojs.io/v1/ip/geo.json")
@@ -204,134 +197,7 @@ function ExploreContent() {
 
   return (
     <>
-      <Navbar />
-      <div className="mt-5 flex flex-col gap-4 px-4 md:flex-row">
-        <div
-          className="w-full md:w-1/3 xl:w-1/3"
-          style={{ maxHeight: "80vh", minHeight: "80vh" }}
-        >
-          {/* Non-scrollable Header and Slider Bar */}
-          <div className="mb-4">
-            <h2 className="flex items-center justify-between text-xl font-bold">
-              Nearby Places
-              <div className="flex items-center gap-2">
-                <ExploreLocationSearch
-                  onSearch={(placeId) => {
-                    setSelectedPlaceId(placeId);
-                    if (placeId === null) {
-                      setSearchOriginLocation(null);
-                    }
-                  }}
-                  placeName={searchParams.get("placeName") ?? undefined}
-                />
-
-                <input
-                  type="range"
-                  min="1"
-                  max="100"
-                  step=".1"
-                  value={tempRadius}
-                  onMouseDown={() => setSliderToggled(true)}
-                  onChange={handleSliderChange}
-                  onMouseUp={handleSliderChangeComplete}
-                  className="w-3/4"
-                  ref={sliderRef}
-                />
-                <span
-                  style={{
-                    fontWeight: "normal",
-                    fontSize: 15,
-                    width: "85px",
-                    textAlign: "right",
-                  }}
-                >
-                  {Math.round(Number(tempRadius))}{" "}
-                  {Math.round(Number(tempRadius)) > 1 ? "miles" : "mile"}
-                </span>
-              </div>
-            </h2>
-            {/* Sort By Dropdown */}
-            <div className="mb-4">
-              <label htmlFor="sort" className="mr-2">
-                Sort by:
-              </label>
-              <select id="sort" value={sortOption} onChange={handleSortChange}>
-                <option value="best">Best</option>
-                <option value="closest">Closest</option>
-                <option value="rating">Rating</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Scrollable Container for Places */}
-          {filteredPlacesQuery.isLoading ? (
-            <Loading />
-          ) : (
-            <div
-              className="overflow-auto rounded-lg border p-4"
-              style={{
-                maxHeight: "75vh",
-                minHeight: "75vh",
-              }}
-            >
-              {/* Display of places */}
-              {filteredPlacesQuery.data?.length ? (
-                filteredPlacesQuery.data.map((place, index) => (
-                  <div
-                    key={index}
-                    className="mb-4 rounded border p-4"
-                    id={`place-${place.place_id}`}
-                    onMouseEnter={() => setHoveredPlace(place.place_id)} // Set hoveredPlace to the id of the place card
-                    onMouseLeave={() => setHoveredPlace(null)} // Set hoveredPlace back to null when not hovering
-                  >
-                    <div className="flex items-center">
-                      <h3 className="font-semibold">{place.name}</h3>
-                      {place.isUserSubmitted && (
-                        <span className="ml-2 rounded bg-yellow-200 px-2 py-1 text-yellow-500">
-                          User Recommended
-                        </span>
-                      )}
-                    </div>
-                    {place.description && (
-                      <p>Description: {place.description}</p>
-                    )}
-                    <p>Address: {place.address}</p>
-                    {place.airport && (
-                      <p>Airport: {place.airportDetails?.name}</p>
-                    )}
-                    {place.distance_from_flightpath && (
-                      <p>
-                        Distance from Flight Path:{" "}
-                        {Math.round(place.distance_from_flightpath * 100) / 100}{" "}
-                        {Math.round(place.distance_from_flightpath * 100) /
-                          100 ===
-                        1
-                          ? "mile"
-                          : "miles"}
-                      </p>
-                    )}
-                    <p>
-                      Average Altitude: {place.altitude_estimated && "~"}
-                      {Math.round(place.average_altitude)}{" "}
-                      {Math.round(place.average_altitude) === 1
-                        ? "foot"
-                        : "feet"}
-                    </p>
-                    <Link href={`/place/?id=${place.place_id}`}>
-                      <span className="cursor-pointer text-blue-500 hover:text-blue-700">
-                        View Details
-                      </span>
-                    </Link>
-                  </div>
-                ))
-              ) : (
-                <div className="text-center">
-                  No places found within the selected radius.
-                </div>
-              )}
-            </div>
-          )}
-        </div>
+     
         <MapComponent
           location={location}
           ipLocation={ipLocation}
@@ -346,9 +212,8 @@ function ExploreContent() {
           airports={airportsQuery.data ?? []}
           selectedAirport={selectedAirport}
           setSelectedAirport={setSelectedAirport}
-          removeFilters={removeFilters}
+          pageIsLoading={pageIsLoading}
         />
-      </div>
     </>
   );
 }

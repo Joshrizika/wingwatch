@@ -5,6 +5,7 @@ import Navbar from "../_components/Navbar";
 import { api } from "~/trpc/react";
 import ContributeLocationSearch from "../_components/ContributeLocationSearch";
 import Loading from "../_components/Loading";
+import MapComponent from "../_components/ContributeMap";
 
 interface ILocation {
   latitude: number;
@@ -56,22 +57,44 @@ export default function Contribute() {
   const [newPlace, setNewPlace] = useState<NewPlace | null>(null);
   const [averageAltitude, setAverageAltitude] = useState<number | null>(null);
 
+  const [location, setLocation] = useState<ILocation | undefined>(undefined);
+
   useEffect(() => {
     if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(({ coords }) => {
-        const newLocation = {
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-        };
-        if (mapRef.current) {
-          const newCenter = {
-            lat: newLocation.latitude,
-            lng: newLocation.longitude,
-          };
-          mapRef.current.setCenter(newCenter);
-        }
-      });
+      navigator.geolocation.getCurrentPosition(
+        ({ coords }) => {
+          setLocation({
+            latitude: coords.latitude,
+            longitude: coords.longitude,
+          });
+        },
+        (error) => {
+          console.error("Geolocation Error:", error);
+        },
+        {
+          enableHighAccuracy: false,
+          maximumAge: Infinity,
+        },
+      );
     }
+  }, []);
+
+  const [ipLocation, setIpLocation] = useState<ILocation | undefined>(
+    undefined,
+  );
+
+  useEffect(() => {
+    fetch("https://get.geojs.io/v1/ip/geo.json")
+      .then((response) => response.json())
+      .then((data: ILocation) => {
+        setIpLocation({
+          latitude: data.latitude,
+          longitude: data.longitude,
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   }, []);
 
   useEffect(() => {
@@ -96,120 +119,6 @@ export default function Contribute() {
 
   const pathsQuery = api.main.findPaths.useQuery();
   const airportsQuery = api.main.findAirports.useQuery();
-
-  useEffect(() => {
-    // Dynamically load the Google Maps script with the initMap callback
-    const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAXt99dXCkF4UFgLWPckl6pKzfCwc792ts&loading=async&callback=initMap`;
-    script.async = true;
-    document.body.appendChild(script);
-
-    // Attach the initMap function to the window object
-    window.initMap = function () {
-      const initialCenter = {
-        lat: 42.3601,
-        lng: -71.0589,
-      };
-      const map = new google.maps.Map(document.getElementById("map")!, {
-        center: initialCenter,
-        zoom: 12,
-      });
-      mapRef.current = map;
-
-      google.maps.event.addListener(
-        map,
-        "click",
-        function (event: google.maps.MapMouseEvent) {
-          if (markerRef.current) {
-            markerRef.current.setMap(null);
-            markerRef.current = null;
-          }
-
-          const marker = new google.maps.Marker({
-            position: event.latLng,
-          });
-          marker.setMap(map);
-          markerRef.current = marker;
-          setMarkerPosition({
-            latitude: event.latLng!.lat(),
-            longitude: event.latLng!.lng(),
-          });
-          setPlace(null);
-          setMarkerError("");
-        },
-      );
-
-      pathsQuery.data?.forEach((path) => {
-        const pathPoints = path.latitude.map((lat, index) => ({
-          lat,
-          lng: path.longitude[index]!,
-        }));
-
-        const polyline = new google.maps.Polyline({
-          path: pathPoints,
-          geodesic: true,
-          strokeColor: "#0000FF",
-          strokeOpacity: 1.0,
-          strokeWeight: 2,
-        });
-        polyline.setMap(map);
-      });
-
-      airportsQuery.data?.forEach((airport) => {
-        const marker = new google.maps.Marker({
-          position: { lat: airport.latitude, lng: airport.longitude },
-          map,
-          title: airport.name,
-          icon: {
-            url: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
-            scaledSize: new google.maps.Size(50, 50),
-          },
-        });
-
-        const infowindow = new google.maps.InfoWindow({
-          content: `<div><h1>${airport.name}</h1>
-                            <p>IATA Code: ${airport.iata_code}</p>
-                            <p>Elevation: ${airport.elevation}</p></div>`,
-        });
-
-        marker.addListener("mouseover", () => {
-          infowindow.open(map, marker);
-        });
-
-        marker.addListener("mouseout", () => {
-          infowindow.close();
-        });
-      });
-    };
-
-    // Cleanup: Remove the script and clean up the window object
-    return () => {
-      document.body.removeChild(script);
-      delete window.initMap;
-    };
-  }, [pathsQuery.data, airportsQuery.data]);
-
-  useEffect(() => {
-    // This effect handles updating the map when `place` changes
-    if (place && mapRef.current) {
-      const newCenter = new google.maps.LatLng(
-        place.location.latitude,
-        place.location.longitude,
-      );
-      mapRef.current.setCenter(newCenter);
-      mapRef.current.setZoom(12); // Set zoom to 12 when a place is selected
-
-      if (markerRef.current) {
-        markerRef.current.setPosition(newCenter);
-      } else {
-        const marker = new google.maps.Marker({
-          position: newCenter,
-          map: mapRef.current,
-        });
-        markerRef.current = marker;
-      }
-    }
-  }, [place]); // Dependencies array now only contains `place`
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -469,8 +378,12 @@ export default function Contribute() {
     }
   };
 
-  if (pathsQuery.isLoading || airportsQuery.isLoading || getClosestPathMutation.isLoading || getClosestAirportMutation.isLoading || getAverageAltitudeMutation.isLoading || getNearbyPlacesMutation.isLoading || addPlaceMutation.isLoading) {
-    return <Loading />; 
+  if (
+    pathsQuery.isLoading ||
+    airportsQuery.isLoading ||
+    addPlaceMutation.isLoading
+  ) {
+    return <Loading />;
   }
 
   return (
@@ -508,7 +421,6 @@ export default function Contribute() {
             justifyContent: "center",
             width: "100%",
             alignItems: "center",
-            // marginTop: "-200px",
             overflowY: "auto", // Add a scrollbar to the inner div if necessary
             maxHeight: "calc(100vh - 80px)", // Subtract the height of the Navbar
           }}
@@ -576,6 +488,7 @@ export default function Contribute() {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
+              marginTop: "240px",
             }}
           >
             {markerError && <div style={{ color: "red" }}>{markerError}</div>}
@@ -585,16 +498,18 @@ export default function Contribute() {
             <h2>Search for a place</h2>
             <ContributeLocationSearch onSearch={handlePlaceSelection} />
             <h2>Or select the location on the map</h2>
-            <div
-              id="map"
-              className="h-full rounded-lg border"
-              style={{
-                height: "50vh",
-                width: "70vh",
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-              }}
-            ></div>
+
+            <MapComponent
+              location={location}
+              ipLocation={ipLocation}
+              paths={pathsQuery.data ?? []}
+              airports={airportsQuery.data ?? []}
+              markerRef={markerRef}
+              setMarkerPosition={setMarkerPosition}
+              place={place}
+              setPlace={setPlace}
+              setMarkerError={setMarkerError}
+            />
           </div>
         </div>
       </div>

@@ -58,24 +58,11 @@ export const mainRouter = createTRPCRouter({
     }),
 
   //Explore Page
-
-  findPlaces: publicProcedure
-    .input(
-      z.object({
-        pathId: z.string().optional(),
-        iata_code: z.string().optional(),
-      }),
-    ) // Input required for this procedure
-    .query(async ({ input }) => {
-      let whereClause = {};
-      if (input.pathId && input.pathId !== "") {
-        whereClause = { path: { path_id: input.pathId } };
-      } else if (input.iata_code && input.iata_code !== "") {
-        whereClause = { airport: input.iata_code };
-      }
+    findPlaces: publicProcedure
+    .input(z.void()) // No input required for this procedure
+    .query(async () => {
       const places = await db.places.findMany({
         where: {
-          ...whereClause,
           isVerified: true,
         },
       });
