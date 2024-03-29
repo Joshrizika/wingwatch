@@ -223,6 +223,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
             lat: searchOriginLocation.latitude,
             lng: searchOriginLocation.longitude,
           });
+          mapRef.current.setZoom(12);
         } else {
           searchOriginLocationMarkerRef.current.setPosition(
             new google.maps.LatLng(
@@ -235,6 +236,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
             lat: searchOriginLocation.latitude,
             lng: searchOriginLocation.longitude,
           });
+          mapRef.current.setZoom(12);
         }
       } else if (searchOriginLocationMarkerRef.current) {
         // Remove the marker if searchOriginLocation is null
