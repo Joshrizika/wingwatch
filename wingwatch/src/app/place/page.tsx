@@ -155,8 +155,6 @@ function PlaceContent() {
               url: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
             },
           });
-        } else {
-          console.error("Map already initialized");
         }
       })
       .catch((e) => {

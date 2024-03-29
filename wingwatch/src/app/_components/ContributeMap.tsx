@@ -128,11 +128,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
                   setMarkerError("");
                 },
               );
-            } else {
-              console.error("Map already initialized");
             }
-          } else {
-            console.error("Map element not found");
           }
         })
         .catch((e) => {
@@ -143,7 +139,6 @@ const MapComponent: React.FC<MapComponentProps> = ({
       initializeMap(Number(ipLocation.latitude), Number(ipLocation.longitude));
     }
   }, [ipLocation, markerRef, setMarkerPosition, setPlace, setMarkerError]);
-
 
   // Handle location update
   useEffect(() => {

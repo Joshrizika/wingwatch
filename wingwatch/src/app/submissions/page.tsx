@@ -198,8 +198,6 @@ export default function Submissions() {
               });
             });
             setIsMapInitialized(true);
-          } else {
-            console.error("Map element not found");
           }
         })
         .catch((e) => {

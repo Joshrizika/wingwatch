@@ -148,12 +148,8 @@ const MapComponent: React.FC<MapComponentProps> = ({
                   lng: searchOriginLocationRef.current.longitude,
                 });
               }
-            } else {
-              console.error("Map already initialized");
             }
-          } else {
-            console.error("Map element not found");
-          }
+          } 
         })
         .catch((e) => {
           console.error("Failed to load the map library:", e);
