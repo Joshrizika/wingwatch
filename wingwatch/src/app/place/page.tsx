@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import Navbar from "../_components/Navbar";
 import RatingBar from "../_components/RatingBar";
-import Review from "../_components/Review";
+import Review from "./Review";
 import { useSearchParams } from "next/navigation";
 import { api } from "~/trpc/react";
 import { format } from "date-fns";

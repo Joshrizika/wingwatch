@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { api } from "~/trpc/react";
 import { useState, useEffect } from "react";
-import InteractiveRatingBar from "../_components/InteractiveRatingBar";
+import InteractiveRatingBar from "./InteractiveRatingBar";
 
 interface ReviewProps {
   onClose: () => void;
@@ -81,7 +81,10 @@ export default function Review({ onClose }: ReviewProps) {
             <form className="w-full max-w-md" onSubmit={handleSubmit}>
               <div>
                 <InteractiveRatingBar onRatingSelected={handleRatingSelect} />
-                {ratingError && <p className="text-red-500">Please enter a rating</p>} {/* Display error message if no rating is selected */}
+                {ratingError && (
+                  <p className="text-red-500">Please enter a rating</p>
+                )}{" "}
+                {/* Display error message if no rating is selected */}
               </div>
               <input
                 className="my-2 w-full border p-2"

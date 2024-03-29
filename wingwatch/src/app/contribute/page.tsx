@@ -3,9 +3,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import Navbar from "../_components/Navbar";
 import { api } from "~/trpc/react";
-import ContributeLocationSearch from "../_components/ContributeLocationSearch";
+import ContributeLocationSearch from "./ContributeLocationSearch";
 import Loading from "../_components/Loading";
-import MapComponent from "../_components/ContributeMap";
+import MapComponent from "./ContributeMap";
 
 interface ILocation {
   latitude: number;

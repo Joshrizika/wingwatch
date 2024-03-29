@@ -5,10 +5,10 @@ import { api } from "~/trpc/react";
 import Navbar from "../_components/Navbar";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import ExploreLocationSearch from "../_components/ExploreLocationSearch";
+import ExploreLocationSearch from "./ExploreLocationSearch";
 import Link from "next/link";
 import Loading from "../_components/Loading";
-import MapComponent from "../_components/ExploreMap";
+import MapComponent from "./ExploreMap";
 
 declare global {
   interface Window {
