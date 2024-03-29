@@ -136,29 +136,10 @@ export default function Submissions() {
     }
   };
 
-  // const popUpPlaceRef = useRef<Place | null>(null);
-  // const mapRef = useRef<google.maps.Map | null>(null);
-
-  // useEffect(() => {
-  //   console.log("Checking if popUpPlaceRef needs to be updated...");
-  //   if (
-  //     !popUpPlaceRef.current ||
-  //     (popUpPlace && popUpPlaceRef.current.place_id !== popUpPlace.place_id)
-  //   ) {
-  //     console.log("Updating popUpPlaceRef...");
-  //     popUpPlaceRef.current = popUpPlace ? { ...popUpPlace } : null;
-  //     console.log("popUpPlaceRef updated:", popUpPlaceRef.current);
-  //   } else {
-  //     console.log("No update needed for popUpPlaceRef.");
-  //   }
-  // }, [popUpPlace]); // This effect is only responsible for updating the ref
-
   const [isMapInitialized, setIsMapInitialized] = useState(false);
 
   useEffect(() => {
-    console.log("Initializing map with popUpPlace changes");
     const initializeMap = (latitude: number, longitude: number) => {
-      console.log(`Loading map for coordinates: ${latitude}, ${longitude}`);
       const loader = new Loader({
         apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
         version: "weekly",
@@ -175,14 +156,11 @@ export default function Submissions() {
       loader
         .importLibrary("maps")
         .then(({ Map }) => {
-          console.log("Map library loaded successfully");
           const mapElement = document.getElementById("map");
           if (mapElement && !isMapInitialized) {
-            console.log("Creating map instance");
             const map = new Map(mapElement, mapOptions);
 
             // Add markers to the map based on the places
-            console.log("Adding marker for popUpPlace");
             new google.maps.Marker({
               map: map,
               position: {
@@ -192,7 +170,6 @@ export default function Submissions() {
               title: popUpPlace?.name,
             });
 
-            console.log("Drawing paths");
             pathsQuery.data?.forEach((path) => {
               const pathPoints = path.latitude.map((lat, index) => ({
                 lat,
@@ -209,7 +186,6 @@ export default function Submissions() {
               });
             });
 
-            console.log("Adding markers for airport details");
             airportsQuery.data?.forEach((airport) => {
               new google.maps.Marker({
                 position: { lat: airport.latitude, lng: airport.longitude },
@@ -222,7 +198,6 @@ export default function Submissions() {
               });
             });
             setIsMapInitialized(true);
-            console.log("Map initialized set to true");
           } else {
             console.error("Map element not found");
           }
@@ -233,13 +208,10 @@ export default function Submissions() {
     };
 
     if (popUpPlace) {
-      console.log("popUpPlace is available, initializing map");
       initializeMap(
         Number(popUpPlace?.latitude),
         Number(popUpPlace?.longitude),
       );
-    } else {
-      console.log("popUpPlace is not available, skipping map initialization");
     }
   }, [popUpPlace, pathsQuery, airportsQuery, isMapInitialized]);
 
