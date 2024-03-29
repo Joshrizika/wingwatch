@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
 import Navbar from "../_components/Navbar";
 import RatingBar from "../_components/RatingBar";
 import Review from "./Review";
 import { useSearchParams } from "next/navigation";
 import { api } from "~/trpc/react";
 import { format } from "date-fns";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Suspense } from "react";
 import Loading from "../_components/Loading";
 import { Loader } from "@googlemaps/js-api-loader";
@@ -96,76 +95,105 @@ function PlaceContent() {
     setIsReviewModalOpen(!isReviewModalOpen);
   };
 
-  const initializeMap = (latitude: number, longitude: number) => {
-    const loader = new Loader({
-      apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
-      version: "weekly",
-      libraries: ["places", "marker"],
-    });
-
-    const mapOptions = {
-      center: {
-        lat: latitude,
-        lng: longitude,
-      },
-      zoom: 12,
-    };
-    loader
-      .importLibrary("maps")
-      .then(({ Map }) => {
-        const mapElement = document.getElementById("map");
-        if (mapElement) {
-          const map = new Map(mapElement, mapOptions);
-
-          // Add markers to the map based on the places
-          new google.maps.Marker({
-            map: map,
-            position: {
-              lat: placeQuery.data?.latitude ?? 0,
-              lng: placeQuery.data?.longitude ?? 0,
-            },
-            title: placeQuery.data?.name,
-          });
-
-          const pathPoints: { lat: number; lng: number }[] =
-            placeQuery.data?.path?.latitude?.map(
-              (lat: number, index: number) => ({
-                lat: lat,
-                lng: placeQuery.data?.path?.longitude?.[index] ?? 0,
-              }),
-            ) ?? [];
-
-          new google.maps.Polyline({
-            map: map,
-            path: pathPoints,
-            geodesic: true,
-            strokeColor: "#0000FF", // Customize color as needed
-            strokeOpacity: 1.0,
-            strokeWeight: 2,
-          });
-
-          new google.maps.Marker({
-            map: map,
-            position: {
-              lat: placeQuery.data?.airportDetails?.latitude ?? 0,
-              lng: placeQuery.data?.airportDetails?.longitude ?? 0,
-            },
-            title: placeQuery.data?.airportDetails?.name,
-            icon: {
-              url: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
-            },
-          });
-        }
-      })
-      .catch((e) => {
-        console.error("Failed to load the map library:", e);
+  useEffect(() => {
+    const initializeMap = (latitude: number, longitude: number) => {
+      const loader = new Loader({
+        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
+        version: "weekly",
+        libraries: ["places", "marker"],
       });
-  };
 
-  initializeMap(
-    Number(placeQuery.data?.latitude),
-    Number(placeQuery.data?.longitude),
-  );
+      const mapOptions = {
+        center: {
+          lat: latitude,
+          lng: longitude,
+        },
+        zoom: 12,
+      };
+      loader
+        .importLibrary("maps")
+        .then(({ Map }) => {
+          const mapElement = document.getElementById("map");
+          if (mapElement) {
+            const map = new Map(mapElement, mapOptions);
+
+            // Add markers to the map based on the places
+            new google.maps.Marker({
+              map: map,
+              position: {
+                lat: placeQuery.data?.latitude ?? 0,
+                lng: placeQuery.data?.longitude ?? 0,
+              },
+              title: placeQuery.data?.name,
+            });
+
+            const pathPoints: { lat: number; lng: number }[] =
+              placeQuery.data?.path?.latitude?.map(
+                (lat: number, index: number) => ({
+                  lat: lat,
+                  lng: placeQuery.data?.path?.longitude?.[index] ?? 0,
+                }),
+              ) ?? [];
+
+            new google.maps.Polyline({
+              map: map,
+              path: pathPoints,
+              geodesic: true,
+              strokeColor: "#0000FF", // Customize color as needed
+              strokeOpacity: 1.0,
+              strokeWeight: 2,
+            });
+
+            new google.maps.Marker({
+              map: map,
+              position: {
+                lat: placeQuery.data?.airportDetails?.latitude ?? 0,
+                lng: placeQuery.data?.airportDetails?.longitude ?? 0,
+              },
+              title: placeQuery.data?.airportDetails?.name,
+              icon: {
+                url: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
+              },
+            });
+          }
+        })
+        .catch((e) => {
+          console.error("Failed to load the map library:", e);
+        });
+    };
+
+    initializeMap(
+      Number(placeQuery.data?.latitude),
+      Number(placeQuery.data?.longitude),
+    );
+  }, [placeQuery.data]);
+
+  // //TODO: Get all Images from database and API
+  // const getDetailsFromCoords = async (latitude: number, longitude: number) => {
+  //   // Ensure the Geocoder is defined
+  //   if (!new google.maps.Geocoder()) {
+  //     console.error("Geocoder is not available");
+  //     return;
+  //   }
+
+  //   const geocoder = new google.maps.Geocoder();
+
+  //   try {
+  //     const response = await geocoder.geocode({
+  //       location: { lat: latitude, lng: longitude },
+  //     });
+  //     if (response.results[0]) {
+  //       return response.results[0];
+  //     } else {
+  //       return null;
+  //     }
+  //   } catch (error) {
+  //     console.error("Geocoder failed due to:", error);
+  //     return null;
+  //   }
+  // };
+
+  // console.log("Details:", getDetailsFromCoords(placeQuery.data?.latitude ?? 0, placeQuery.data?.longitude ?? 0));
 
   if (placeQuery.isLoading || isPlaceSavedQuery.isLoading) {
     return <Loading />;
