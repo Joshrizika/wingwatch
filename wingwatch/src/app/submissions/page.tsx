@@ -2,9 +2,10 @@
 
 import Navbar from "../_components/Navbar";
 import { api } from "~/trpc/react";
-import React, { useState } from "react";
-import Image from "next/image";
+import React, { useState, useEffect } from "react";
 import Loading from "../_components/Loading";
+import { Loader } from "@googlemaps/js-api-loader";
+
 interface Place {
   place_id: string;
   name: string;
@@ -13,6 +14,10 @@ interface Place {
   latitude: number;
   longitude: number;
   path_id: string | null;
+  path: {
+    latitude: number[];
+    longitude: number[];
+  } | null;
   google_maps_uri: string | null;
   airport: string | null;
   distance_from_flightpath: number | null;
@@ -43,6 +48,9 @@ export default function Submissions() {
     api.main.getSession.useQuery();
   const submittedPlacesQuery = api.main.findSubmittedPlaces.useQuery();
 
+  const pathsQuery = api.main.findPaths.useQuery();
+  const airportsQuery = api.main.findAirports.useQuery();
+
   const approvePlaceMutation = api.main.approvePlace.useMutation();
   const rejectPlaceMutation = api.main.rejectPlace.useMutation();
   const updatePlaceMutation = api.main.updatePlace.useMutation();
@@ -55,14 +63,6 @@ export default function Submissions() {
   const [nameError, setNameError] = useState<string | null>(null);
   const [pathError, setPathError] = useState<string | null>(null);
   const [iataError, setIataError] = useState<string | null>(null);
-
-  if (sessionLoading || submittedPlacesQuery.isLoading) {
-    return <Loading />;
-  }
-
-  if (!session?.user?.isAdmin) {
-    return <div>Invalid Access</div>;
-  }
 
   const handleApprove = async (placeId: string) => {
     await approvePlaceMutation.mutateAsync({ placeId });
@@ -103,15 +103,14 @@ export default function Submissions() {
             : null,
           averageAltitude: popUpPlace.average_altitude,
           altitudeEstimated:
-            popUpPlace.average_altitude !== submittedAltitude
-              ? true
-              : false,
+            popUpPlace.average_altitude !== submittedAltitude ? true : false,
           distanceFromAirport: popUpPlace.distance_from_airport
             ? popUpPlace.distance_from_airport
             : null,
         });
         void submittedPlacesQuery.refetch();
         setPopUpOpen(false);
+        setIsMapInitialized(false);
         setPopUpPlace(null);
         setSubmittedAltitude(null);
         setNameError(null);
@@ -136,6 +135,121 @@ export default function Submissions() {
       }
     }
   };
+
+  // const popUpPlaceRef = useRef<Place | null>(null);
+  // const mapRef = useRef<google.maps.Map | null>(null);
+
+  // useEffect(() => {
+  //   console.log("Checking if popUpPlaceRef needs to be updated...");
+  //   if (
+  //     !popUpPlaceRef.current ||
+  //     (popUpPlace && popUpPlaceRef.current.place_id !== popUpPlace.place_id)
+  //   ) {
+  //     console.log("Updating popUpPlaceRef...");
+  //     popUpPlaceRef.current = popUpPlace ? { ...popUpPlace } : null;
+  //     console.log("popUpPlaceRef updated:", popUpPlaceRef.current);
+  //   } else {
+  //     console.log("No update needed for popUpPlaceRef.");
+  //   }
+  // }, [popUpPlace]); // This effect is only responsible for updating the ref
+
+  const [isMapInitialized, setIsMapInitialized] = useState(false);
+
+  useEffect(() => {
+    console.log("Initializing map with popUpPlace changes");
+    const initializeMap = (latitude: number, longitude: number) => {
+      console.log(`Loading map for coordinates: ${latitude}, ${longitude}`);
+      const loader = new Loader({
+        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
+        version: "weekly",
+        libraries: ["places", "marker"],
+      });
+
+      const mapOptions = {
+        center: {
+          lat: latitude,
+          lng: longitude,
+        },
+        zoom: 12,
+      };
+      loader
+        .importLibrary("maps")
+        .then(({ Map }) => {
+          console.log("Map library loaded successfully");
+          const mapElement = document.getElementById("map");
+          if (mapElement && !isMapInitialized) {
+            console.log("Creating map instance");
+            const map = new Map(mapElement, mapOptions);
+
+            // Add markers to the map based on the places
+            console.log("Adding marker for popUpPlace");
+            new google.maps.Marker({
+              map: map,
+              position: {
+                lat: popUpPlace?.latitude ?? 0,
+                lng: popUpPlace?.longitude ?? 0,
+              },
+              title: popUpPlace?.name,
+            });
+
+            console.log("Drawing paths");
+            pathsQuery.data?.forEach((path) => {
+              const pathPoints = path.latitude.map((lat, index) => ({
+                lat,
+                lng: path.longitude[index]!,
+              }));
+
+              new google.maps.Polyline({
+                path: pathPoints,
+                geodesic: true,
+                strokeColor: "#0000FF",
+                strokeOpacity: 1.0,
+                strokeWeight: 2,
+                map: map,
+              });
+            });
+
+            console.log("Adding markers for airport details");
+            airportsQuery.data?.forEach((airport) => {
+              new google.maps.Marker({
+                position: { lat: airport.latitude, lng: airport.longitude },
+                map: map,
+                title: airport.name,
+                icon: {
+                  url: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
+                  scaledSize: new google.maps.Size(50, 50), // back to normal size
+                },
+              });
+            });
+            setIsMapInitialized(true);
+            console.log("Map initialized set to true");
+          } else {
+            console.error("Map element not found");
+          }
+        })
+        .catch((e) => {
+          console.error("Failed to load the map library:", e);
+        });
+    };
+
+    if (popUpPlace) {
+      console.log("popUpPlace is available, initializing map");
+      initializeMap(
+        Number(popUpPlace?.latitude),
+        Number(popUpPlace?.longitude),
+      );
+    } else {
+      console.log("popUpPlace is not available, skipping map initialization");
+    }
+  }, [popUpPlace, pathsQuery, airportsQuery, isMapInitialized]);
+
+  if (sessionLoading || submittedPlacesQuery.isLoading) {
+    return <Loading />;
+  }
+
+  if (!session?.user?.isAdmin) {
+    return <div>Invalid Access</div>;
+  }
 
   return (
     <>
@@ -230,6 +344,7 @@ export default function Submissions() {
             <button
               onClick={() => {
                 setPopUpOpen(false);
+                setIsMapInitialized(false);
                 setPopUpPlace(null);
                 setSubmittedAltitude(null);
                 setNameError(null);
@@ -411,14 +526,11 @@ export default function Submissions() {
                       }}
                     />
                   </div>
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    <Image
-                      src={`https://maps.googleapis.com/maps/api/staticmap?center=${popUpPlace?.latitude},${popUpPlace?.longitude}&zoom=12&size=700x700&markers=color:red%7C${popUpPlace?.latitude},${popUpPlace?.longitude}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`}
-                      alt="Map"
-                      width="600"
-                      height="300"
-                    />
-                  </div>
+                  <div
+                    className="w-full md:w-1/2"
+                    style={{ height: "600px", width: "600px" }}
+                    id="map"
+                  ></div>
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <button
