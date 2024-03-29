@@ -517,6 +517,7 @@ export const mainRouter = createTRPCRouter({
           isVerified: false,
         },
         include: {
+          path: true,
           airportDetails: true,
           submittedUser: true,
         },
