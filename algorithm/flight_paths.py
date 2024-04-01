@@ -84,21 +84,21 @@ def getFlights(iataCode):
     boxDimensions = 30 #set the dimensions of the box that bounds the results
     boundsBox = calculateCoordinatesWithinDimensions(iataCode, boxDimensions) #get the bounding box coordinates
     params_depart = { #set the parameters for the first api request
-        'api_key': 'ed9f2aab-ab95-4805-9da8-b43eaf96a836', #api key
+        'api_key': '5d73a0fa-3d4f-4380-a0c7-699b22a6834a', #api key
         'bbox': f'{boundsBox[2]}, {boundsBox[3]}, {boundsBox[0]}, {boundsBox[1]}', #bounding box
         'dep_iata': iataCode, #departing airport iata code
         '_fields': 'flight_icao, airline_icao, lat, lng, alt, dep_iata, arr_iata, status' #return values
     }
 
     params_arrive = { #set the parameters for the second api request
-        'api_key': 'ed9f2aab-ab95-4805-9da8-b43eaf96a836', #api key
+        'api_key': '5d73a0fa-3d4f-4380-a0c7-699b22a6834a', #api key
         'bbox': f'{boundsBox[2]}, {boundsBox[3]}, {boundsBox[0]}, {boundsBox[1]}', #bounding box
         'arr_iata': iataCode, #arriving airport iata code
         '_fields': 'flight_icao, airline_icao, lat, lng, alt, dep_iata, arr_iata, status' #return values
     }
     api_result_depart = requests.get('https://airlabs.co/api/v9/flights', params_depart) #first api call
     api_result_arrive = requests.get('https://airlabs.co/api/v9/flights', params_arrive) #second api call
-    
+
     api_response_depart = api_result_depart.json()['response'] #get the response from the first api call
     api_response_arrive = api_result_arrive.json()['response'] #get the response from the second api call
 
@@ -169,5 +169,6 @@ def collectAirportData(iataCodes):
 
 
 if __name__ == "__main__":
-    iataCodes = ['ATL', 'BOS', 'DCA', 'DEN', 'DFW', 'EWR', 'IAD', 'JFK', 'LAX', 'LGA', 'ORD', 'PHL']
-    collectAirportData(iataCodes)
+    # iataCodes = ['ATL', 'BOS', 'DCA', 'DEN', 'DFW', 'EWR', 'IAD', 'JFK', 'LAX', 'LGA', 'ORD', 'PHL']
+    # collectAirportData(iataCodes)
+    trackFlights('COS')
