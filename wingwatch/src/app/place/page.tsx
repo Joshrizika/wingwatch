@@ -10,9 +10,9 @@ import { useState, useEffect } from "react";
 import { Suspense } from "react";
 import Loading from "../_components/Loading";
 import { Loader } from "@googlemaps/js-api-loader";
+import ImageDisplay from "./ImageDisplay";
 
 export default function Place() {
-  // Wrap the component or the specific logic that requires useSearchParams within Suspense
   return (
     <Suspense fallback={<Loading />}>
       <PlaceContent />
@@ -95,12 +95,14 @@ function PlaceContent() {
     setIsReviewModalOpen(!isReviewModalOpen);
   };
 
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
+
   useEffect(() => {
     const initializeMap = (latitude: number, longitude: number) => {
       const loader = new Loader({
         apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
         version: "weekly",
-        libraries: ["places", "marker"],
+        libraries: ["places"],
       });
 
       const mapOptions = {
@@ -155,6 +157,7 @@ function PlaceContent() {
                 url: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
               },
             });
+            setIsMapLoaded(true);
           }
         })
         .catch((e) => {
@@ -162,38 +165,96 @@ function PlaceContent() {
         });
     };
 
-    initializeMap(
-      Number(placeQuery.data?.latitude),
-      Number(placeQuery.data?.longitude),
-    );
-  }, [placeQuery.data]);
+    if (!isMapLoaded) {
+      initializeMap(
+        Number(placeQuery.data?.latitude),
+        Number(placeQuery.data?.longitude),
+      );
+    }
+  }, [placeQuery, isMapLoaded]);
 
-  // //TODO: Get all Images from database and API
-  // const getDetailsFromCoords = async (latitude: number, longitude: number) => {
-  //   // Ensure the Geocoder is defined
-  //   if (!new google.maps.Geocoder()) {
-  //     console.error("Geocoder is not available");
-  //     return;
-  //   }
+  interface GoogleMapsImage {
+    authorAttributions: [
+      {
+        displayName: string;
+        uri: string;
+        photoUri: string;
+      },
+    ];
+    heightPx: number;
+    name: string;
+    widthPx: number;
+  }
 
-  //   const geocoder = new google.maps.Geocoder();
+  const [googleMapsImages, setGoogleMapsImages] = useState<GoogleMapsImage[]>(
+    [],
+  );
 
-  //   try {
-  //     const response = await geocoder.geocode({
-  //       location: { lat: latitude, lng: longitude },
-  //     });
-  //     if (response.results[0]) {
-  //       return response.results[0];
-  //     } else {
-  //       return null;
-  //     }
-  //   } catch (error) {
-  //     console.error("Geocoder failed due to:", error);
-  //     return null;
-  //   }
-  // };
+  const [imagesRecieved, setImagesRecieved] = useState(false);
 
-  // console.log("Details:", getDetailsFromCoords(placeQuery.data?.latitude ?? 0, placeQuery.data?.longitude ?? 0));
+  useEffect(() => {
+    //TODO: Get all Images from database and API
+    const getPlaceIdFromCoords = async (
+      latitude: number,
+      longitude: number,
+    ) => {
+      const loader = new Loader({
+        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
+        version: "weekly",
+        libraries: ["places"],
+      });
+
+      try {
+        await loader.load(); // Ensures the Google Maps API is loaded before proceeding
+        const geocoder = new google.maps.Geocoder();
+
+        const response = await geocoder.geocode({
+          location: { lat: latitude, lng: longitude },
+        });
+        if (response.results[0]) {
+          return response.results[0].place_id;
+        } else {
+          return null;
+        }
+      } catch (error) {
+        console.error("Geocoder failed due to:", error);
+        return null;
+      }
+    };
+
+    const getGoogleMapsImages = async () => {
+      if (placeQuery.data?.latitude && placeQuery.data?.longitude) {
+        const placeId = await getPlaceIdFromCoords(
+          placeQuery.data.latitude,
+          placeQuery.data.longitude,
+        );
+        fetch(`https://places.googleapis.com/v1/places/${placeId}`, {
+          headers: {
+            "Content-Type": "application/json",
+            "X-Goog-Api-Key": process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
+            "X-Goog-FieldMask": "photos",
+          },
+        })
+          .then((response) => response.json())
+          .then((data: { photos: GoogleMapsImage[] }) => {
+            setGoogleMapsImages(data.photos);
+            setImagesRecieved(true);
+          })
+          .catch((error) =>
+            console.error("Failed to fetch place details:", error),
+          );
+      }
+    };
+    if (!imagesRecieved) {
+      void getGoogleMapsImages();
+    }
+  }, [placeQuery, imagesRecieved]);
+
+  useEffect(() => {
+    setGoogleMapsImages([]);
+    setImagesRecieved(false);
+    setIsMapLoaded(false);
+  }, [id]);
 
   if (placeQuery.isLoading || isPlaceSavedQuery.isLoading) {
     return <Loading />;
@@ -271,6 +332,9 @@ function PlaceContent() {
             {isPlaceSaved ? "Unsave" : "Save"}
           </button>
         </div>
+
+        {/* Image Display */}
+        <ImageDisplay googleMapsImages={googleMapsImages ?? null} />
 
         {/* Review Section */}
         <div className="mt-10 w-full">
