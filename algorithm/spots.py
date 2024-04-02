@@ -199,7 +199,7 @@ def getParks(line):
 
     headers = { #set headers
         'Content-Type': 'application/json', #content type JSON
-        'X-Goog-Api-Key': 'AIzaSyCOsh2QBtZT0mFpOH5dTyk3x4nHdxJsX_4', #api key
+        'X-Goog-Api-Key': 'AIzaSyAXt99dXCkF4UFgLWPckl6pKzfCwc792ts', #api key
         'X-Goog-FieldMask': 'places.formattedAddress,places.location,places.googleMapsUri,places.displayName,places.editorialSummary' #expected fields
     }
 
@@ -236,11 +236,26 @@ def getParks(line):
                         place_coords = (place['location']['latitude'], place['location']['longitude'])
                         place['distanceFromAirport'] = getDistanceFromAirport(place_coords, place['airport'])
                         unique_spots.add(json.dumps(place)) #add spot to unique spots
+        else: #if api call was not successfull
+            print("Error: API call failed")
+            print(response.text)
     spots = list(unique_spots) #turn unique spots into list
     # print(spots)
     return spots #return spots
 
 if __name__ == "__main__" : 
+    # line = {'coefficients': [
+    #                         -9.22938759e-38,  4.52344752e-36,  5.70188403e-35, -5.79837247e-32,
+    #                         1.07988142e-29, -1.50839844e-27,  1.80310851e-25, -1.88840821e-23,
+    #                         1.67769043e-21, -1.07913069e-19,  6.90380855e-20,  1.59935028e-15,
+    #                         -3.74281769e-13,  6.31994481e-11, -9.04520499e-09,  1.13394089e-06,
+    #                         -1.21667264e-04,  9.80017965e-03, -1.48811402e-01, -1.70155669e+02,
+    #                         5.21074952e+04], 
+    #         'max_lat': 37.70220373244956, 
+    #         'max_long': -122.248742, 
+    #         'min_lat': 37.63234887950239, 
+    #         'min_long': -122.370055}
+    
     line = {'coefficients': [
                             -3.03918804e-30, -7.01339284e-32, 9.51372530e-27, -9.77640864e-25,
                             6.81489730e-23, -3.46681640e-21, 8.53900410e-20, 7.63965073e-18,
@@ -255,6 +270,6 @@ if __name__ == "__main__" :
             'min_long': -77.17926}
     
     spots = getParks(line)
-    # print(spots)
+    print(spots)
 
 
