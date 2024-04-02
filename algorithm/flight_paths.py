@@ -169,6 +169,7 @@ def collectAirportData(iataCodes):
 
 
 if __name__ == "__main__":
-    # iataCodes = ['ATL', 'BOS', 'DCA', 'DEN', 'DFW', 'EWR', 'IAD', 'JFK', 'LAX', 'LGA', 'ORD', 'PHL']
-    # collectAirportData(iataCodes)
-    trackFlights('COS')
+    # iataCodes = ['DTW', 'SLC']
+    iataCodes = ['SFO', 'DEN', 'IAH', 'MCO', 'LAS', 'MIA', 'CLT', 'SEA', 'PHX', 'FLL', 'MSP', 'DTW']
+    collectAirportData(iataCodes)
+    # trackFlights('COS')
