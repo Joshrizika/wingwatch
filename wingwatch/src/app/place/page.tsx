@@ -361,9 +361,10 @@ function PlaceContent() {
               <div
                 key={review.id}
                 className="mb-4 rounded-lg border p-4 shadow-lg"
+                style={{ position: 'relative', zIndex: -1 }} // Reset stacking context
               >
-                <div className="flex">
-                  <div className="mr-4">
+                <div className="flex items-center">
+                  <div className="mr-4 flex items-center">
                     <RatingBar rating={review.rating} />
                   </div>
                   <div>
