@@ -64,9 +64,9 @@ Resets the current database then re initializes it with the schema provided in s
 
 Uploads spot data to the database.
 
-## Running the App
+## Using the App
 
-TO BE IMPLEMENTED AFTER APP CREATION
+Visit https://www.wingwatch.net to use the app.
 
 ## Contributing
 
