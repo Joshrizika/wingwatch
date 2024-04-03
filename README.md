@@ -68,10 +68,6 @@ Uploads spot data to the database.
 
 Visit https://www.wingwatch.net to use the app.
 
-## Contributing
-
-TO BE IMPLEMENTED AFTER APP CREATION
-
 ## License
 
-TO BE IMPLEMENTED AFTER APP CREATION
+WingWatch is available under the MIT license. See the LICENSE file for more info.
