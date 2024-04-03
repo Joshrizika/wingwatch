@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_edee8ebd92c3cf0fb06928383aa1056b {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_edee8ebd92c3cf0fb06928383aa1056b" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_edee8ebd92c3cf0fb06928383aa1056b = L.map(
+                "map_edee8ebd92c3cf0fb06928383aa1056b",
+                {
+                    center: [44.882, -93.221802],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 8,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_97f655565a0fbed6e07b98410ead3ae9 = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca target=\"_blank\" href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\"_blank\" href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+                tile_layer_97f655565a0fbed6e07b98410ead3ae9.addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+    
+            var marker_f502e4293d2d96212aff63786d0164b5 = L.marker(
+                [44.836509, -93.090992],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_f502e4293d2d96212aff63786d0164b5.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 12:06:40.367357<br>Flight ICAO: DAL2309<br>Latitude: 44.836509<br>Longitude: -93.090992<br>Altitude: 1692<br>Departure IATA: ORD<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f10cfc622991f9a30598a46554988dbd = L.marker(
+                [44.84475, -93.109816],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_f10cfc622991f9a30598a46554988dbd.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 12:07:05.436517<br>Flight ICAO: DAL2309<br>Latitude: 44.84475<br>Longitude: -93.109816<br>Altitude: 1341<br>Departure IATA: ORD<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e7e3bcb18799340c0988f2121c5ba371 = L.marker(
+                [44.844959, -93.110393],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_e7e3bcb18799340c0988f2121c5ba371.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 12:38:02.164539<br>Flight ICAO: DAL1179<br>Latitude: 44.844959<br>Longitude: -93.110393<br>Altitude: 1341<br>Departure IATA: PHX<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_79efa64297bb4992e88ea19028b74f71 = L.marker(
+                [44.830996, -93.078088],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_79efa64297bb4992e88ea19028b74f71.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 12:39:43.483206<br>Flight ICAO: EDV5130<br>Latitude: 44.830996<br>Longitude: -93.078088<br>Altitude: 1866<br>Departure IATA: CVG<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_1696f4aa4f23023f9f58501fcf13e4bd = L.marker(
+                [44.837633, -93.093457],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_1696f4aa4f23023f9f58501fcf13e4bd.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 12:40:09.736511<br>Flight ICAO: EDV5130<br>Latitude: 44.837633<br>Longitude: -93.093457<br>Altitude: 1666<br>Departure IATA: CVG<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_0d432ec6c7b4d6c77ec2be1119c7c135 = L.marker(
+                [44.849963, -93.122008],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_0d432ec6c7b4d6c77ec2be1119c7c135.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 12:40:37.448223<br>Flight ICAO: EDV5130<br>Latitude: 44.849963<br>Longitude: -93.122008<br>Altitude: 1164<br>Departure IATA: CVG<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_96a41eb7b39f2870fb65bd9430f4eb0c = L.marker(
+                [44.830815, -93.077564],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_96a41eb7b39f2870fb65bd9430f4eb0c.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 12:42:33.554369<br>Flight ICAO: DAL1474<br>Latitude: 44.830815<br>Longitude: -93.077564<br>Altitude: 1889<br>Departure IATA: MSO<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_50e35db0b680bec725046cd0dda9d949 = L.marker(
+                [44.838788, -93.096219],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_50e35db0b680bec725046cd0dda9d949.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 12:43:01.860482<br>Flight ICAO: DAL1474<br>Latitude: 44.838788<br>Longitude: -93.096219<br>Altitude: 1590<br>Departure IATA: MSO<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e149b9b159631c3182789744131e07c8 = L.marker(
+                [44.846972, -93.114972],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_e149b9b159631c3182789744131e07c8.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 12:43:26.510727<br>Flight ICAO: DAL1474<br>Latitude: 44.846972<br>Longitude: -93.114972<br>Altitude: 1265<br>Departure IATA: MSO<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7ceeb5c7534cea5620ce2309d7f7e0c2 = L.marker(
+                [44.826484, -93.07009],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_7ceeb5c7534cea5620ce2309d7f7e0c2.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 12:45:38.680114<br>Flight ICAO: SKW4279<br>Latitude: 44.826484<br>Longitude: -93.07009<br>Altitude: 2017<br>Departure IATA: ESC<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_6aefcdd44a08f50809f8ab7d1adab3db = L.marker(
+                [44.836673, -93.092866],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_6aefcdd44a08f50809f8ab7d1adab3db.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 12:46:01.387245<br>Flight ICAO: SKW4279<br>Latitude: 44.836673<br>Longitude: -93.092866<br>Altitude: 1666<br>Departure IATA: ESC<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ea2ef4a4dcb71c9565f18485160f467f = L.marker(
+                [44.843682, -93.106922],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_ea2ef4a4dcb71c9565f18485160f467f.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 12:46:24.537290<br>Flight ICAO: SKW4279<br>Latitude: 44.843682<br>Longitude: -93.106922<br>Altitude: 1439<br>Departure IATA: ESC<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_050ca1c7d6a36be713e66c6650946a30 = L.marker(
+                [44.832188, -93.080767],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_050ca1c7d6a36be713e66c6650946a30.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 12:47:39.425824<br>Flight ICAO: DAL1499<br>Latitude: 44.832188<br>Longitude: -93.080767<br>Altitude: 1866<br>Departure IATA: SLC<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_86802027b9b5b8dafaaceeeed50f6287 = L.marker(
+                [44.845729, -93.112091],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_86802027b9b5b8dafaaceeeed50f6287.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 12:48:05.669549<br>Flight ICAO: DAL1499<br>Latitude: 44.845729<br>Longitude: -93.112091<br>Altitude: 1315<br>Departure IATA: SLC<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_57590ef4d8c740971d30e13a89e8a5d4 = L.marker(
+                [44.830739, -93.077592],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_57590ef4d8c740971d30e13a89e8a5d4.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 12:51:53.948284<br>Flight ICAO: DAL792<br>Latitude: 44.830739<br>Longitude: -93.077592<br>Altitude: 1915<br>Departure IATA: LAX<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b000bd22c5d3e6a5223faa966e6684ce = L.marker(
+                [44.839876, -93.098754],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_b000bd22c5d3e6a5223faa966e6684ce.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 12:52:15.350891<br>Flight ICAO: DAL792<br>Latitude: 44.839876<br>Longitude: -93.098754<br>Altitude: 1541<br>Departure IATA: LAX<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d63949525d434bc53be626c1c155b7e7 = L.marker(
+                [44.846239, -93.113366],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_d63949525d434bc53be626c1c155b7e7.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 12:52:38.484050<br>Flight ICAO: DAL792<br>Latitude: 44.846239<br>Longitude: -93.113366<br>Altitude: 1292<br>Departure IATA: LAX<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_8be5cd192dcdc11a73d759d9de95dc2b = L.marker(
+                [44.829991, -93.075798],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_8be5cd192dcdc11a73d759d9de95dc2b.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:01:19.930358<br>Flight ICAO: DAL2672<br>Latitude: 44.829991<br>Longitude: -93.075798<br>Altitude: 1889<br>Departure IATA: MKE<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2da760661a00ed27d779a50f6954e6f5 = L.marker(
+                [44.836305, -93.090318],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_2da760661a00ed27d779a50f6954e6f5.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:01:38.196855<br>Flight ICAO: DAL2672<br>Latitude: 44.836305<br>Longitude: -93.090318<br>Altitude: 1666<br>Departure IATA: MKE<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_91ed73fecfcc9282e08cef4e58da7df4 = L.marker(
+                [44.842807, -93.105357],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_91ed73fecfcc9282e08cef4e58da7df4.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:01:56.150382<br>Flight ICAO: DAL2672<br>Latitude: 44.842807<br>Longitude: -93.105357<br>Altitude: 1439<br>Departure IATA: MKE<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c50bc21e66d0b72509f25d2bf64fa199 = L.marker(
+                [44.848299, -93.118111],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_c50bc21e66d0b72509f25d2bf64fa199.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:02:10.943275<br>Flight ICAO: DAL2672<br>Latitude: 44.848299<br>Longitude: -93.118111<br>Altitude: 1164<br>Departure IATA: MKE<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5ea7db90dd5555c8d75d3e021ae6fe22 = L.marker(
+                [44.831913, -93.08005],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_5ea7db90dd5555c8d75d3e021ae6fe22.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:32:47.975764<br>Flight ICAO: SKW3816<br>Latitude: 44.831913<br>Longitude: -93.08005<br>Altitude: 1866<br>Departure IATA: GRR<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_915147a2601242bf2ce78160ca4f2acf = L.marker(
+                [44.835344, -93.087898],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_915147a2601242bf2ce78160ca4f2acf.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:32:58.001831<br>Flight ICAO: DAL3816<br>Latitude: 44.835344<br>Longitude: -93.087898<br>Altitude: 1715<br>Departure IATA: GRR<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2a151f5ffb90dbfbbedb9b3abe68524f = L.marker(
+                [44.835344, -93.087898],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_2a151f5ffb90dbfbbedb9b3abe68524f.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:33:09.866723<br>Flight ICAO: DAL3816<br>Latitude: 44.835344<br>Longitude: -93.087898<br>Altitude: 1715<br>Departure IATA: GRR<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f46b0b0824dd2a8f6a05375cb46f0c44 = L.marker(
+                [44.842348, -93.104378],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_f46b0b0824dd2a8f6a05375cb46f0c44.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:33:22.247324<br>Flight ICAO: SKW3816<br>Latitude: 44.842348<br>Longitude: -93.104378<br>Altitude: 1439<br>Departure IATA: GRR<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7dc15744f184b9bfeb788acb355390f3 = L.marker(
+                [44.845914, -93.112427],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_7dc15744f184b9bfeb788acb355390f3.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:33:34.729943<br>Flight ICAO: SKW3816<br>Latitude: 44.845914<br>Longitude: -93.112427<br>Altitude: 1265<br>Departure IATA: GRR<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_37a62805395f77e56166740889baecf4 = L.marker(
+                [44.831993, -93.080073],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_37a62805395f77e56166740889baecf4.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:35:01.039114<br>Flight ICAO: DAL3888<br>Latitude: 44.831993<br>Longitude: -93.080073<br>Altitude: 1816<br>Departure IATA: DLH<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ba0ca0c64a3a4777d7623ba00f3b986e = L.marker(
+                [44.831993, -93.080073],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_ba0ca0c64a3a4777d7623ba00f3b986e.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:35:11.214870<br>Flight ICAO: DAL3888<br>Latitude: 44.831993<br>Longitude: -93.080073<br>Altitude: 1816<br>Departure IATA: DLH<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_59e569f3db224e755b3a18b236d1f5ff = L.marker(
+                [44.837998, -93.094074],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_59e569f3db224e755b3a18b236d1f5ff.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:35:21.663211<br>Flight ICAO: DAL3888<br>Latitude: 44.837998<br>Longitude: -93.094074<br>Altitude: 1616<br>Departure IATA: DLH<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_dfab4f012f107e6c5fe45db089163414 = L.marker(
+                [44.840978, -93.101041],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_dfab4f012f107e6c5fe45db089163414.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:35:33.161113<br>Flight ICAO: DAL3888<br>Latitude: 44.840978<br>Longitude: -93.101041<br>Altitude: 1492<br>Departure IATA: DLH<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_a9dffdf9a53b392842e07ba69e2b928c = L.marker(
+                [44.846607, -93.11399],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_a9dffdf9a53b392842e07ba69e2b928c.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:35:43.873898<br>Flight ICAO: SKW3888<br>Latitude: 44.846607<br>Longitude: -93.11399<br>Altitude: 1292<br>Departure IATA: DLH<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_6696fb8213eeb0ab02883c55610b0242 = L.marker(
+                [44.849311, -93.120132],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_6696fb8213eeb0ab02883c55610b0242.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:35:53.966823<br>Flight ICAO: SKW3888<br>Latitude: 44.849311<br>Longitude: -93.120132<br>Altitude: 1164<br>Departure IATA: DLH<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_54169ee9fdca22e6feede2a06c968584 = L.marker(
+                [44.828479, -93.072203],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_54169ee9fdca22e6feede2a06c968584.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:39:42.357546<br>Flight ICAO: LYM5112<br>Latitude: 44.828479<br>Longitude: -93.072203<br>Altitude: 1964<br>Departure IATA: TVF<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d7d5a1430ef8518b69048f4d19266473 = L.marker(
+                [44.83139, -93.0788],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_d7d5a1430ef8518b69048f4d19266473.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:39:51.520584<br>Flight ICAO: LYM5112<br>Latitude: 44.83139<br>Longitude: -93.0788<br>Altitude: 1866<br>Departure IATA: TVF<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_541ebe243b42e93c2e5fb3d260bc25c8 = L.marker(
+                [44.834019, -93.084691],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_541ebe243b42e93c2e5fb3d260bc25c8.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:40:02.402230<br>Flight ICAO: LYM5112<br>Latitude: 44.834019<br>Longitude: -93.084691<br>Altitude: 1764<br>Departure IATA: TVF<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b0bff8a3105a6265b9a1eaeb04f24691 = L.marker(
+                [44.839673, -93.097559],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_b0bff8a3105a6265b9a1eaeb04f24691.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:40:13.325758<br>Flight ICAO: LYM5112<br>Latitude: 44.839673<br>Longitude: -93.097559<br>Altitude: 1616<br>Departure IATA: TVF<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3eec276e76d6f5f434fd31c08622b4e3 = L.marker(
+                [44.842325, -93.10379],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_3eec276e76d6f5f434fd31c08622b4e3.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:40:24.415020<br>Flight ICAO: LYM5112<br>Latitude: 44.842325<br>Longitude: -93.10379<br>Altitude: 1541<br>Departure IATA: TVF<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_0a097849d4224e1423c8721df6801bce = L.marker(
+                [44.84493, -93.110156],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_0a097849d4224e1423c8721df6801bce.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:40:34.989490<br>Flight ICAO: LYM5112<br>Latitude: 44.84493<br>Longitude: -93.110156<br>Altitude: 1416<br>Departure IATA: TVF<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7bc24f6af10e5621a28b465eedab2b92 = L.marker(
+                [44.850035, -93.123607],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_7bc24f6af10e5621a28b465eedab2b92.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:40:48.083636<br>Flight ICAO: LYM5112<br>Latitude: 44.850035<br>Longitude: -93.123607<br>Altitude: 1114<br>Departure IATA: TVF<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c011c2d5f2cafa5e7ac98bb421f7c730 = L.marker(
+                [44.827425, -93.070176],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_c011c2d5f2cafa5e7ac98bb421f7c730.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:44:18.617348<br>Flight ICAO: DAL1064<br>Latitude: 44.827425<br>Longitude: -93.070176<br>Altitude: 1964<br>Departure IATA: DCA<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7d058caa2ac15ab13278a8e072d2b72b = L.marker(
+                [44.827425, -93.070176],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_7d058caa2ac15ab13278a8e072d2b72b.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:44:31.438427<br>Flight ICAO: DAL1064<br>Latitude: 44.827425<br>Longitude: -93.070176<br>Altitude: 1964<br>Departure IATA: DCA<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_701c6ee882d726d8deea949eb29ed7d5 = L.marker(
+                [44.837439, -93.093002],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_701c6ee882d726d8deea949eb29ed7d5.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:44:46.288005<br>Flight ICAO: DAL1064<br>Latitude: 44.837439<br>Longitude: -93.093002<br>Altitude: 1666<br>Departure IATA: DCA<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_1f1286e5157f302eb7dfae080730eb28 = L.marker(
+                [44.843631, -93.107385],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_1f1286e5157f302eb7dfae080730eb28.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:44:59.478776<br>Flight ICAO: DAL1064<br>Latitude: 44.843631<br>Longitude: -93.107385<br>Altitude: 1390<br>Departure IATA: DCA<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_44208a6c70eb28eea7cf1583258d1f82 = L.marker(
+                [44.846612, -93.114102],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_44208a6c70eb28eea7cf1583258d1f82.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 13:45:10.900506<br>Flight ICAO: DAL1064<br>Latitude: 44.846612<br>Longitude: -93.114102<br>Altitude: 1239<br>Departure IATA: DCA<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_fc29753cfcfa6bc70170aeb0dcc73b20 = L.marker(
+                [44.842002, -93.102783],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_fc29753cfcfa6bc70170aeb0dcc73b20.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:12:15.134689<br>Flight ICAO: AWI6087<br>Latitude: 44.842002<br>Longitude: -93.102783<br>Altitude: 1492<br>Departure IATA: ORD<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_68a9530c4169f2e2856e5e804fdc8277 = L.marker(
+                [44.834321, -93.085699],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_68a9530c4169f2e2856e5e804fdc8277.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:15:12.154497<br>Flight ICAO: DAL1167<br>Latitude: 44.834321<br>Longitude: -93.085699<br>Altitude: 1764<br>Departure IATA: LGA<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_89133a4f1a53c108c6c9d9c5f85bb7de = L.marker(
+                [44.842699, -93.105129],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_89133a4f1a53c108c6c9d9c5f85bb7de.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:15:34.552490<br>Flight ICAO: DAL1167<br>Latitude: 44.842699<br>Longitude: -93.105129<br>Altitude: 1465<br>Departure IATA: LGA<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_cc637d7c2e00166c963c6f6558fe7fa4 = L.marker(
+                [44.848528, -93.118633],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_cc637d7c2e00166c963c6f6558fe7fa4.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:15:56.166073<br>Flight ICAO: DAL1167<br>Latitude: 44.848528<br>Longitude: -93.118633<br>Altitude: 1216<br>Departure IATA: LGA<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_dd1a2ec5a399a507f78978e425f08d2c = L.marker(
+                [44.827154, -93.068682],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_dd1a2ec5a399a507f78978e425f08d2c.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:20:16.949705<br>Flight ICAO: DAL2020<br>Latitude: 44.827154<br>Longitude: -93.068682<br>Altitude: 2017<br>Departure IATA: RDU<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ab4527117a05d3c94424faca82adf0a6 = L.marker(
+                [44.833374, -93.083649],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_ab4527117a05d3c94424faca82adf0a6.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:20:33.591792<br>Flight ICAO: DAL2020<br>Latitude: 44.833374<br>Longitude: -93.083649<br>Altitude: 1764<br>Departure IATA: RDU<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b638ea538562f12f9437db57b977ae71 = L.marker(
+                [44.842166, -93.10392],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_b638ea538562f12f9437db57b977ae71.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:20:53.276404<br>Flight ICAO: DAL2020<br>Latitude: 44.842166<br>Longitude: -93.10392<br>Altitude: 1439<br>Departure IATA: RDU<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3917b3cc8e650f24ef9ecf94e4c28510 = L.marker(
+                [44.847706, -93.11667],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_3917b3cc8e650f24ef9ecf94e4c28510.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:21:13.375613<br>Flight ICAO: DAL2020<br>Latitude: 44.847706<br>Longitude: -93.11667<br>Altitude: 1239<br>Departure IATA: RDU<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_0312f70e29d3dd3b5a1c3caefaedd334 = L.marker(
+                [44.83162, -93.07947],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_0312f70e29d3dd3b5a1c3caefaedd334.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:22:28.983810<br>Flight ICAO: EDV5029<br>Latitude: 44.83162<br>Longitude: -93.07947<br>Altitude: 1866<br>Departure IATA: PIT<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_04a6a11e4856f2f4e192f2c0212fafbf = L.marker(
+                [44.83716, -93.092332],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_04a6a11e4856f2f4e192f2c0212fafbf.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:22:47.116887<br>Flight ICAO: EDV5029<br>Latitude: 44.83716<br>Longitude: -93.092332<br>Altitude: 1639<br>Departure IATA: PIT<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_34c8faab741d84006b7a9f6642c819f1 = L.marker(
+                [44.842487, -93.104573],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_34c8faab741d84006b7a9f6642c819f1.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:23:06.829226<br>Flight ICAO: EDV5029<br>Latitude: 44.842487<br>Longitude: -93.104573<br>Altitude: 1439<br>Departure IATA: PIT<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c2d598a115cdbda6bcfa84f77445f00e = L.marker(
+                [44.848026, -93.11739],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_c2d598a115cdbda6bcfa84f77445f00e.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:23:29.984953<br>Flight ICAO: EDV5029<br>Latitude: 44.848026<br>Longitude: -93.11739<br>Altitude: 1216<br>Departure IATA: PIT<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_401b974af6b70f52ad3b204b59511346 = L.marker(
+                [44.850987, -93.124152],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_401b974af6b70f52ad3b204b59511346.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:23:53.715148<br>Flight ICAO: EDV5029<br>Latitude: 44.850987<br>Longitude: -93.124152<br>Altitude: 1114<br>Departure IATA: PIT<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_03b0c38e687d3d46dc6fdf0bec0fa9f5 = L.marker(
+                [44.827151, -93.069064],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_03b0c38e687d3d46dc6fdf0bec0fa9f5.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:24:50.492198<br>Flight ICAO: EDV5008<br>Latitude: 44.827151<br>Longitude: -93.069064<br>Altitude: 1964<br>Departure IATA: CMH<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_8c41979bcb044b227f832d55cde91d19 = L.marker(
+                [44.835344, -93.088029],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_8c41979bcb044b227f832d55cde91d19.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:25:07.312959<br>Flight ICAO: EDV5008<br>Latitude: 44.835344<br>Longitude: -93.088029<br>Altitude: 1715<br>Departure IATA: CMH<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c2fa844eb40a1e228bb150c49124d3a1 = L.marker(
+                [44.84038, -93.09993],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_c2fa844eb40a1e228bb150c49124d3a1.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:25:23.256302<br>Flight ICAO: EDV5008<br>Latitude: 44.84038<br>Longitude: -93.09993<br>Altitude: 1515<br>Departure IATA: CMH<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_1f6b278ac59cd23f2f0d314400bea0ec = L.marker(
+                [44.846239, -93.113165],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_1f6b278ac59cd23f2f0d314400bea0ec.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:25:37.955904<br>Flight ICAO: EDV5008<br>Latitude: 44.846239<br>Longitude: -93.113165<br>Altitude: 1315<br>Departure IATA: CMH<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_6542a54a9f739390d54ea9c2c44a7e54 = L.marker(
+                [44.831899, -93.079538],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_6542a54a9f739390d54ea9c2c44a7e54.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:27:17.272537<br>Flight ICAO: SKW4245<br>Latitude: 44.831899<br>Longitude: -93.079538<br>Altitude: 1839<br>Departure IATA: INL<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_561983597f1a98204ebb31fcd22fa66d = L.marker(
+                [44.836225, -93.089992],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_561983597f1a98204ebb31fcd22fa66d.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:27:33.633805<br>Flight ICAO: SKW4245<br>Latitude: 44.836225<br>Longitude: -93.089992<br>Altitude: 1692<br>Departure IATA: INL<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_41450687d6b5e48542729645e27f6b8c = L.marker(
+                [44.840838, -93.100715],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_41450687d6b5e48542729645e27f6b8c.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:27:51.905899<br>Flight ICAO: SKW4245<br>Latitude: 44.840838<br>Longitude: -93.100715<br>Altitude: 1541<br>Departure IATA: INL<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_61afaa7caa0baf9d0dcf413893ba44c8 = L.marker(
+                [44.847569, -93.116278],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_61afaa7caa0baf9d0dcf413893ba44c8.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:28:09.673317<br>Flight ICAO: SKW4245<br>Latitude: 44.847569<br>Longitude: -93.116278<br>Altitude: 1239<br>Departure IATA: INL<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_fd726ac51e5cf8a31497bcdd1ffcabaa = L.marker(
+                [44.829573, -93.07478],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_fd726ac51e5cf8a31497bcdd1ffcabaa.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:30:06.084311<br>Flight ICAO: SKW3809<br>Latitude: 44.829573<br>Longitude: -93.07478<br>Altitude: 1889<br>Departure IATA: GFK<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2c0eb9c2fd604eb9608174b8fe67fc56 = L.marker(
+                [44.83823, -93.094544],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_2c0eb9c2fd604eb9608174b8fe67fc56.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:30:24.083124<br>Flight ICAO: SKW3809<br>Latitude: 44.83823<br>Longitude: -93.094544<br>Altitude: 1616<br>Departure IATA: GFK<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7f8db6f8050c969652c8505c3588e983 = L.marker(
+                [44.84381, -93.107584],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_7f8db6f8050c969652c8505c3588e983.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:30:45.334016<br>Flight ICAO: SKW3809<br>Latitude: 44.84381<br>Longitude: -93.107584<br>Altitude: 1390<br>Departure IATA: GFK<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e7bf29d1459677e8571bbe96c01ca8ef = L.marker(
+                [44.848891, -93.119329],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_e7bf29d1459677e8571bbe96c01ca8ef.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:31:06.780915<br>Flight ICAO: SKW3809<br>Latitude: 44.848891<br>Longitude: -93.119329<br>Altitude: 1190<br>Departure IATA: GFK<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c2a5ffc08b2e8f5c19d8c5db1dc27a13 = L.marker(
+                [44.827198, -93.069288],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_c2a5ffc08b2e8f5c19d8c5db1dc27a13.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:32:30.847976<br>Flight ICAO: SKW3971<br>Latitude: 44.827198<br>Longitude: -93.069288<br>Altitude: 2040<br>Departure IATA: GRB<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c77c35f6a28b1081738d4f475b1220bd = L.marker(
+                [44.833622, -93.083959],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_c77c35f6a28b1081738d4f475b1220bd.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:32:51.612846<br>Flight ICAO: SKW3971<br>Latitude: 44.833622<br>Longitude: -93.083959<br>Altitude: 1790<br>Departure IATA: GRB<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_19c940b253edc58deb0992bb35ecacf8 = L.marker(
+                [44.84239, -93.104315],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_19c940b253edc58deb0992bb35ecacf8.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:33:09.814981<br>Flight ICAO: SKW3971<br>Latitude: 44.84239<br>Longitude: -93.104315<br>Altitude: 1465<br>Departure IATA: GRB<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_db844c54f74bb7d7a88733fed3f9e916 = L.marker(
+                [44.848052, -93.117388],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_db844c54f74bb7d7a88733fed3f9e916.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:33:29.729100<br>Flight ICAO: SKW3971<br>Latitude: 44.848052<br>Longitude: -93.117388<br>Altitude: 1216<br>Departure IATA: GRB<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3cdff47161c6721d86559e4aa066530e = L.marker(
+                [44.831502, -93.079067],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_3cdff47161c6721d86559e4aa066530e.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:35:00.261472<br>Flight ICAO: SKW3787<br>Latitude: 44.831502<br>Longitude: -93.079067<br>Altitude: 1866<br>Departure IATA: CLE<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b6383cc3fe3f9948b4c5d67d53aaf0fd = L.marker(
+                [44.840103, -93.099148],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_b6383cc3fe3f9948b4c5d67d53aaf0fd.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:35:16.958486<br>Flight ICAO: SKW3787<br>Latitude: 44.840103<br>Longitude: -93.099148<br>Altitude: 1541<br>Departure IATA: CLE<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ebb1a7d13995c43085c46b2696b4e3f0 = L.marker(
+                [44.843214, -93.106264],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_ebb1a7d13995c43085c46b2696b4e3f0.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:35:33.689735<br>Flight ICAO: SKW3787<br>Latitude: 44.843214<br>Longitude: -93.106264<br>Altitude: 1416<br>Departure IATA: CLE<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c9b4f76892382d60f2155ea4228e5271 = L.marker(
+                [44.848287, -93.11799],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_c9b4f76892382d60f2155ea4228e5271.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:35:50.382023<br>Flight ICAO: SKW3787<br>Latitude: 44.848287<br>Longitude: -93.11799<br>Altitude: 1216<br>Departure IATA: CLE<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_fa5c35d7ce284f326752d58793d4213c = L.marker(
+                [44.830036, -93.075996],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_fa5c35d7ce284f326752d58793d4213c.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:37:31.054286<br>Flight ICAO: DAL2901<br>Latitude: 44.830036<br>Longitude: -93.075996<br>Altitude: 1941<br>Departure IATA: ATL<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_547d50cb79f100dfd8d06bb84c40cb11 = L.marker(
+                [44.838546, -93.095552],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_547d50cb79f100dfd8d06bb84c40cb11.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:37:49.575432<br>Flight ICAO: DAL2901<br>Latitude: 44.838546<br>Longitude: -93.095552<br>Altitude: 1616<br>Departure IATA: ATL<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_1ce5d4bd5fa82e9cc25c50511279e1ce = L.marker(
+                [44.843404, -93.106664],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_1ce5d4bd5fa82e9cc25c50511279e1ce.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:38:07.147738<br>Flight ICAO: DAL2901<br>Latitude: 44.843404<br>Longitude: -93.106664<br>Altitude: 1439<br>Departure IATA: ATL<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9f537d8a4162f5653ec2155ad654604d = L.marker(
+                [44.848571, -93.118701],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_9f537d8a4162f5653ec2155ad654604d.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:38:27.103586<br>Flight ICAO: DAL2901<br>Latitude: 44.848571<br>Longitude: -93.118701<br>Altitude: 1216<br>Departure IATA: ATL<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f35973ca81b36adaccd20e7050873d00 = L.marker(
+                [44.829247, -93.073708],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_f35973ca81b36adaccd20e7050873d00.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:39:53.694909<br>Flight ICAO: SKW3758<br>Latitude: 44.829247<br>Longitude: -93.073708<br>Altitude: 1964<br>Departure IATA: BIS<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d8e75ed068de32b23bb6d59b45322494 = L.marker(
+                [44.835391, -93.088045],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_d8e75ed068de32b23bb6d59b45322494.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:40:13.975453<br>Flight ICAO: SKW3758<br>Latitude: 44.835391<br>Longitude: -93.088045<br>Altitude: 1715<br>Departure IATA: BIS<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2410c005c07bf26e350c400757a029aa = L.marker(
+                [44.84418, -93.108431],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_2410c005c07bf26e350c400757a029aa.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:40:31.688107<br>Flight ICAO: SKW3758<br>Latitude: 44.84418<br>Longitude: -93.108431<br>Altitude: 1364<br>Departure IATA: BIS<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_fcfdc95ab704b707bbd0887f150367b1 = L.marker(
+                [44.849403, -93.120535],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_fcfdc95ab704b707bbd0887f150367b1.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:40:50.669948<br>Flight ICAO: DAL3758<br>Latitude: 44.849403<br>Longitude: -93.120535<br>Altitude: 1164<br>Departure IATA: BIS<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b567f7637e42cc4f5accdf1e1f16a524 = L.marker(
+                [44.830675, -93.077239],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_b567f7637e42cc4f5accdf1e1f16a524.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:48:38.952334<br>Flight ICAO: SKW4058<br>Latitude: 44.830675<br>Longitude: -93.077239<br>Altitude: 1889<br>Departure IATA: YWG<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f7e69cd710fb6b8e867ff81e67efa08d = L.marker(
+                [44.833881, -93.084561],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_f7e69cd710fb6b8e867ff81e67efa08d.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:48:49.498350<br>Flight ICAO: SKW4058<br>Latitude: 44.833881<br>Longitude: -93.084561<br>Altitude: 1764<br>Departure IATA: YWG<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c8178383ccb9f87ca4659049fda8b44f = L.marker(
+                [44.837114, -93.092131],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_c8178383ccb9f87ca4659049fda8b44f.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:49:01.254925<br>Flight ICAO: SKW4058<br>Latitude: 44.837114<br>Longitude: -93.092131<br>Altitude: 1666<br>Departure IATA: YWG<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_0b447c38b62462b29f5210f4ed1854dc = L.marker(
+                [44.843772, -93.107605],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_0b447c38b62462b29f5210f4ed1854dc.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:49:13.674353<br>Flight ICAO: SKW4058<br>Latitude: 44.843772<br>Longitude: -93.107605<br>Altitude: 1390<br>Departure IATA: YWG<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f8ea197c85140f3d468a654255aa9521 = L.marker(
+                [44.84926, -93.120334],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_f8ea197c85140f3d468a654255aa9521.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:49:24.289864<br>Flight ICAO: SKW4058<br>Latitude: 44.84926<br>Longitude: -93.120334<br>Altitude: 1164<br>Departure IATA: YWG<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f96cd6bc00673fc547afcaee2a0ff14c = L.marker(
+                [44.827102, -93.068955],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_f96cd6bc00673fc547afcaee2a0ff14c.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:51:18.485273<br>Flight ICAO: SKW3771<br>Latitude: 44.827102<br>Longitude: -93.068955<br>Altitude: 2017<br>Departure IATA: FAR<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_37704e515734b800942b70f678324890 = L.marker(
+                [44.829853, -93.075406],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_37704e515734b800942b70f678324890.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:51:26.344334<br>Flight ICAO: SKW3771<br>Latitude: 44.829853<br>Longitude: -93.075406<br>Altitude: 1915<br>Departure IATA: FAR<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_cba0d7efff42027b0bac039062282d69 = L.marker(
+                [44.833055, -93.082601],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_cba0d7efff42027b0bac039062282d69.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:51:33.639706<br>Flight ICAO: SKW3771<br>Latitude: 44.833055<br>Longitude: -93.082601<br>Altitude: 1790<br>Departure IATA: FAR<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_29dc8a51f82ca5887bb1bfb2ff1ae1f5 = L.marker(
+                [44.835578, -93.088513],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_29dc8a51f82ca5887bb1bfb2ff1ae1f5.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:51:41.272793<br>Flight ICAO: SKW3771<br>Latitude: 44.835578<br>Longitude: -93.088513<br>Altitude: 1692<br>Departure IATA: FAR<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7a7436891ecc6675c90b05647ae1c6ee = L.marker(
+                [44.838228, -93.094813],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_7a7436891ecc6675c90b05647ae1c6ee.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:51:48.682851<br>Flight ICAO: SKW3771<br>Latitude: 44.838228<br>Longitude: -93.094813<br>Altitude: 1590<br>Departure IATA: FAR<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7ccf56b9e4f90c1e90668effcac6508e = L.marker(
+                [44.840928, -93.100913],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_7ccf56b9e4f90c1e90668effcac6508e.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:51:56.991263<br>Flight ICAO: SKW3771<br>Latitude: 44.840928<br>Longitude: -93.100913<br>Altitude: 1492<br>Departure IATA: FAR<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7c64a40450df53188039d0ee34220248 = L.marker(
+                [44.843819, -93.107672],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_7c64a40450df53188039d0ee34220248.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:52:05.696033<br>Flight ICAO: SKW3771<br>Latitude: 44.843819<br>Longitude: -93.107672<br>Altitude: 1390<br>Departure IATA: FAR<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b97481181b660b29ead3df9a57dcacb3 = L.marker(
+                [44.846378, -93.113635],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_b97481181b660b29ead3df9a57dcacb3.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:52:13.224814<br>Flight ICAO: SKW3771<br>Latitude: 44.846378<br>Longitude: -93.113635<br>Altitude: 1292<br>Departure IATA: FAR<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f128a97c5269846f8a1fd0b59f0c7231 = L.marker(
+                [44.849358, -93.120468],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_f128a97c5269846f8a1fd0b59f0c7231.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:52:20.206092<br>Flight ICAO: SKW3771<br>Latitude: 44.849358<br>Longitude: -93.120468<br>Altitude: 1164<br>Departure IATA: FAR<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_bf013198b88adb0361a65bd0e0443af7 = L.marker(
+                [44.849358, -93.120468],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_bf013198b88adb0361a65bd0e0443af7.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:52:27.408991<br>Flight ICAO: SKW3771<br>Latitude: 44.849358<br>Longitude: -93.120468<br>Altitude: 1164<br>Departure IATA: FAR<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_89d5a252d3d3176a57fb0786e9387f0a = L.marker(
+                [44.828475, -93.072533],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_89d5a252d3d3176a57fb0786e9387f0a.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:53:34.062087<br>Flight ICAO: SKW3818<br>Latitude: 44.828475<br>Longitude: -93.072533<br>Altitude: 1941<br>Departure IATA: JFK<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_64d9798a20abf415adb81b757e881927 = L.marker(
+                [44.831274, -93.078936],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_64d9798a20abf415adb81b757e881927.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:53:42.982226<br>Flight ICAO: SKW3818<br>Latitude: 44.831274<br>Longitude: -93.078936<br>Altitude: 1866<br>Departure IATA: JFK<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d070a3baa6d00e957902e41964b3f59f = L.marker(
+                [44.83418, -93.085367],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_d070a3baa6d00e957902e41964b3f59f.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:53:52.153909<br>Flight ICAO: SKW3818<br>Latitude: 44.83418<br>Longitude: -93.085367<br>Altitude: 1741<br>Departure IATA: JFK<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5a82d88132c9323c43ab50f0a902047a = L.marker(
+                [44.83418, -93.085367],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_5a82d88132c9323c43ab50f0a902047a.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:54:00.461924<br>Flight ICAO: SKW3818<br>Latitude: 44.83418<br>Longitude: -93.085367<br>Altitude: 1741<br>Departure IATA: JFK<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_723912248ff5493d1ed1844ca70e6fb1 = L.marker(
+                [44.840426, -93.099865],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_723912248ff5493d1ed1844ca70e6fb1.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:54:08.677955<br>Flight ICAO: SKW3818<br>Latitude: 44.840426<br>Longitude: -93.099865<br>Altitude: 1465<br>Departure IATA: JFK<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_146c088a677457beffe3bf9ea6debbfb = L.marker(
+                [44.840426, -93.099865],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_146c088a677457beffe3bf9ea6debbfb.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:54:17.607131<br>Flight ICAO: SKW3818<br>Latitude: 44.840426<br>Longitude: -93.099865<br>Altitude: 1465<br>Departure IATA: JFK<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5a89e8f62d58e3617b471422d04532cb = L.marker(
+                [44.84582, -93.112295],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_5a89e8f62d58e3617b471422d04532cb.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:54:27.189204<br>Flight ICAO: SKW3818<br>Latitude: 44.84582<br>Longitude: -93.112295<br>Altitude: 1315<br>Departure IATA: JFK<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7082ab0d45a20a2beb76ffeb4cd07978 = L.marker(
+                [44.84824, -93.117856],
+                {}
+            ).addTo(map_edee8ebd92c3cf0fb06928383aa1056b);
+        
+    
+            marker_7082ab0d45a20a2beb76ffeb4cd07978.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-02 14:54:35.887604<br>Flight ICAO: SKW3818<br>Latitude: 44.84824<br>Longitude: -93.117856<br>Altitude: 1216<br>Departure IATA: JFK<br>Arrival IATA: MSP<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+</script>
+</html>
