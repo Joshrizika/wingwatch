@@ -3,6 +3,7 @@ from typing import Callable
 import pandas as pd
 import psycopg2
 import sys
+import os
 
 # This file uploads data to the database.
 
@@ -38,6 +39,11 @@ def insertSpots(iataCode):
 
         # Add data to places table with duplicate filtering.
         file_path = f'../algorithm/data/spotData/data/spots_{iataCode}.csv'
+
+        if not os.path.exists(file_path):
+            connection.commit()
+            return
+
         df = pd.read_csv(file_path)
         df = df.where(pd.notnull(df), None) # Replace NaN with None
 
@@ -68,6 +74,7 @@ def insertSpots(iataCode):
         connection.close()
 
 if __name__ == '__main__':
-    iataCodes = ["ATL", "BOS", "DCA", "DFW", "EWR", "IAD", "JFK", "LAX", "LGA", "ORD", "PHL"]
+    # iataCodes = ['IAH', 'MCO', 'LAS', 'MIA', 'CLT', 'SEA', 'PHX', 'FLL', 'MSP', 'DTW']
+    iataCodes = ['DEN']
     for iataCode in iataCodes:
         insertSpots(iataCode)
