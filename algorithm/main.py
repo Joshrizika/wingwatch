@@ -55,12 +55,25 @@ def getSpots(iataCode):
 
         savePath(line, iataCode, line_index)
         line_index += 1
+
     spots = list(spots) #turn spots into a list
+
+    if len(spots) == 0: #if there are no spots
+        return spots #return empty list
 
     spots_data = [json.loads(spot) for spot in spots] #parse the JSON data
     df = pd.json_normalize(spots_data) #create a DataFrame from the JSON data
     df.rename(columns={'displayName.text': 'displayName', 'editorialSummary.text': 'editorialSummary', 'location.latitude': 'latitude', 'location.longitude': 'longitude'}, inplace=True) #rename columns
-    df.drop(columns=['displayName.languageCode', 'editorialSummary.languageCode'], inplace=True) #remove columns
+
+    columns_to_drop = ['displayName.languageCode'] #always drop this column
+    if 'editorialSummary.languageCode' in df.columns: #if this column exists
+        columns_to_drop.append('editorialSummary.languageCode') #add it to the list of columns to drop
+        
+    df.drop(columns=columns_to_drop, inplace=True) #remove specified columns
+
+    if 'editorialSummary' not in df.columns: #if the editorialSummary column does not exist
+        df['editorialSummary'] = np.nan #add it and fill it with NaN
+    
     df.to_csv(f'data/spotData/data/spots_{iataCode}.csv', index=False) #save data to .csv file
 
     return spots
@@ -79,9 +92,9 @@ def getSpotsThreading(iataCodes): #DISABLE ALL FOLIUM AND MATPLOTLIB PLOTS WHEN 
         thread.join() #make sure that the main program waits until thread is finished
 
 if __name__ == '__main__':
-    iataCodes = ['ATL', 'BOS', 'DCA', 'DEN', 'DFW', 'EWR', 'IAD', 'JFK', 'LAX', 'LGA', 'ORD', 'PHL']
-    getSpotsThreading(iataCodes)
-    # iataCode = 'BOS'
-    # getSpots(iataCode)
+    # iataCodes = ['DEN', 'IAH', 'MCO', 'LAS', 'MIA', 'CLT', 'SEA', 'PHX', 'FLL', 'MSP', 'DTW']
+    # getSpotsThreading(iataCodes)
+    iataCode = 'DEN'
+    getSpots(iataCode)
 
    
