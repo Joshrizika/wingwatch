@@ -80,31 +80,43 @@ export default function ImageDisplay({
             <Loading />
           </div>
         ) : (
-          googleMapsImages.map((image, index) => (
-            <div
-              key={index}
-              style={{
-                flex: "0 0 auto",
-                marginRight: "10px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                height: "400px",
-                width: "auto",
-                backgroundColor: "#f0f0f0",
-                cursor: "pointer",
-              }}
-              onClick={() => openPopup(index)}
-            >
-              <Image
-                src={`https://places.googleapis.com/v1/${image.name}/media?maxHeightPx=${image.heightPx}&maxWidthPx=${image.widthPx}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`}
-                alt={`Google Maps Image ${index}`}
-                height={400}
-                width={400 * (image.widthPx / image.heightPx)}
-                priority={index === 0}
-              />
-            </div>
-          ))
+          googleMapsImages.map((image, index) => {
+            let adjustedHeightPx = image.heightPx;
+            let adjustedWidthPx = image.widthPx;
+
+            if (image.heightPx > 4800 || image.widthPx > 4800) {
+              const ratio = Math.min(4800 / image.heightPx, 4800 / image.widthPx);
+              adjustedHeightPx = Math.round(image.heightPx * ratio);
+              adjustedWidthPx = Math.round(image.widthPx * ratio);
+            }
+
+            return (
+              <div
+                key={index}
+                style={{
+                  flex: "0 0 auto",
+                  marginRight: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "400px",
+                  width: "auto",
+                  backgroundColor: "#f0f0f0",
+                  cursor: "pointer",
+                }}
+                onClick={() => openPopup(index)}
+              >
+                  {void console.log(`${index}: https://places.googleapis.com/v1/${image.name}/media?maxHeightPx=${adjustedHeightPx}&maxWidthPx=${adjustedWidthPx}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`)}
+                <Image
+                  src={`https://places.googleapis.com/v1/${image.name}/media?maxHeightPx=${adjustedHeightPx}&maxWidthPx=${adjustedWidthPx}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`}
+                  alt={`Google Maps Image ${index}`}
+                  height={400}
+                  width={400 * (adjustedWidthPx / adjustedHeightPx)}
+                  priority={index === 0}
+                />
+              </div>
+            );
+          })
         )}
       </div>
 
@@ -247,17 +259,36 @@ export default function ImageDisplay({
                   >
                     &lt;
                   </div>
-                  <Image
-                    key={currentImageIndex} // Add a unique key to trigger remount on index change
-                    src={`https://places.googleapis.com/v1/${googleMapsImages[currentImageIndex]!.name}/media?maxHeightPx=${googleMapsImages[currentImageIndex]!.heightPx}&maxWidthPx=${googleMapsImages[currentImageIndex]!.widthPx}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`}
-                    alt={`Google Maps Image ${currentImageIndex}`}
-                    height={600}
-                    width={
-                      600 *
-                      (googleMapsImages[currentImageIndex]!.widthPx /
-                        googleMapsImages[currentImageIndex]!.heightPx)
+                  {(() => {
+                    const maxHeight = 4800;
+                    const maxWidth = 4800;
+                    let heightPx = googleMapsImages[currentImageIndex]!.heightPx;
+                    let widthPx = googleMapsImages[currentImageIndex]!.widthPx;
+                    const ratio = widthPx / heightPx;
+
+                    if (heightPx > maxHeight || widthPx > maxWidth) {
+                      if (ratio > 1) { // width is greater
+                        widthPx = maxWidth;
+                        heightPx = Math.round(widthPx / ratio);
+                      } else {
+                        heightPx = maxHeight;
+                        widthPx = Math.round(heightPx * ratio);
+                      }
                     }
-                  />
+
+                    return (
+                      <Image
+                        key={currentImageIndex} // Add a unique key to trigger remount on index change
+                        src={`https://places.googleapis.com/v1/${googleMapsImages[currentImageIndex]!.name}/media?maxHeightPx=${heightPx}&maxWidthPx=${widthPx}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`}
+                        alt={`Google Maps Image ${currentImageIndex}`}
+                        height={600}
+                        width={
+                          600 *
+                          (widthPx / heightPx)
+                        }
+                      />
+                    );
+                  })()}
                   <div
                     style={{
                       position: "absolute",
