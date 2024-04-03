@@ -85,6 +85,11 @@ def createClusters(iataCode):
     departing_dbscan = DBSCAN(eps=eps, min_samples=minPts) #initialize departing DBSCAN with parameters
     departing_dbscan.fit(departing_coordinates) #fit departing DBSCAN to my data
 
+    #DBSCAN takes 2 arguments: eps and min_samples
+    #eps(ε) is the distance between points that DBSCAN looks for another point 
+    #min_samples is the minimum number of points that DBSCAN looks for to form a cluster
+    #using these variable and a list of coordinate, DBSCAN will provide a classification of either noise, non-core, or core points.
+
     arriving_cluster_labels = arriving_dbscan.labels_ #get all the arriving dbscan labels
     departing_cluster_labels = [label + (len(np.unique(arriving_cluster_labels))-1) if label != -1 else label for label in departing_dbscan.labels_] #get all the departing dbscan labels and change them to not overlap with arriving dbscan labels
 
