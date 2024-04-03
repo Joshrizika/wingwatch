@@ -94,6 +94,10 @@ export default function Contribute() {
       })
       .catch((error) => {
         console.error("Error:", error);
+        setIpLocation({
+          latitude: 0,
+          longitude: 0,
+        });
       });
   }, []);
 
