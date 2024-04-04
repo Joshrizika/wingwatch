@@ -42,10 +42,11 @@ export const mainRouter = createTRPCRouter({
       const paths = await db.paths.findMany();
       return paths;
     }),
-  findAirports: publicProcedure
+    findAirports: publicProcedure
     .input(z.void()) // No input required for this procedure
     .query(async () => {
-      const airports = await db.airports.findMany({
+      // Find airports with verified places
+      const verifiedAirports = await db.airports.findMany({
         where: {
           places: {
             some: {
@@ -54,11 +55,28 @@ export const mainRouter = createTRPCRouter({
           },
         },
       });
-      return airports;
+
+      // Fetch all paths in a separate query
+      const paths = await db.paths.findMany();
+
+      // Get all airports to check against the paths
+      const allAirports = await db.airports.findMany();
+
+      // Filter airports based on path_id matching with iata_code
+      const airportsWithMatchingPaths = allAirports.filter(airport =>
+        paths.some(path => path.path_id.startsWith(airport.iata_code))
+      );
+
+      // Combine the two airport lists (verified and matching paths) while removing duplicates
+      const combinedAirports = [...verifiedAirports, ...airportsWithMatchingPaths]
+        .filter((value, index, self) => self.findIndex(t => t.airport_id === value.airport_id) === index);
+
+      return combinedAirports;
     }),
 
+
   //Explore Page
-    findPlaces: publicProcedure
+  findPlaces: publicProcedure
     .input(z.void()) // No input required for this procedure
     .query(async () => {
       const places = await db.places.findMany({
