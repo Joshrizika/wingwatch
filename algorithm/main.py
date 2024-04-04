@@ -72,7 +72,7 @@ def getSpots(iataCode):
     df.drop(columns=columns_to_drop, inplace=True) #remove specified columns
 
     if 'editorialSummary' not in df.columns: #if the editorialSummary column does not exist
-        df['editorialSummary'] = np.nan #add it and fill it with NaN
+        df['editorialSummary'] = None #add it and fill it with None values
     
     df.to_csv(f'data/spotData/data/spots_{iataCode}.csv', index=False) #save data to .csv file
 
