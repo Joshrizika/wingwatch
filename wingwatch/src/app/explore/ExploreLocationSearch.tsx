@@ -161,14 +161,18 @@ const ExploreLocationSearch: React.FC<LocationSearchProps> = ({
     };
   }, []);
 
+  console.log("InputRef Width", inputRef.current?.offsetWidth);
+
   function segmentLongWords(selectedPlace: string): string {
+    const charsPerPixel = 0.13452914798;
+    const maxChars = inputRef.current!.offsetWidth * charsPerPixel;
     const words = selectedPlace.split(" ");
     const segmentedWords = words.map((word) => {
-      if (word.length > 25) {
-        // Insert `{-}` every 25 characters in the word
+      if (word.length > maxChars) {
+        // Insert `{-}` every maxChars characters in the word
         let segmented = "";
-        for (let i = 0; i < word.length; i += 25) {
-          const segment = word.slice(i, i + 25);
+        for (let i = 0; i < word.length; i += maxChars) {
+          const segment = word.slice(i, i + maxChars);
           segmented += (i > 0 ? "-" : "") + segment;
         }
         return segmented;
@@ -189,6 +193,7 @@ const ExploreLocationSearch: React.FC<LocationSearchProps> = ({
       }}
     >
       <div style={{ width: "100%" }}>
+        {/* Input Form */}
         <form style={{ width: "100%" }}>
           <input
             type="text"
@@ -196,12 +201,12 @@ const ExploreLocationSearch: React.FC<LocationSearchProps> = ({
             onChange={handleInputChange}
             onKeyDown={handleKeyPress}
             onFocus={() => setShowSuggestions(true)}
-            placeholder="Search..."
+            placeholder="Search from..."
             style={{
               fontWeight: "normal",
               zIndex: 5, // Ensure input is always on top
               outline: "1px solid #000",
-              width: "100%",
+              width: "100%", // Ensure input width is consistent
               minWidth: "150px",
               boxSizing: "border-box",
               padding: "5px",
@@ -209,6 +214,8 @@ const ExploreLocationSearch: React.FC<LocationSearchProps> = ({
             }}
             ref={inputRef}
           />
+
+          {/* Suggestion Display */}
           {showSuggestions && suggestions.length > 0 && (
             <div
               style={{
@@ -252,40 +259,40 @@ const ExploreLocationSearch: React.FC<LocationSearchProps> = ({
               </ul>
             </div>
           )}
+        </form>
+        {/* SelectedPlace Display */}
+        <div
+          style={{
+            border: "1px solid gray",
+            padding: "10px",
+            fontWeight: "normal",
+            marginTop: "5px",
+            fontSize: "12px",
+            borderRadius: "4px",
+            minHeight: "30px",
+            height: "auto",
+            zIndex: 3, // Lower than suggestions to be obscured when suggestions are shown
+            wordWrap: "break-word",
+            hyphens: "auto",
+            overflowWrap: "break-word",
+            width: "100%", // Ensure selectedPlace width is consistent with input
+          }}
+        >
+          {selectedPlace ? segmentLongWords(selectedPlace) : "Your Location"}
+
           {selectedPlace && (
-            <div
+            <button
+              type="button"
+              onClick={handleClearSelection}
               style={{
-                border: "1px solid gray",
-                padding: "10px",
-                fontWeight: "normal",
-                marginTop: "5px",
                 fontSize: "12px",
-                borderRadius: "4px",
-                minHeight: "30px",
-                height: "auto",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                zIndex: 3, // Lower than suggestions to be obscured when suggestions are shown
-                wordWrap: "break-word",
-                hyphens: "auto",
-                overflowWrap: "break-word", // Ensure text breaks to prevent width expansion
+                padding: "0 5px",
               }}
             >
-              {segmentLongWords(selectedPlace)}
-              <button
-                type="button"
-                onClick={handleClearSelection}
-                style={{
-                  fontSize: "12px",
-                  padding: "0 5px",
-                }}
-              >
-                X
-              </button>
-            </div>
+              X
+            </button>
           )}
-        </form>
+        </div>
       </div>
     </div>
   );
