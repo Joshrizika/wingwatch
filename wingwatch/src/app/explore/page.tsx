@@ -300,7 +300,7 @@ function ExploreContent() {
               </div>
 
               {/* Container for the span adjusted to prevent wrapping */}
-              <div style={{ minWidth: "60px", textAlign: "right" }}>
+              <div style={{ minWidth: "70px", textAlign: "right" }}>
                 <span
                   style={{
                     fontWeight: "normal",
