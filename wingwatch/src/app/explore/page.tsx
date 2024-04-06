@@ -188,14 +188,14 @@ function ExploreContent() {
     const dLon = toRadians(lon2 - lon1);
     lat1 = toRadians(lat1);
     lat2 = toRadians(lat2);
-  
+
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
   }
-  
+
   // Convert degree to radians
   function toRadians(degree: number): number {
     return degree * (Math.PI / 180);
@@ -236,23 +236,55 @@ function ExploreContent() {
       <div className="mt-5 flex flex-col gap-4 px-4 md:flex-row">
         <div
           className="w-full md:w-1/3 xl:w-1/3"
-          style={{ maxHeight: "80vh", minHeight: "80vh" }}
+          style={{ maxHeight: "80vh", minHeight: "80vh", minWidth: "490px" }}
         >
           {/* Non-scrollable Header and Slider Bar */}
-          <div className="mb-4">
-            <h2 className="flex items-center justify-between text-xl font-bold">
-              Nearby Places
-              <div className="flex items-center gap-2">
-                <ExploreLocationSearch
-                  onSearch={(placeId) => {
-                    setSelectedPlaceId(placeId);
-                    if (placeId === null) {
-                      setSearchOriginLocation(null);
-                    }
-                  }}
-                  placeName={searchParams.get("placeName") ?? undefined}
-                />
+          <div className="mb-4 flex flex-row items-start gap-4">
+            <div className="flex flex-col">
+              <h2 className="whitespace-nowrap text-xl font-bold">
+                Nearby Places
+              </h2>
+              {/* Sort By Dropdown */}
+              <div className="mt-4" style={{ minWidth: "150px" }}>
+                <label htmlFor="sort" className="mr-2">
+                  Sort by:
+                </label>
+                <select
+                  id="sort"
+                  value={sortOption}
+                  onChange={handleSortChange}
+                  style={{ outline: "1px solid gray", borderRadius: "4px" }}
+                >
+                  <option value="best">Best</option>
+                  <option value="closest">Closest</option>
+                  <option value="rating">Rating</option>
+                </select>
+              </div>
+            </div>
 
+            <div className="flex-grow">
+              <ExploreLocationSearch
+                onSearch={(placeId) => {
+                  setSelectedPlaceId(placeId);
+                  if (placeId === null) {
+                    setSearchOriginLocation(null);
+                  }
+                }}
+                placeName={searchParams.get("placeName") ?? undefined}
+              />
+            </div>
+
+            <div
+              className="flex items-center justify-between"
+              style={{ minWidth: "160px" }}
+            >
+              {/* Fixed width container for the slider */}
+              <div
+                className="mr-2 flex items-center"
+                style={{ width: "100px" }}
+              >
+                {" "}
+                {/* Added margin right to create a gap */}
                 <input
                   type="range"
                   min="1"
@@ -262,32 +294,24 @@ function ExploreContent() {
                   onMouseDown={() => setSliderToggled(true)}
                   onChange={handleSliderChange}
                   onMouseUp={handleSliderChangeComplete}
-                  className="w-3/4"
+                  className="w-full"
                   ref={sliderRef}
                 />
+              </div>
+
+              {/* Container for the span adjusted to prevent wrapping */}
+              <div style={{ minWidth: "60px", textAlign: "right" }}>
                 <span
                   style={{
                     fontWeight: "normal",
-                    fontSize: 15,
-                    width: "85px",
-                    textAlign: "right",
+                    fontSize: "15px",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {Math.round(Number(tempRadius))}{" "}
                   {Math.round(Number(tempRadius)) > 1 ? "miles" : "mile"}
                 </span>
               </div>
-            </h2>
-            {/* Sort By Dropdown */}
-            <div className="mb-4">
-              <label htmlFor="sort" className="mr-2">
-                Sort by:
-              </label>
-              <select id="sort" value={sortOption} onChange={handleSortChange}>
-                <option value="best">Best</option>
-                <option value="closest">Closest</option>
-                <option value="rating">Rating</option>
-              </select>
             </div>
           </div>
 
@@ -331,7 +355,8 @@ function ExploreContent() {
                       {place.distance_from_flightpath && (
                         <p>
                           Distance from Flight Path:{" "}
-                          {Math.round(place.distance_from_flightpath * 100) / 100}{" "}
+                          {Math.round(place.distance_from_flightpath * 100) /
+                            100}{" "}
                           {Math.round(place.distance_from_flightpath * 100) /
                             100 ===
                           1
@@ -346,12 +371,24 @@ function ExploreContent() {
                           ? "foot"
                           : "feet"}
                       </p>
-                      <p>Distance: {(() => {
-                        const originLat = searchOriginLocation ? searchOriginLocation.latitude : location.latitude;
-                        const originLon = searchOriginLocation ? searchOriginLocation.longitude : location.longitude;
-                        const distance = calculateDistance(originLat, originLon, place.latitude, place.longitude);
-                        return `${distance.toFixed(2)} ${distance.toFixed(2) === "1" ? "mile" : "miles"}`;
-                      })()}</p>
+                      <p>
+                        Distance:{" "}
+                        {(() => {
+                          const originLat = searchOriginLocation
+                            ? searchOriginLocation.latitude
+                            : location.latitude;
+                          const originLon = searchOriginLocation
+                            ? searchOriginLocation.longitude
+                            : location.longitude;
+                          const distance = calculateDistance(
+                            originLat,
+                            originLon,
+                            place.latitude,
+                            place.longitude,
+                          );
+                          return `${distance.toFixed(2)} ${distance.toFixed(2) === "1" ? "mile" : "miles"}`;
+                        })()}
+                      </p>
                       <Link href={`/place/?id=${place.place_id}`}>
                         <span className="cursor-pointer text-blue-500 hover:text-blue-700">
                           View Details
@@ -365,9 +402,7 @@ function ExploreContent() {
                   </div>
                 )
               ) : (
-                <div className="text-center">
-                  Finding your location...
-                </div>
+                <div className="text-center">Finding your location...</div>
               )}
             </div>
           )}

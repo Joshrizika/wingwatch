@@ -28,7 +28,7 @@ export default function Navbar() {
 
   return (
     <nav className="bg-white shadow" style={{ zIndex: 10 }}>
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
         <div className="flex items-center space-x-4">
           <Link href="/" passHref>
             <span>
@@ -40,7 +40,9 @@ export default function Navbar() {
               Wing Watch
             </span>
           </Link>
-          <SearchBar />
+          <div className="flex-grow">
+            <SearchBar />
+          </div>
         </div>
         <div className="flex items-center space-x-4">
           <Link href="/explore" passHref>

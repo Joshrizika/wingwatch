@@ -31,9 +31,7 @@ const ExploreLocationSearch: React.FC<LocationSearchProps> = ({
   const suggestionsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (placeName) {
-      setSelectedPlace(placeName);
-    }
+    setSelectedPlace(placeName ?? null);
   }, [placeName]);
 
   useEffect(() => {
@@ -93,23 +91,23 @@ const ExploreLocationSearch: React.FC<LocationSearchProps> = ({
 
   const handleSelection = () => {
     if (suggestions[activeSuggestion]) {
-        setSelectedPlace(
-          suggestions[activeSuggestion]!.placePrediction.text.text,
-        );
-        onSearch(suggestions[activeSuggestion]!.placePrediction.placeId);
-        setShowSuggestions(false);
-        setCurrentInput(""); // Reset the currentInput to "" on submit
-        const urlParams = new URLSearchParams(window.location.search);
-        urlParams.set(
-          "placeName",
-          suggestions[activeSuggestion]!.placePrediction.text.text,
-        );
-        urlParams.set(
-          "placeId",
-          suggestions[activeSuggestion]!.placePrediction.placeId,
-        );
-        window.history.replaceState({}, "", "?" + urlParams.toString());
-      }
+      setSelectedPlace(
+        suggestions[activeSuggestion]!.placePrediction.text.text,
+      );
+      onSearch(suggestions[activeSuggestion]!.placePrediction.placeId);
+      setShowSuggestions(false);
+      setCurrentInput(""); // Reset the currentInput to "" on submit
+      const urlParams = new URLSearchParams(window.location.search);
+      urlParams.set(
+        "placeName",
+        suggestions[activeSuggestion]!.placePrediction.text.text,
+      );
+      urlParams.set(
+        "placeId",
+        suggestions[activeSuggestion]!.placePrediction.placeId,
+      );
+      window.history.replaceState({}, "", "?" + urlParams.toString());
+    }
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -146,7 +144,12 @@ const ExploreLocationSearch: React.FC<LocationSearchProps> = ({
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (inputRef.current && !inputRef.current.contains(event.target as Node) && suggestionsRef.current && !suggestionsRef.current.contains(event.target as Node)) {
+    if (
+      inputRef.current &&
+      !inputRef.current.contains(event.target as Node) &&
+      suggestionsRef.current &&
+      !suggestionsRef.current.contains(event.target as Node)
+    ) {
       setShowSuggestions(false);
     }
   };
@@ -158,64 +161,133 @@ const ExploreLocationSearch: React.FC<LocationSearchProps> = ({
     };
   }, []);
 
+  function segmentLongWords(selectedPlace: string): string {
+    const words = selectedPlace.split(" ");
+    const segmentedWords = words.map((word) => {
+      if (word.length > 25) {
+        // Insert `{-}` every 25 characters in the word
+        let segmented = "";
+        for (let i = 0; i < word.length; i += 25) {
+          const segment = word.slice(i, i + 25);
+          segmented += (i > 0 ? "-" : "") + segment;
+        }
+        return segmented;
+      }
+      return word;
+    });
+
+    return segmentedWords.join(" ");
+  }
+
   return (
-    <form>
-      <input
-        type="text"
-        value={currentInput}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyPress}
-        onFocus={() => setShowSuggestions(true)}
-        placeholder="Search..."
-        style={{ fontWeight: "normal", zIndex: 3, outline: "1px solid #000" }}
-        ref={inputRef}
-      />
-      {showSuggestions && suggestions.length > 0 && (
-        <div
-          style={{ position: "absolute", zIndex: 4, border: "1px solid #000" }}
-          ref={suggestionsRef}
-        >
-          <ul>
-            {suggestions.map((place, index) => (
-              <li
-                key={index}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleSelection();
-                }}
-                onMouseOver={() => handleSuggestionHover(index)}
+    <div
+      style={{
+        width: "100%",
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <div style={{ width: "100%" }}>
+        <form style={{ width: "100%" }}>
+          <input
+            type="text"
+            value={currentInput}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyPress}
+            onFocus={() => setShowSuggestions(true)}
+            placeholder="Search..."
+            style={{
+              fontWeight: "normal",
+              zIndex: 5, // Ensure input is always on top
+              outline: "1px solid #000",
+              width: "100%",
+              minWidth: "150px",
+              boxSizing: "border-box",
+              padding: "5px",
+              borderRadius: "4px",
+            }}
+            ref={inputRef}
+          />
+          {showSuggestions && suggestions.length > 0 && (
+            <div
+              style={{
+                position: "absolute",
+                zIndex: 4, // Ensure suggestions are directly below the search bar and on top of the selected place
+                border: "1px solid gray",
+                width: "98%",
+                boxSizing: "border-box",
+                overflow: "hidden",
+                backgroundColor: "#fff",
+                left: "1%",
+                marginTop: "1px", // Adds a one pixel gap between the suggestions and the bottom of the search box
+                borderBottomLeftRadius: "4px",
+                borderBottomRightRadius: "4px",
+              }}
+              ref={suggestionsRef}
+            >
+              <ul style={{ padding: 0, margin: 0 }}>
+                {suggestions.map((place, index) => (
+                  <li
+                    key={index}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleSelection();
+                    }}
+                    onMouseOver={() => handleSuggestionHover(index)}
+                    style={{
+                      backgroundColor:
+                        index === activeSuggestion ? "#eee" : "#fff",
+                      fontWeight: "normal",
+                      listStyleType: "none",
+                      padding: "5px",
+                      whiteSpace: "normal",
+                      wordWrap: "break-word",
+                      fontSize: "14px",
+                    }}
+                  >
+                    {place?.placePrediction?.text?.text}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {selectedPlace && (
+            <div
+              style={{
+                border: "1px solid gray",
+                padding: "10px",
+                fontWeight: "normal",
+                marginTop: "5px",
+                fontSize: "12px",
+                borderRadius: "4px",
+                minHeight: "30px",
+                height: "auto",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                zIndex: 3, // Lower than suggestions to be obscured when suggestions are shown
+                wordWrap: "break-word",
+                hyphens: "auto",
+                overflowWrap: "break-word", // Ensure text breaks to prevent width expansion
+              }}
+            >
+              {segmentLongWords(selectedPlace)}
+              <button
+                type="button"
+                onClick={handleClearSelection}
                 style={{
-                  backgroundColor: index === activeSuggestion ? "#eee" : "#fff",
-                  fontWeight: "normal",
+                  fontSize: "12px",
+                  padding: "0 5px",
                 }}
               >
-                {place?.placePrediction?.text?.text}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {selectedPlace && (
-        <div
-          style={{
-            border: "1px solid #000",
-            padding: "10px",
-            fontWeight: "normal",
-            position: "relative",
-            zIndex: 2,
-          }}
-        >
-          {selectedPlace}
-          <button
-            type="button"
-            onClick={handleClearSelection}
-            style={{ position: "absolute", right: "10px" }}
-          >
-            X
-          </button>
-        </div>
-      )}
-    </form>
+                X
+              </button>
+            </div>
+          )}
+        </form>
+      </div>
+    </div>
   );
 };
 
