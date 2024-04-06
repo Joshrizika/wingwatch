@@ -275,16 +275,11 @@ function ExploreContent() {
             </div>
 
             <div
-              className="flex items-center justify-between"
-              style={{ minWidth: "160px" }}
+              className="flex flex-col justify-center"
+              style={{ minWidth: "160px", height: "100%", paddingTop: "20px" }}
             >
-              {/* Fixed width container for the slider */}
-              <div
-                className="mr-2 flex items-center"
-                style={{ width: "100px" }}
-              >
-                {" "}
-                {/* Added margin right to create a gap */}
+              {/* Container for the slider centered */}
+              <div className="flex items-center justify-center">
                 <input
                   type="range"
                   min="1"
@@ -299,8 +294,8 @@ function ExploreContent() {
                 />
               </div>
 
-              {/* Container for the span adjusted to prevent wrapping */}
-              <div style={{ minWidth: "70px", textAlign: "right" }}>
+              {/* Centered container for the span below the slider */}
+              <div style={{ textAlign: "center" }}>
                 <span
                   style={{
                     fontWeight: "normal",
