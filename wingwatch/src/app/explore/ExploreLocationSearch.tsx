@@ -263,6 +263,7 @@ const ExploreLocationSearch: React.FC<LocationSearchProps> = ({
         {/* SelectedPlace Display */}
         <div
           style={{
+            position: "relative", // Added for absolute positioning of the button
             border: "1px solid gray",
             padding: "10px",
             fontWeight: "normal",
@@ -278,13 +279,16 @@ const ExploreLocationSearch: React.FC<LocationSearchProps> = ({
             width: "100%", // Ensure selectedPlace width is consistent with input
           }}
         >
+          Searching From:{" "}
           {selectedPlace ? segmentLongWords(selectedPlace) : "Your Location"}
-
           {selectedPlace && (
             <button
               type="button"
               onClick={handleClearSelection}
               style={{
+                position: "absolute", // Position the button absolutely within the parent div
+                top: 0, // Align to the top of the parent div
+                right: 0, // Align to the right of the parent div
                 fontSize: "12px",
                 padding: "0 5px",
               }}
