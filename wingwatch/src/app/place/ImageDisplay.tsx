@@ -106,7 +106,6 @@ export default function ImageDisplay({
                 }}
                 onClick={() => openPopup(index)}
               >
-                  {void console.log(`${index}: https://places.googleapis.com/v1/${image.name}/media?maxHeightPx=${adjustedHeightPx}&maxWidthPx=${adjustedWidthPx}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`)}
                 <Image
                   src={`https://places.googleapis.com/v1/${image.name}/media?maxHeightPx=${adjustedHeightPx}&maxWidthPx=${adjustedWidthPx}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`}
                   alt={`Google Maps Image ${index}`}
