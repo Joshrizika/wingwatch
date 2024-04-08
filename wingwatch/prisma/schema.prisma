@@ -15,7 +15,7 @@ datasource db {
 }
 
 model places {
-    place_id                 String   @id @default(cuid())
+    place_id                 String    @id @default(cuid())
     name                     String
     address                  String
     description              String?
@@ -28,31 +28,32 @@ model places {
     airportDetails           airports? @relation(fields: [airport], references: [iata_code], onDelete: Cascade)
     distance_from_flightpath Float?
     average_altitude         Float
-    altitude_estimated       Boolean @default(false)
+    altitude_estimated       Boolean   @default(false)
     distance_from_airport    Float?
     reviews                  Review[]
-    savedByUsers             User[]   @relation("UserSavedPlaces")
-    isUserSubmitted          Boolean  @default(false)
+    images                   Image[]
+    savedByUsers             User[]    @relation("UserSavedPlaces")
+    isUserSubmitted          Boolean   @default(false)
     submittedUserId          String?
-    submittedUser            User?    @relation(fields: [submittedUserId], references: [id], onDelete: SetNull)
-    isVerified               Boolean  @default(true)
+    submittedUser            User?     @relation(fields: [submittedUserId], references: [id], onDelete: SetNull)
+    isVerified               Boolean   @default(true)
 }
 
 model paths {
-    path_id             String   @id
-    latitude            Float[]
-    longitude           Float[]
-    places              places[]
+    path_id   String   @id
+    latitude  Float[]
+    longitude Float[]
+    places    places[]
 }
 
 model airports {
-    airport_id          String   @id @default(cuid())
-    name                String
-    iata_code           String   @unique
-    latitude            Float
-    longitude           Float
-    elevation           Float?
-    places              places[]
+    airport_id String   @id @default(cuid())
+    name       String
+    iata_code  String   @unique
+    latitude   Float
+    longitude  Float
+    elevation  Float?
+    places     places[]
 }
 
 // Necessary for Next auth
@@ -84,17 +85,17 @@ model Session {
 }
 
 model User {
-    id                      String    @id @default(cuid())
-    name                    String
-    email                   String    @unique
-    emailVerified           DateTime?
-    image                   String?
-    isAdmin                 Boolean   @default(false)
-    accounts                Account[]
-    sessions                Session[]
-    reviews                 Review[]
-    savedPlaces             places[] @relation("UserSavedPlaces")
-    contributedPlaces       places[] 
+    id                String    @id @default(cuid())
+    name              String
+    email             String    @unique
+    emailVerified     DateTime?
+    image             String?
+    isAdmin           Boolean   @default(false)
+    accounts          Account[]
+    sessions          Session[]
+    reviews           Review[]
+    savedPlaces       places[]  @relation("UserSavedPlaces")
+    contributedPlaces places[]
 }
 
 model Review {
@@ -103,8 +104,20 @@ model Review {
     content   String?
     rating    Int
     timestamp DateTime
+    images    Image[]
     userId    String?
-    user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+    user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
     placeId   String
     place     places   @relation(fields: [placeId], references: [place_id], onDelete: Cascade)
+}
+
+model Image {
+    id       String @id @default(cuid())
+    name     String
+    size     Int
+    type     String
+    placeId  String
+    place    places @relation(fields: [placeId], references: [place_id], onDelete: Cascade)
+    reviewId String
+    review   Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
 }

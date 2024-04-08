@@ -5,6 +5,7 @@ import { getServerAuthSession } from "~/server/auth";
 import fs from "fs";
 import csv from "csv-parser";
 import path from "path";
+import aws from "aws-sdk";
 
 function calculateDistance(
   lat1: number,
@@ -30,6 +31,51 @@ function toRadians(degree: number): number {
   return degree * (Math.PI / 180);
 }
 
+async function uploadImage(file: Buffer, imageId: string, reviewId: string, placeId: string) {
+  const endpoint = new aws.Endpoint("nyc3.digitaloceanspaces.com");
+  const s3 = new aws.S3({
+    endpoint: endpoint,
+    accessKeyId: process.env.DO_SPACES_ACCESS_KEY,
+    secretAccessKey: process.env.DO_SPACES_SECRET_KEY,
+    region: 'nyc3',
+    signatureVersion: 'v4',
+  });
+
+  const params = {
+    Bucket: "wingwatch",
+    Key: `${placeId}/${reviewId}/${imageId}`,
+    Body: file,
+  };
+  try {
+    await s3.upload(params).promise();
+  } catch (error) {
+    console.error(
+      "Error uploading image for reviewId:",
+      reviewId,
+      "Error:",
+      error,
+    );
+    // deleteReviewMutation.mutate({ id: reviewId });
+    await db.review.delete({
+      where: { id: reviewId },
+    });
+  }
+}
+
+const base64ToBuffer = (base64String: string): Buffer => {
+  const arr = base64String.split(",");
+  const bstr = atob(arr[1]!);
+  let n = bstr.length;
+  const buffer = new Uint8Array(n);
+
+  while (n--) {
+    buffer[n] = bstr.charCodeAt(n);
+  }
+
+  return Buffer.from(buffer);
+};
+
+
 export const mainRouter = createTRPCRouter({
   getSession: publicProcedure
     .input(z.void()) // No input required for this procedure
@@ -42,7 +88,7 @@ export const mainRouter = createTRPCRouter({
       const paths = await db.paths.findMany();
       return paths;
     }),
-    findAirports: publicProcedure
+  findAirports: publicProcedure
     .input(z.void()) // No input required for this procedure
     .query(async () => {
       // Find airports with verified places
@@ -63,17 +109,21 @@ export const mainRouter = createTRPCRouter({
       const allAirports = await db.airports.findMany();
 
       // Filter airports based on path_id matching with iata_code
-      const airportsWithMatchingPaths = allAirports.filter(airport =>
-        paths.some(path => path.path_id.startsWith(airport.iata_code))
+      const airportsWithMatchingPaths = allAirports.filter((airport) =>
+        paths.some((path) => path.path_id.startsWith(airport.iata_code)),
       );
 
       // Combine the two airport lists (verified and matching paths) while removing duplicates
-      const combinedAirports = [...verifiedAirports, ...airportsWithMatchingPaths]
-        .filter((value, index, self) => self.findIndex(t => t.airport_id === value.airport_id) === index);
+      const combinedAirports = [
+        ...verifiedAirports,
+        ...airportsWithMatchingPaths,
+      ].filter(
+        (value, index, self) =>
+          self.findIndex((t) => t.airport_id === value.airport_id) === index,
+      );
 
       return combinedAirports;
     }),
-
 
   //Explore Page
   findPlaces: publicProcedure
@@ -203,7 +253,7 @@ export const mainRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      await db.review.create({
+      const newReview = await db.review.create({
         data: {
           title: input.title,
           content: input.content,
@@ -212,11 +262,43 @@ export const mainRouter = createTRPCRouter({
           userId: input.userId,
           placeId: input.placeId,
         },
+        select: {
+          id: true,
+        },
       });
+      return newReview;
+    }),
+
+  addImage: publicProcedure
+    .input(
+      z.object({
+        name: z.string(),
+        size: z.number(),
+        type: z.string(),
+        placeId: z.string(),
+        reviewId: z.string(),
+        file: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const createdImage = await db.image.create({
+        data: {
+          name: input.name,
+          size: input.size,
+          type: input.type,
+          placeId: input.placeId,
+          reviewId: input.reviewId,
+        },
+        select: {
+          id: true,
+        },
+      });
+      const imageId = createdImage.id;
+      const file = base64ToBuffer(input.file);
+      await uploadImage(file, imageId, input.reviewId, input.placeId);
     }),
 
   //Account Page
-
   editUser: publicProcedure
     .input(
       z.object({
