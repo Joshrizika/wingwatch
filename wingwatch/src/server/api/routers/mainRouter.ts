@@ -31,20 +31,40 @@ function toRadians(degree: number): number {
   return degree * (Math.PI / 180);
 }
 
-async function uploadImage(file: Buffer, imageId: string, reviewId: string, placeId: string) {
+const base64ToBuffer = (base64String: string): Buffer => {
+  const arr = base64String.split(",");
+  const bstr = atob(arr[1]!);
+  let n = bstr.length;
+  const buffer = new Uint8Array(n);
+
+  while (n--) {
+    buffer[n] = bstr.charCodeAt(n);
+  }
+
+  return Buffer.from(buffer);
+};
+
+async function uploadImage(
+  file: Buffer,
+  imageId: string,
+  reviewId: string,
+  placeId: string,
+  type: string,
+) {
   const endpoint = new aws.Endpoint("nyc3.digitaloceanspaces.com");
   const s3 = new aws.S3({
     endpoint: endpoint,
     accessKeyId: process.env.DO_SPACES_ACCESS_KEY,
     secretAccessKey: process.env.DO_SPACES_SECRET_KEY,
-    region: 'nyc3',
-    signatureVersion: 'v4',
+    region: "nyc3",
+    signatureVersion: "v4",
   });
 
   const params = {
     Bucket: "wingwatch",
-    Key: `${placeId}/${reviewId}/${imageId}`,
+    Key: `${placeId}/${reviewId}/${imageId}.${type.split('/')[1]}`,
     Body: file,
+    ACL: "public-read",
   };
   try {
     await s3.upload(params).promise();
@@ -61,20 +81,6 @@ async function uploadImage(file: Buffer, imageId: string, reviewId: string, plac
     });
   }
 }
-
-const base64ToBuffer = (base64String: string): Buffer => {
-  const arr = base64String.split(",");
-  const bstr = atob(arr[1]!);
-  let n = bstr.length;
-  const buffer = new Uint8Array(n);
-
-  while (n--) {
-    buffer[n] = bstr.charCodeAt(n);
-  }
-
-  return Buffer.from(buffer);
-};
-
 
 export const mainRouter = createTRPCRouter({
   getSession: publicProcedure
@@ -275,6 +281,8 @@ export const mainRouter = createTRPCRouter({
         name: z.string(),
         size: z.number(),
         type: z.string(),
+        height: z.number(),
+        width: z.number(),
         placeId: z.string(),
         reviewId: z.string(),
         file: z.string(),
@@ -286,6 +294,8 @@ export const mainRouter = createTRPCRouter({
           name: input.name,
           size: input.size,
           type: input.type,
+          height: input.height,
+          width: input.width,
           placeId: input.placeId,
           reviewId: input.reviewId,
         },
@@ -295,7 +305,23 @@ export const mainRouter = createTRPCRouter({
       });
       const imageId = createdImage.id;
       const file = base64ToBuffer(input.file);
-      await uploadImage(file, imageId, input.reviewId, input.placeId);
+      await uploadImage(file, imageId, input.reviewId, input.placeId, input.type);
+    }),
+
+  getPlaceImages: publicProcedure
+    .input(z.object({ placeId: z.string() }))
+    .query(async ({ input }) => {
+      const images = await db.image.findMany({
+        where: { placeId: input.placeId },
+        include: {
+          review: {
+            include: {
+              user: true,
+            },
+          },
+        },
+      });
+      return images;
     }),
 
   //Account Page

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Loading from "../_components/Loading";
-interface GoogleMapsImage {
+interface ImageDisplayProps {
   authorAttributions: [
     {
       displayName: string;
@@ -12,12 +12,13 @@ interface GoogleMapsImage {
   heightPx: number;
   name: string;
   widthPx: number;
+  type: string;
 }
 
 export default function ImageDisplay({
-  googleMapsImages,
+  images,
 }: {
-  googleMapsImages: GoogleMapsImage[];
+  images: ImageDisplayProps[];
 }) {
   const [popupVisible, setPopupVisible] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -33,12 +34,12 @@ export default function ImageDisplay({
 
   const goToPreviousImage = () => {
     setCurrentImageIndex(
-      (prev) => (prev - 1 + googleMapsImages.length) % googleMapsImages.length,
+      (prev) => (prev - 1 + images.length) % images.length,
     );
   };
 
   const goToNextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % googleMapsImages.length);
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
   };
 
   return (
@@ -55,7 +56,7 @@ export default function ImageDisplay({
           padding: "10px",
         }}
       >
-        {googleMapsImages === null ? (
+        {images === null ? (
           <div
             style={{
               height: "400px",
@@ -67,7 +68,7 @@ export default function ImageDisplay({
           >
             No Images Available
           </div>
-        ) : googleMapsImages.length === 0 ? (
+        ) : images.length === 0 ? (
           <div
             style={{
               height: "400px",
@@ -80,7 +81,7 @@ export default function ImageDisplay({
             <Loading />
           </div>
         ) : (
-          googleMapsImages.map((image, index) => {
+          images.map((image, index) => {
             let adjustedHeightPx = image.heightPx;
             let adjustedWidthPx = image.widthPx;
 
@@ -107,8 +108,8 @@ export default function ImageDisplay({
                 onClick={() => openPopup(index)}
               >
                 <Image
-                  src={`https://places.googleapis.com/v1/${image.name}/media?maxHeightPx=${adjustedHeightPx}&maxWidthPx=${adjustedWidthPx}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`}
-                  alt={`Google Maps Image ${index}`}
+                  src={image.type === "GM" ? `https://places.googleapis.com/v1/${image.name}/media?maxHeightPx=${adjustedHeightPx}&maxWidthPx=${adjustedWidthPx}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}` : image.name}
+                  alt={`Image ${index}`}
                   height={400}
                   width={400 * (adjustedWidthPx / adjustedHeightPx)}
                   priority={index === 0}
@@ -165,13 +166,13 @@ export default function ImageDisplay({
                 position: "relative",
                 backgroundColor: "#f0f0f0",
                 height: "600px",
-                width: `${600 * (googleMapsImages[currentImageIndex]!.widthPx / googleMapsImages[currentImageIndex]!.heightPx)}px`,
+                width: `${600 * (images[currentImageIndex]!.widthPx / images[currentImageIndex]!.heightPx)}px`,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              {googleMapsImages[currentImageIndex] && (
+              {images[currentImageIndex] && (
                 <>
                   <div
                     style={{
@@ -185,9 +186,9 @@ export default function ImageDisplay({
                       borderRadius: "8px",
                     }}
                   >
-                    {googleMapsImages[currentImageIndex]!.authorAttributions[0].uri ? (
+                    {images[currentImageIndex]!.authorAttributions[0].uri ? (
                       <a
-                        href={googleMapsImages[currentImageIndex]!.authorAttributions[0].uri}
+                        href={images[currentImageIndex]!.authorAttributions[0].uri}
                         style={{
                           display: "flex",
                           alignItems: "center",
@@ -197,8 +198,8 @@ export default function ImageDisplay({
                         rel="noopener noreferrer"
                       >
                         <Image
-                          key={googleMapsImages[currentImageIndex]!.authorAttributions[0].photoUri}
-                          src={`https:${googleMapsImages[currentImageIndex]!.authorAttributions[0].photoUri}`}
+                          key={images[currentImageIndex]!.authorAttributions[0].photoUri}
+                          src={`${images[currentImageIndex]!.type === 'GM' ? 'https:' : ''}${images[currentImageIndex]!.authorAttributions[0].photoUri}`}
                           alt="Author's Photo"
                           width={40}
                           height={40}
@@ -212,14 +213,14 @@ export default function ImageDisplay({
                             color: "#fff",
                           }}
                         >
-                          {googleMapsImages[currentImageIndex]!.authorAttributions[0].displayName}
+                          {images[currentImageIndex]!.authorAttributions[0].displayName}
                         </span>
                       </a>
                     ) : (
                       <>
                         <Image
-                          key={googleMapsImages[currentImageIndex]!.authorAttributions[0].photoUri}
-                          src={`https:${googleMapsImages[currentImageIndex]!.authorAttributions[0].photoUri}`}
+                          key={images[currentImageIndex]!.authorAttributions[0].photoUri}
+                          src={`${images[currentImageIndex]!.type === 'GM' ? 'https:' : ''}${images[currentImageIndex]!.authorAttributions[0].photoUri}`}
                           alt="Author's Photo"
                           width={40}
                           height={40}
@@ -233,7 +234,7 @@ export default function ImageDisplay({
                             color: "#fff",
                           }}
                         >
-                          {googleMapsImages[currentImageIndex]!.authorAttributions[0].displayName}
+                          {images[currentImageIndex]!.authorAttributions[0].displayName}
                         </span>
                       </>
                     )}
@@ -261,8 +262,8 @@ export default function ImageDisplay({
                   {(() => {
                     const maxHeight = 4800;
                     const maxWidth = 4800;
-                    let heightPx = googleMapsImages[currentImageIndex]!.heightPx;
-                    let widthPx = googleMapsImages[currentImageIndex]!.widthPx;
+                    let heightPx = images[currentImageIndex]!.heightPx;
+                    let widthPx = images[currentImageIndex]!.widthPx;
                     const ratio = widthPx / heightPx;
 
                     if (heightPx > maxHeight || widthPx > maxWidth) {
@@ -278,8 +279,8 @@ export default function ImageDisplay({
                     return (
                       <Image
                         key={currentImageIndex} // Add a unique key to trigger remount on index change
-                        src={`https://places.googleapis.com/v1/${googleMapsImages[currentImageIndex]!.name}/media?maxHeightPx=${heightPx}&maxWidthPx=${widthPx}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`}
-                        alt={`Google Maps Image ${currentImageIndex}`}
+                        src={images[currentImageIndex]!.type === "GM" ? `https://places.googleapis.com/v1/${images[currentImageIndex]!.name}/media?maxHeightPx=${heightPx}&maxWidthPx=${widthPx}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}` : images[currentImageIndex]!.name}
+                        alt={`Image ${currentImageIndex}`}
                         height={600}
                         width={
                           600 *
@@ -310,7 +311,7 @@ export default function ImageDisplay({
                   </div>
                 </>
               )}
-              {!googleMapsImages[currentImageIndex] && (
+              {!images[currentImageIndex] && (
                 <div
                   style={{
                     position: "absolute",

@@ -22,8 +22,7 @@ export default function Place() {
 
 function PlaceContent() {
   const id = useSearchParams().get("id");
-  const sessionQuery = api.main.getSession.useQuery();
-  const session = sessionQuery.data;
+  const session = api.main.getSession.useQuery().data;
   const placeQuery = api.main.findPlace.useQuery({ id: id! });
   const isPlaceSavedQuery = api.main.isPlaceSavedByUser.useQuery(
     {
@@ -173,7 +172,7 @@ function PlaceContent() {
     }
   }, [placeQuery, isMapLoaded]);
 
-  interface GoogleMapsImage {
+  interface DisplayImage {
     authorAttributions: [
       {
         displayName: string;
@@ -184,16 +183,21 @@ function PlaceContent() {
     heightPx: number;
     name: string;
     widthPx: number;
+    type: string;
   }
 
-  const [googleMapsImages, setGoogleMapsImages] = useState<GoogleMapsImage[]>(
-    [],
-  );
+  const getPlaceImagesQuery = api.main.getPlaceImages.useQuery({
+    placeId: id!,
+  });
 
-  const [imagesRecieved, setImagesRecieved] = useState(false);
+  const [googleMapsImages, setGoogleMapsImages] = useState<DisplayImage[]>([]);
+  const [databaseImages, setDatabaseImages] = useState<DisplayImage[]>([]);
+
+  const [googleMapsImagesRecieved, setGoogleMapsImagesRecieved] =
+    useState(false);
+  const [databaseImagesRecieved, setDatabaseImagesRecieved] = useState(false);
 
   useEffect(() => {
-    //TODO: Get all Images from database and API
     const getPlaceIdFromCoords = async (
       latitude: number,
       longitude: number,
@@ -236,27 +240,77 @@ function PlaceContent() {
           },
         })
           .then((response) => response.json())
-          .then((data: { photos: GoogleMapsImage[] }) => {
-            setGoogleMapsImages(data.photos);
-            setImagesRecieved(true);
+          .then((data: { photos: DisplayImage[] }) => {
+            const photosWithTypes = data.photos.map((photo) => ({
+              ...photo,
+              type: "GM",
+            }));
+            setGoogleMapsImages(photosWithTypes);
+            setGoogleMapsImagesRecieved(true);
           })
           .catch((error) =>
             console.error("Failed to fetch place details:", error),
           );
       }
     };
-    if (!imagesRecieved) {
+
+    const getDatabaseImages = async () => {
+      const images = getPlaceImagesQuery.data;
+
+      if (images) {
+        console.log("Images Found:", images);
+        const displayImages: DisplayImage[] = images.map((image) => ({
+          authorAttributions: [
+            {
+              displayName: image.review.user?.name ?? "Unknown",
+              uri: "",
+              photoUri: image.review.user?.image ?? "",
+            },
+          ],
+          heightPx: image.height, // Fill in with appropriate value
+          name: `https://wingwatch.nyc3.cdn.digitaloceanspaces.com/${image.placeId}/${image.review.id}/${image.id}.${image.type.split("/")[1]}`,
+          widthPx: image.width, // Fill in with appropriate value
+          type: "DB",
+        }));
+        setDatabaseImages(displayImages);
+        setDatabaseImagesRecieved(true);
+      }
+    };
+
+    if (!googleMapsImagesRecieved) {
       void getGoogleMapsImages();
     }
-  }, [placeQuery, imagesRecieved]);
+    console.log("Attempting to get database images");
+    if (!databaseImagesRecieved) {
+      console.log("Getting database images");
+      void getDatabaseImages();
+    }
+  }, [
+    placeQuery,
+    googleMapsImagesRecieved,
+    databaseImagesRecieved,
+    getPlaceImagesQuery,
+  ]);
+
+  const [images, setImages] = useState<DisplayImage[]>([]);
 
   useEffect(() => {
+    setImages([...databaseImages, ...googleMapsImages]);
+  }, [googleMapsImages, databaseImages]);
+
+  useEffect(() => {
+    setDatabaseImages([]);
+    setDatabaseImagesRecieved(false);
     setGoogleMapsImages([]);
-    setImagesRecieved(false);
+    setGoogleMapsImagesRecieved(false);
     setIsMapLoaded(false);
   }, [id]);
 
-  if (placeQuery.isLoading || isPlaceSavedQuery.isLoading) {
+  if (
+    placeQuery.isLoading ||
+    isPlaceSavedQuery.isLoading ||
+    getPlaceImagesQuery.isLoading
+  ) {
     return <Loading />;
   }
 
@@ -334,7 +388,7 @@ function PlaceContent() {
         </div>
 
         {/* Image Display */}
-        <ImageDisplay googleMapsImages={googleMapsImages ?? null} />
+        <ImageDisplay images={images ?? null} />
 
         {/* Review Section */}
         <div className="mt-10 w-full">
@@ -352,7 +406,7 @@ function PlaceContent() {
           {/* Modal display logic */}
           {isReviewModalOpen && (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-              <Review onClose={toggleReviewModal} />
+              <Review onClose={toggleReviewModal} />{" "}
             </div>
           )}
           <h2 className="mb-4 text-2xl font-bold">Reviews</h2>
@@ -361,7 +415,7 @@ function PlaceContent() {
               <div
                 key={review.id}
                 className="mb-4 rounded-lg border p-4 shadow-lg"
-                style={{ position: 'relative', zIndex: -1 }} // Reset stacking context
+                style={{ position: "relative", zIndex: -1 }} // Reset stacking context
               >
                 <div className="flex items-center">
                   <div className="mr-4 flex items-center">

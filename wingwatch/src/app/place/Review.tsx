@@ -4,8 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { api } from "~/trpc/react";
 import { useState, useEffect } from "react";
 import InteractiveRatingBar from "./InteractiveRatingBar";
-import Image from "next/image";
-// import aws from "aws-sdk";
+import NextImage from "next/image";
 interface ReviewProps {
   onClose: () => void;
 }
@@ -15,7 +14,6 @@ export default function Review({ onClose }: ReviewProps) {
   const session = api.main.getSession.useQuery().data;
   const placeQuery = api.main.findPlace.useQuery({ id: id! });
   const reviewMutation = api.main.addReview.useMutation();
-  // const deleteReviewMutation = api.main.deleteReview.useMutation();
   const imageMutation = api.main.addImage.useMutation();
 
   const [title, setTitle] = useState("");
@@ -23,7 +21,6 @@ export default function Review({ onClose }: ReviewProps) {
   const [rating, setRating] = useState(0);
   const [hasReviewed, setHasReviewed] = useState(false);
   const [ratingError, setRatingError] = useState(false); // New state for rating error
-  // const [imageUploadError, setImageUploadError] = useState(false); // New state for image upload error
 
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
@@ -104,11 +101,25 @@ export default function Review({ onClose }: ReviewProps) {
 
         if (images.length > 0) {
           const uploadPromises = images.map(async (image) => {
+            let imageWidth = 0,
+              imageHeight = 0;
+            const img = new Image();
+            img.src = URL.createObjectURL(image);
+            await new Promise((resolve) => {
+              img.onload = () => {
+                imageWidth = img.width;
+                imageHeight = img.height;
+                resolve(true);
+              };
+            });
+
             const base64Image = await convertToBase64(image); // Wait for the Promise to resolve
             return imageMutation.mutateAsync({
               name: image.name,
               size: image.size,
               type: image.type,
+              height: imageHeight,
+              width: imageWidth,
               placeId: id!,
               reviewId: reviewId,
               file: base64Image, // Use the resolved base64 string
@@ -185,7 +196,7 @@ export default function Review({ onClose }: ReviewProps) {
                         key={index}
                         className="h-20 w-20 overflow-hidden rounded-lg"
                       >
-                        <Image
+                        <NextImage
                           src={src}
                           alt={`Preview ${index}`}
                           className="h-full w-full object-cover object-center"
