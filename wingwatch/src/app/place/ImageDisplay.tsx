@@ -33,9 +33,7 @@ export default function ImageDisplay({
   };
 
   const goToPreviousImage = () => {
-    setCurrentImageIndex(
-      (prev) => (prev - 1 + images.length) % images.length,
-    );
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
   const goToNextImage = () => {
@@ -86,14 +84,22 @@ export default function ImageDisplay({
             let adjustedWidthPx = image.widthPx;
 
             if (image.heightPx > 4800 || image.widthPx > 4800) {
-              const ratio = Math.min(4800 / image.heightPx, 4800 / image.widthPx);
+              const ratio = Math.min(
+                4800 / image.heightPx,
+                4800 / image.widthPx,
+              );
               adjustedHeightPx = Math.round(image.heightPx * ratio);
               adjustedWidthPx = Math.round(image.widthPx * ratio);
             }
 
+            const imageUrl =
+              image.type === "GM"
+                ? `https://places.googleapis.com/v1/${image.name}/media?maxHeightPx=${adjustedHeightPx}&maxWidthPx=${adjustedWidthPx}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
+                : image.name;
+
             return (
               <div
-                key={index}
+                key={imageUrl}
                 style={{
                   flex: "0 0 auto",
                   marginRight: "10px",
@@ -108,7 +114,11 @@ export default function ImageDisplay({
                 onClick={() => openPopup(index)}
               >
                 <Image
-                  src={image.type === "GM" ? `https://places.googleapis.com/v1/${image.name}/media?maxHeightPx=${adjustedHeightPx}&maxWidthPx=${adjustedWidthPx}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}` : image.name}
+                  src={
+                    image.type === "GM"
+                      ? `https://places.googleapis.com/v1/${image.name}/media?maxHeightPx=${adjustedHeightPx}&maxWidthPx=${adjustedWidthPx}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
+                      : image.name
+                  }
                   alt={`Image ${index}`}
                   height={400}
                   width={400 * (adjustedWidthPx / adjustedHeightPx)}
@@ -188,7 +198,9 @@ export default function ImageDisplay({
                   >
                     {images[currentImageIndex]!.authorAttributions[0].uri ? (
                       <a
-                        href={images[currentImageIndex]!.authorAttributions[0].uri}
+                        href={
+                          images[currentImageIndex]!.authorAttributions[0].uri
+                        }
                         style={{
                           display: "flex",
                           alignItems: "center",
@@ -198,8 +210,11 @@ export default function ImageDisplay({
                         rel="noopener noreferrer"
                       >
                         <Image
-                          key={images[currentImageIndex]!.authorAttributions[0].photoUri}
-                          src={`${images[currentImageIndex]!.type === 'GM' ? 'https:' : ''}${images[currentImageIndex]!.authorAttributions[0].photoUri}`}
+                          key={
+                            images[currentImageIndex]!.authorAttributions[0]
+                              .photoUri
+                          }
+                          src={`${images[currentImageIndex]!.type === "GM" ? "https:" : ""}${images[currentImageIndex]!.authorAttributions[0].photoUri}`}
                           alt="Author's Photo"
                           width={40}
                           height={40}
@@ -213,14 +228,20 @@ export default function ImageDisplay({
                             color: "#fff",
                           }}
                         >
-                          {images[currentImageIndex]!.authorAttributions[0].displayName}
+                          {
+                            images[currentImageIndex]!.authorAttributions[0]
+                              .displayName
+                          }
                         </span>
                       </a>
                     ) : (
                       <>
                         <Image
-                          key={images[currentImageIndex]!.authorAttributions[0].photoUri}
-                          src={`${images[currentImageIndex]!.type === 'GM' ? 'https:' : ''}${images[currentImageIndex]!.authorAttributions[0].photoUri}`}
+                          key={
+                            images[currentImageIndex]!.authorAttributions[0]
+                              .photoUri
+                          }
+                          src={`${images[currentImageIndex]!.type === "GM" ? "https:" : ""}${images[currentImageIndex]!.authorAttributions[0].photoUri}`}
                           alt="Author's Photo"
                           width={40}
                           height={40}
@@ -234,7 +255,10 @@ export default function ImageDisplay({
                             color: "#fff",
                           }}
                         >
-                          {images[currentImageIndex]!.authorAttributions[0].displayName}
+                          {
+                            images[currentImageIndex]!.authorAttributions[0]
+                              .displayName
+                          }
                         </span>
                       </>
                     )}
@@ -267,7 +291,8 @@ export default function ImageDisplay({
                     const ratio = widthPx / heightPx;
 
                     if (heightPx > maxHeight || widthPx > maxWidth) {
-                      if (ratio > 1) { // width is greater
+                      if (ratio > 1) {
+                        // width is greater
                         widthPx = maxWidth;
                         heightPx = Math.round(widthPx / ratio);
                       } else {
@@ -279,13 +304,14 @@ export default function ImageDisplay({
                     return (
                       <Image
                         key={currentImageIndex} // Add a unique key to trigger remount on index change
-                        src={images[currentImageIndex]!.type === "GM" ? `https://places.googleapis.com/v1/${images[currentImageIndex]!.name}/media?maxHeightPx=${heightPx}&maxWidthPx=${widthPx}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}` : images[currentImageIndex]!.name}
+                        src={
+                          images[currentImageIndex]!.type === "GM"
+                            ? `https://places.googleapis.com/v1/${images[currentImageIndex]!.name}/media?maxHeightPx=${heightPx}&maxWidthPx=${widthPx}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
+                            : images[currentImageIndex]!.name
+                        }
                         alt={`Image ${currentImageIndex}`}
                         height={600}
-                        width={
-                          600 *
-                          (widthPx / heightPx)
-                        }
+                        width={600 * (widthPx / heightPx)}
                       />
                     );
                   })()}

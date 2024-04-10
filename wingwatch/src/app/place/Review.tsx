@@ -7,9 +7,10 @@ import InteractiveRatingBar from "./InteractiveRatingBar";
 import NextImage from "next/image";
 interface ReviewProps {
   onClose: () => void;
+  onReviewSubmitted: () => void;
 }
 
-export default function Review({ onClose }: ReviewProps) {
+export default function Review({ onClose, onReviewSubmitted }: ReviewProps) {
   const id = useSearchParams().get("id");
   const session = api.main.getSession.useQuery().data;
   const placeQuery = api.main.findPlace.useQuery({ id: id! });
@@ -78,6 +79,9 @@ export default function Review({ onClose }: ReviewProps) {
     });
   };
 
+  const [submitted, setSubmitted] = useState(false);
+
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the form from causing a page reload
 
@@ -88,7 +92,7 @@ export default function Review({ onClose }: ReviewProps) {
 
     if (session && !hasReviewed) {
       try {
-        onClose();
+        setSubmitted(true);
         const reviewResponse = await reviewMutation.mutateAsync({
           title: title,
           content: content,
@@ -130,6 +134,8 @@ export default function Review({ onClose }: ReviewProps) {
           await Promise.all(uploadPromises);
         }
         await placeQuery.refetch();
+        onReviewSubmitted();
+        onClose();
       } catch (error) {
         console.error("Error in form submission or image upload:", error);
       }
@@ -214,7 +220,7 @@ export default function Review({ onClose }: ReviewProps) {
                   type="submit"
                   className="mt-4 w-full rounded bg-blue-500 py-2 text-white"
                 >
-                  Submit Review
+                  {submitted ? "Submitting..." : "Submit Review"}
                 </button>
               ) : (
                 <p className="mt-4 text-red-500">

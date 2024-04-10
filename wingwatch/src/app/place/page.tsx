@@ -193,9 +193,11 @@ function PlaceContent() {
   const [googleMapsImages, setGoogleMapsImages] = useState<DisplayImage[]>([]);
   const [databaseImages, setDatabaseImages] = useState<DisplayImage[]>([]);
 
-  const [googleMapsImagesRecieved, setGoogleMapsImagesRecieved] =
+  const [googleMapsImagesRecieved, setGoogleMapsImagesReceived] =
     useState(false);
-  const [databaseImagesRecieved, setDatabaseImagesRecieved] = useState(false);
+  const [databaseImagesRecieved, setDatabaseImagesReceived] = useState(false);
+
+  const [refetchingImages, setRefetchingImages] = useState(false);
 
   useEffect(() => {
     const getPlaceIdFromCoords = async (
@@ -246,7 +248,7 @@ function PlaceContent() {
               type: "GM",
             }));
             setGoogleMapsImages(photosWithTypes);
-            setGoogleMapsImagesRecieved(true);
+            setGoogleMapsImagesReceived(true);
           })
           .catch((error) =>
             console.error("Failed to fetch place details:", error),
@@ -255,10 +257,13 @@ function PlaceContent() {
     };
 
     const getDatabaseImages = async () => {
+      if (!getPlaceImagesQuery.isFetching) {
+        setRefetchingImages(false);
+      }
+
       const images = getPlaceImagesQuery.data;
 
-      if (images) {
-        console.log("Images Found:", images);
+      if (images && !refetchingImages) {
         const displayImages: DisplayImage[] = images.map((image) => ({
           authorAttributions: [
             {
@@ -273,16 +278,14 @@ function PlaceContent() {
           type: "DB",
         }));
         setDatabaseImages(displayImages);
-        setDatabaseImagesRecieved(true);
+        setDatabaseImagesReceived(true);
       }
     };
 
     if (!googleMapsImagesRecieved) {
       void getGoogleMapsImages();
     }
-    console.log("Attempting to get database images");
     if (!databaseImagesRecieved) {
-      console.log("Getting database images");
       void getDatabaseImages();
     }
   }, [
@@ -290,6 +293,7 @@ function PlaceContent() {
     googleMapsImagesRecieved,
     databaseImagesRecieved,
     getPlaceImagesQuery,
+    refetchingImages,
   ]);
 
   const [images, setImages] = useState<DisplayImage[]>([]);
@@ -298,11 +302,22 @@ function PlaceContent() {
     setImages([...databaseImages, ...googleMapsImages]);
   }, [googleMapsImages, databaseImages]);
 
+  const resetDatabaseImagesReceived = async () => {
+    setDatabaseImagesReceived(false);
+
+    try {
+      setRefetchingImages(true);
+      await getPlaceImagesQuery.refetch();
+    } catch (error) {
+      console.error("Failed to refetch images:", error);
+    }
+  };
+
   useEffect(() => {
     setDatabaseImages([]);
-    setDatabaseImagesRecieved(false);
+    setDatabaseImagesReceived(false);
     setGoogleMapsImages([]);
-    setGoogleMapsImagesRecieved(false);
+    setGoogleMapsImagesReceived(false);
     setIsMapLoaded(false);
   }, [id]);
 
@@ -406,7 +421,12 @@ function PlaceContent() {
           {/* Modal display logic */}
           {isReviewModalOpen && (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-              <Review onClose={toggleReviewModal} />{" "}
+              <Review
+                onClose={toggleReviewModal}
+                onReviewSubmitted={async () => {
+                  await resetDatabaseImagesReceived(); // Reset the state to trigger a refetch
+                }}
+              />
             </div>
           )}
           <h2 className="mb-4 text-2xl font-bold">Reviews</h2>
