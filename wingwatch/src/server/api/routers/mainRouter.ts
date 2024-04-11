@@ -62,7 +62,7 @@ async function uploadImage(
 
   const params = {
     Bucket: "wingwatch",
-    Key: `${placeId}/${reviewId}/${imageId}.${type.split('/')[1]}`,
+    Key: `${placeId}/${reviewId}/${imageId}.${type.split("/")[1]}`,
     Body: file,
     ACL: "public-read",
   };
@@ -244,6 +244,7 @@ export const mainRouter = createTRPCRouter({
           path: true,
           airportDetails: true,
           reviews: { include: { user: true } },
+          images: { include: { review: { include: { user: true } } } },
         },
       });
       return place;
@@ -305,23 +306,13 @@ export const mainRouter = createTRPCRouter({
       });
       const imageId = createdImage.id;
       const file = base64ToBuffer(input.file);
-      await uploadImage(file, imageId, input.reviewId, input.placeId, input.type);
-    }),
-
-  getPlaceImages: publicProcedure
-    .input(z.object({ placeId: z.string() }))
-    .query(async ({ input }) => {
-      const images = await db.image.findMany({
-        where: { placeId: input.placeId },
-        include: {
-          review: {
-            include: {
-              user: true,
-            },
-          },
-        },
-      });
-      return images;
+      await uploadImage(
+        file,
+        imageId,
+        input.reviewId,
+        input.placeId,
+        input.type,
+      );
     }),
 
   //Account Page

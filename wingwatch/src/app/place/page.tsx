@@ -186,10 +186,6 @@ function PlaceContent() {
     type: string;
   }
 
-  const getPlaceImagesQuery = api.main.getPlaceImages.useQuery({
-    placeId: id!,
-  });
-
   const [googleMapsImages, setGoogleMapsImages] = useState<DisplayImage[]>([]);
   const [databaseImages, setDatabaseImages] = useState<DisplayImage[]>([]);
 
@@ -257,11 +253,11 @@ function PlaceContent() {
     };
 
     const getDatabaseImages = async () => {
-      if (!getPlaceImagesQuery.isFetching) {
+      if (!placeQuery.isFetching) {
         setRefetchingImages(false);
       }
 
-      const images = getPlaceImagesQuery.data;
+      const images = placeQuery.data?.images;
 
       if (images && !refetchingImages) {
         const displayImages: DisplayImage[] = images.map((image) => ({
@@ -292,7 +288,6 @@ function PlaceContent() {
     placeQuery,
     googleMapsImagesRecieved,
     databaseImagesRecieved,
-    getPlaceImagesQuery,
     refetchingImages,
   ]);
 
@@ -307,7 +302,6 @@ function PlaceContent() {
 
     try {
       setRefetchingImages(true);
-      await getPlaceImagesQuery.refetch();
     } catch (error) {
       console.error("Failed to refetch images:", error);
     }
@@ -323,8 +317,7 @@ function PlaceContent() {
 
   if (
     placeQuery.isLoading ||
-    isPlaceSavedQuery.isLoading ||
-    getPlaceImagesQuery.isLoading
+    isPlaceSavedQuery.isLoading
   ) {
     return <Loading />;
   }
