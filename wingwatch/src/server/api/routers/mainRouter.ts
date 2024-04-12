@@ -243,7 +243,7 @@ export const mainRouter = createTRPCRouter({
         include: {
           path: true,
           airportDetails: true,
-          reviews: { include: { user: true } },
+          reviews: { include: { user: true, images: true } },
           images: { include: { review: { include: { user: true } } } },
         },
       });

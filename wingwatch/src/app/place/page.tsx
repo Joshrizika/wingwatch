@@ -11,6 +11,7 @@ import { Suspense } from "react";
 import Loading from "../_components/Loading";
 import { Loader } from "@googlemaps/js-api-loader";
 import ImageDisplay from "./ImageDisplay";
+import Image from "next/image";
 
 export default function Place() {
   return (
@@ -315,10 +316,41 @@ function PlaceContent() {
     setIsMapLoaded(false);
   }, [id]);
 
-  if (
-    placeQuery.isLoading ||
-    isPlaceSavedQuery.isLoading
-  ) {
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [popupImages, setPopupImages] = useState<PopUpImageProps[]>([]);
+
+  interface PopUpImageProps {
+    id: string;
+    name: string;
+    size: number;
+    height: number;
+    width: number;
+    type: string;
+    placeId: string;
+    reviewId: string;
+  }
+
+  const openPopup = (images: PopUpImageProps[], index: number) => {
+    setCurrentImageIndex(index);
+    setPopupVisible(true);
+    setPopupImages(images);
+  };
+
+  const closePopup = () => {
+    setPopupVisible(false);
+    setPopupImages([]);
+  };
+
+  const goToPreviousImage = (numImages: number) => {
+    setCurrentImageIndex((prev) => (prev - 1 + numImages) % numImages);
+  };
+
+  const goToNextImage = (numImages: number) => {
+    setCurrentImageIndex((prev) => (prev + 1) % numImages);
+  };
+
+  if (placeQuery.isLoading || isPlaceSavedQuery.isLoading) {
     return <Loading />;
   }
 
@@ -427,26 +459,60 @@ function PlaceContent() {
             reviews.map((review) => (
               <div
                 key={review.id}
-                className="mb-4 rounded-lg border p-4 shadow-lg"
-                style={{ position: "relative", zIndex: -1 }} // Reset stacking context
+                className="relative mb-4 mr-4 flex rounded-lg border p-4 shadow-lg"
+                // style={{ zIndex: -1 }}
               >
-                <div className="flex items-center">
-                  <div className="mr-4 flex items-center">
-                    <RatingBar rating={review.rating} />
+                <div className="mr-8 flex-grow" style={{ maxWidth: "50%" }}>
+                  <div className="flex items-center">
+                    <div>
+                      <h2 className="text-xl font-semibold">
+                        {review.title ?? "No Title"}
+                      </h2>
+                      <p className="text-gray-700">
+                        {review.content ?? "No Content"}
+                      </p>
+                      <div className="mt-2">
+                        <RatingBar rating={review.rating} />
+                      </div>
+                      <p className="mt-2 text-sm text-gray-500">
+                        User: {review.user?.name ?? "Unknown"}
+                      </p>
+                      <p className="mt-2 text-sm text-gray-500">
+                        Date: {format(new Date(review.timestamp), "PP")}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-lg font-semibold">
-                      {review.title ?? "No Title"}
-                    </h3>
-                    <p className="text-gray-700">
-                      {review.content ?? "No Content"}
-                    </p>
-                    <p className="mt-2 text-sm text-gray-500">
-                      User: {review.user?.name ?? "Unknown"}
-                    </p>
-                    <p className="mt-2 text-sm text-gray-500">
-                      Date: {format(new Date(review.timestamp), "PP")}
-                    </p>
+                </div>
+                <div className="right-0 top-0 flex h-full w-1/2">
+                  <div className="flex flex-col items-center">
+                    <h3 className="mb-2 text-lg font-bold">Images</h3>
+                    <div
+                      className="grid grid-flow-col-dense grid-rows-2 gap-2"
+                      style={{ gridAutoRows: "minmax(80px, auto)" }}
+                    >
+                      {review.images?.slice(0, 6).map((image, imgIndex) => (
+                        <div
+                          key={imgIndex}
+                          className={`h-20 w-20 cursor-pointer overflow-hidden rounded-lg ${review.images.length > 6 && imgIndex === 5 ? "relative" : ""}`}
+                          onClick={() => {
+                          openPopup(review.images, imgIndex);
+                          }}
+                        >
+                          <Image
+                            src={`https://wingwatch.nyc3.cdn.digitaloceanspaces.com/${image.placeId}/${image.reviewId}/${image.id}.${image.type.split("/")[1]}`}
+                            alt={`Review Image ${imgIndex + 1}`}
+                            height={80}
+                            width={80}
+                            className="min-h-full min-w-full object-cover"
+                          />
+                          {review.images.length > 6 && imgIndex === 5 && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                              <span className="text-2xl text-white">...</span>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -456,6 +522,151 @@ function PlaceContent() {
           )}
         </div>
       </div>
+
+      {popupVisible && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          }}
+          onClick={closePopup}
+        >
+          <div
+            style={{
+              position: "relative",
+              maxWidth: "80%",
+              maxHeight: "80%",
+              backgroundColor: "#fff",
+              padding: "20px",
+              borderRadius: "8px",
+              cursor: "default",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                cursor: "pointer",
+              }}
+              onClick={closePopup}
+            >
+              X
+            </div>
+            <div
+              style={{
+                position: "relative",
+                backgroundColor: "#f0f0f0",
+                height: "600px",
+                width: `${600 * (popupImages[currentImageIndex]!.width / popupImages[currentImageIndex]!.height)}px`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {popupImages[currentImageIndex] && (
+                <>
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: "20px",
+                      left: "calc(50% - 60px)", // Adjusted for visibility and spacing
+                      backgroundColor: "rgba(64, 64, 64, 0.8)", // Darker shade of gray
+                      borderRadius: "50%",
+                      width: "40px", // Ensuring circle shape
+                      height: "40px", // Ensuring circle shape
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      color: "white", // Making the arrow white
+                      userSelect: "none", // Preventing text selection
+                    }}
+                    onClick={() => goToPreviousImage(popupImages.length)}
+                  >
+                    &lt;
+                  </div>
+                  {(() => {
+                    const maxHeight = 4800;
+                    const maxWidth = 4800;
+                    let heightPx = popupImages[currentImageIndex]!.height;
+                    let widthPx = popupImages[currentImageIndex]!.width;
+                    const ratio = widthPx / heightPx;
+
+                    if (heightPx > maxHeight || widthPx > maxWidth) {
+                      if (ratio > 1) {
+                        // width is greater
+                        widthPx = maxWidth;
+                        heightPx = Math.round(widthPx / ratio);
+                      } else {
+                        heightPx = maxHeight;
+                        widthPx = Math.round(heightPx * ratio);
+                      }
+                    }
+                    
+                    const imgSource = `https://wingwatch.nyc3.cdn.digitaloceanspaces.com/${popupImages[currentImageIndex]!.placeId}/${popupImages[currentImageIndex]!.reviewId}/${popupImages[currentImageIndex]!.id}.${popupImages[currentImageIndex]!.type.split("/")[1]}`;
+
+                    return (
+                      <Image
+                        key={imgSource} // Add a unique key to trigger remount on index change
+                        src={imgSource}
+                        alt={`Image ${currentImageIndex}`}
+                        height={600}
+                        width={600 * (widthPx / heightPx)}
+                      />
+                    );
+                  })()}
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: "20px",
+                      left: "calc(50% + 20px)", // Adjusted for visibility and spacing
+                      backgroundColor: "rgba(64, 64, 64, 0.8)", // Darker shade of gray
+                      borderRadius: "50%",
+                      width: "40px", // Ensuring circle shape
+                      height: "40px", // Ensuring circle shape
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      color: "white", // Making the arrow white
+                      userSelect: "none", // Preventing text selection
+                    }}
+                    onClick={() => goToNextImage(popupImages.length)}
+                  >
+                    &gt;
+                  </div>
+                </>
+              )}
+              {!popupImages[currentImageIndex] && (
+                <div
+                  style={{
+                    position: "absolute",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100%",
+                    width: "100%",
+                  }}
+                >
+                  <Loading />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
