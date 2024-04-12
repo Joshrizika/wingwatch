@@ -529,7 +529,7 @@ function PlaceContent() {
                           />
                           {review.images.length > 6 && imgIndex === 5 && (
                             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                              <span className="text-2xl text-white">...</span>
+                              <span className="text-2xl text-white" style={{ position: 'relative', top: '-6px' }}>...</span>
                             </div>
                           )}
                         </div>
