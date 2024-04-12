@@ -505,7 +505,9 @@ function PlaceContent() {
                 </div>
                 <div className="right-0 top-0 flex h-full w-1/2">
                   <div className="flex flex-col items-center">
-                    <h3 className="mb-2 text-lg font-bold">Images</h3>
+                    {review.images && review.images.length > 0 && (
+                      <h3 className="mb-2 text-lg font-bold">Images</h3>
+                    )}
                     <div
                       className="grid grid-flow-col-dense grid-rows-2 gap-2"
                       style={{ gridAutoRows: "minmax(80px, auto)" }}
