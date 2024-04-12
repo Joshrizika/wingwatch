@@ -17,8 +17,10 @@ interface ImageDisplayProps {
 
 export default function ImageDisplay({
   images,
+  imagesLoading,
 }: {
   images: ImageDisplayProps[];
+  imagesLoading: boolean;
 }) {
   const [popupVisible, setPopupVisible] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -54,7 +56,7 @@ export default function ImageDisplay({
           padding: "10px",
         }}
       >
-        {images === null ? (
+        {imagesLoading ? (
           <div
             style={{
               height: "400px",
@@ -64,7 +66,7 @@ export default function ImageDisplay({
               width: "100%",
             }}
           >
-            No Images Available
+            <Loading />
           </div>
         ) : images.length === 0 ? (
           <div
@@ -76,7 +78,7 @@ export default function ImageDisplay({
               width: "100%",
             }}
           >
-            <Loading />
+            No Images Available
           </div>
         ) : (
           images.map((image, index) => {
@@ -114,11 +116,7 @@ export default function ImageDisplay({
                 onClick={() => openPopup(index)}
               >
                 <Image
-                  src={
-                    image.type === "GM"
-                      ? `https://places.googleapis.com/v1/${image.name}/media?maxHeightPx=${adjustedHeightPx}&maxWidthPx=${adjustedWidthPx}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
-                      : image.name
-                  }
+                  src={imageUrl}
                   alt={`Image ${index}`}
                   height={400}
                   width={400 * (adjustedWidthPx / adjustedHeightPx)}

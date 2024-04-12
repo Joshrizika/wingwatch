@@ -240,12 +240,16 @@ function PlaceContent() {
         })
           .then((response) => response.json())
           .then((data: { photos: DisplayImage[] }) => {
-            const photosWithTypes = data.photos.map((photo) => ({
-              ...photo,
-              type: "GM",
-            }));
-            setGoogleMapsImages(photosWithTypes);
+            console.log("data photos", data.photos);
+            if (data.photos) {
+              const photosWithTypes = data.photos.map((photo) => ({
+                ...photo,
+                type: "GM",
+              }));
+              setGoogleMapsImages(photosWithTypes);
+            }
             setGoogleMapsImagesReceived(true);
+            console.log("Google Maps Images Received");
           })
           .catch((error) =>
             console.error("Failed to fetch place details:", error),
@@ -276,6 +280,7 @@ function PlaceContent() {
         }));
         setDatabaseImages(displayImages);
         setDatabaseImagesReceived(true);
+        console.log("Database Images Received");
       }
     };
 
@@ -293,10 +298,22 @@ function PlaceContent() {
   ]);
 
   const [images, setImages] = useState<DisplayImage[]>([]);
+  const [imagesLoading, setImagesLoading] = useState(true);
 
   useEffect(() => {
-    setImages([...databaseImages, ...googleMapsImages]);
-  }, [googleMapsImages, databaseImages]);
+    // Check if both image sources have been received
+    if (googleMapsImagesRecieved && databaseImagesRecieved) {
+      // Check if both image arrays are empty
+      if (googleMapsImages.length === 0 && databaseImages.length === 0) {
+        setImagesLoading(false);
+      } else {
+        // Set imagesLoading to false only if there are images
+        setImages([...databaseImages, ...googleMapsImages]);
+        setImagesLoading(false);
+      }
+    }
+  }, [googleMapsImagesRecieved, databaseImagesRecieved, googleMapsImages, databaseImages]);
+  
 
   const resetDatabaseImagesReceived = async () => {
     setDatabaseImagesReceived(false);
@@ -309,11 +326,14 @@ function PlaceContent() {
   };
 
   useEffect(() => {
+    console.log("ID has changed");
     setDatabaseImages([]);
     setDatabaseImagesReceived(false);
     setGoogleMapsImages([]);
     setGoogleMapsImagesReceived(false);
     setIsMapLoaded(false);
+    setImages([]);
+    setImagesLoading(true);
   }, [id]);
 
   const [popupVisible, setPopupVisible] = useState(false);
@@ -428,7 +448,7 @@ function PlaceContent() {
         </div>
 
         {/* Image Display */}
-        <ImageDisplay images={images ?? null} />
+        <ImageDisplay images={images ?? null} imagesLoading={imagesLoading} />
 
         {/* Review Section */}
         <div className="mt-10 w-full">
@@ -495,7 +515,7 @@ function PlaceContent() {
                           key={imgIndex}
                           className={`h-20 w-20 cursor-pointer overflow-hidden rounded-lg ${review.images.length > 6 && imgIndex === 5 ? "relative" : ""}`}
                           onClick={() => {
-                          openPopup(review.images, imgIndex);
+                            openPopup(review.images, imgIndex);
                           }}
                         >
                           <Image
@@ -614,7 +634,7 @@ function PlaceContent() {
                         widthPx = Math.round(heightPx * ratio);
                       }
                     }
-                    
+
                     const imgSource = `https://wingwatch.nyc3.cdn.digitaloceanspaces.com/${popupImages[currentImageIndex]!.placeId}/${popupImages[currentImageIndex]!.reviewId}/${popupImages[currentImageIndex]!.id}.${popupImages[currentImageIndex]!.type.split("/")[1]}`;
 
                     return (
