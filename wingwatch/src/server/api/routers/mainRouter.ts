@@ -82,6 +82,34 @@ async function uploadImage(
   }
 }
 
+async function deleteImage(imageId: string, reviewId: string, placeId: string, type: string) {
+  try {
+    const params = {
+      Bucket: "wingwatch",
+      Key: `${placeId}/${reviewId}/${imageId}.${type.split("/")[1]}`,
+    };
+    const s3 = new aws.S3({
+      endpoint: new aws.Endpoint("nyc3.digitaloceanspaces.com"),
+      accessKeyId: process.env.DO_SPACES_ACCESS_KEY,
+      secretAccessKey: process.env.DO_SPACES_SECRET_KEY,
+      region: "nyc3",
+      signatureVersion: "v4",
+    });
+    await s3.deleteObject(params).promise();
+    console.log("\n\n\n\n\nImage deleted with imageId:", imageId);
+  } catch (error) {
+    console.error(
+      "Error deleting image with imageId:",
+      imageId,
+      "from reviewId:",
+      reviewId,
+      "Error:",
+      error,
+    );
+  }
+}
+
+
 export const mainRouter = createTRPCRouter({
   getSession: publicProcedure
     .input(z.void()) // No input required for this procedure
@@ -276,6 +304,26 @@ export const mainRouter = createTRPCRouter({
       return newReview;
     }),
 
+    editReview: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string().optional(),
+        content: z.string().optional(),
+        rating: z.number(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      await db.review.update({
+        where: { id: input.id },
+        data: {
+          title: input.title,
+          content: input.content,
+          rating: input.rating,
+        },
+      });
+    }),
+
   addImage: publicProcedure
     .input(
       z.object({
@@ -313,6 +361,21 @@ export const mainRouter = createTRPCRouter({
         input.placeId,
         input.type,
       );
+    }),
+
+  deleteImage: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input }) => {
+      const deletedImage = await db.image.delete({
+        where: { id: input.id },
+        select: {
+          placeId: true,
+          reviewId: true,
+          type: true,
+        },
+      });
+      
+      await deleteImage(input.id, deletedImage.reviewId, deletedImage.placeId, deletedImage.type);
     }),
 
   //Account Page

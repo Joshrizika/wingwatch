@@ -12,6 +12,7 @@ import Loading from "../_components/Loading";
 import { Loader } from "@googlemaps/js-api-loader";
 import ImageDisplay from "./ImageDisplay";
 import Image from "next/image";
+import EditReviewPopup from "./EditReviewPopup";
 
 export default function Place() {
   return (
@@ -55,7 +56,6 @@ function PlaceContent() {
       {
         onSuccess: () => {
           setIsPlaceSaved(true);
-          // Optionally, refetch queries or perform other actions on success
         },
       },
     );
@@ -72,11 +72,12 @@ function PlaceContent() {
       {
         onSuccess: () => {
           setIsPlaceSaved(false);
-          // Optionally, refetch queries or perform other actions on success
         },
       },
     );
   };
+
+  //Place Rating
 
   const reviews = placeQuery.data?.reviews;
   let totalRating;
@@ -95,6 +96,7 @@ function PlaceContent() {
     setIsReviewModalOpen(!isReviewModalOpen);
   };
 
+  //Map Initialization
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   useEffect(() => {
@@ -173,6 +175,7 @@ function PlaceContent() {
     }
   }, [placeQuery, isMapLoaded]);
 
+  //Place Image Handling
   interface DisplayImage {
     authorAttributions: [
       {
@@ -240,7 +243,6 @@ function PlaceContent() {
         })
           .then((response) => response.json())
           .then((data: { photos: DisplayImage[] }) => {
-            console.log("data photos", data.photos);
             if (data.photos) {
               const photosWithTypes = data.photos.map((photo) => ({
                 ...photo,
@@ -249,7 +251,6 @@ function PlaceContent() {
               setGoogleMapsImages(photosWithTypes);
             }
             setGoogleMapsImagesReceived(true);
-            console.log("Google Maps Images Received");
           })
           .catch((error) =>
             console.error("Failed to fetch place details:", error),
@@ -280,7 +281,6 @@ function PlaceContent() {
         }));
         setDatabaseImages(displayImages);
         setDatabaseImagesReceived(true);
-        console.log("Database Images Received");
       }
     };
 
@@ -312,8 +312,12 @@ function PlaceContent() {
         setImagesLoading(false);
       }
     }
-  }, [googleMapsImagesRecieved, databaseImagesRecieved, googleMapsImages, databaseImages]);
-  
+  }, [
+    googleMapsImagesRecieved,
+    databaseImagesRecieved,
+    googleMapsImages,
+    databaseImages,
+  ]);
 
   const resetDatabaseImagesReceived = async () => {
     setDatabaseImagesReceived(false);
@@ -326,7 +330,6 @@ function PlaceContent() {
   };
 
   useEffect(() => {
-    console.log("ID has changed");
     setDatabaseImages([]);
     setDatabaseImagesReceived(false);
     setGoogleMapsImages([]);
@@ -336,6 +339,7 @@ function PlaceContent() {
     setImagesLoading(true);
   }, [id]);
 
+  //Review Image Popup
   const [popupVisible, setPopupVisible] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [popupImages, setPopupImages] = useState<PopUpImageProps[]>([]);
@@ -370,6 +374,46 @@ function PlaceContent() {
     setCurrentImageIndex((prev) => (prev + 1) % numImages);
   };
 
+  //Edit Review
+
+  interface Review {
+    id: string;
+    title: string | null;
+    content: string | null;
+    rating: number;
+    timestamp: Date;
+    images: {
+      id: string;
+      name: string;
+      size: number;
+      height: number;
+      width: number;
+      type: string;
+      placeId: string;
+      reviewId: string;
+    }[];
+    user: {
+      id: string;
+      name: string;
+      email: string;
+      emailVerified: Date | null;
+      image: string | null;
+      isAdmin: boolean;
+    } | null;
+    placeId: string;
+  }
+
+  const [editReviewModalVisible, setEditReviewModalVisible] = useState(false);
+  const [reviewToEdit, setReviewToEdit] = useState<Review>();
+
+  const closeEditReviewPopup = async () => {
+    setEditReviewModalVisible(false);
+    setReviewToEdit(undefined);
+    await placeQuery.refetch();
+    await resetDatabaseImagesReceived();
+  };
+
+  //Loading
   if (placeQuery.isLoading || isPlaceSavedQuery.isLoading) {
     return <Loading />;
   }
@@ -462,25 +506,12 @@ function PlaceContent() {
               </button>
             </div>
           )}
-
-          {/* Modal display logic */}
-          {isReviewModalOpen && (
-            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-              <Review
-                onClose={toggleReviewModal}
-                onReviewSubmitted={async () => {
-                  await resetDatabaseImagesReceived(); // Reset the state to trigger a refetch
-                }}
-              />
-            </div>
-          )}
           <h2 className="mb-4 text-2xl font-bold">Reviews</h2>
           {reviews && reviews.length > 0 ? (
             reviews.map((review) => (
               <div
                 key={review.id}
                 className="relative mb-4 mr-4 flex rounded-lg border p-4 shadow-lg"
-                // style={{ zIndex: -1 }}
               >
                 <div className="mr-8 flex-grow" style={{ maxWidth: "50%" }}>
                   <div className="flex items-center">
@@ -529,7 +560,12 @@ function PlaceContent() {
                           />
                           {review.images.length > 6 && imgIndex === 5 && (
                             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                              <span className="text-2xl text-white" style={{ position: 'relative', top: '-6px' }}>...</span>
+                              <span
+                                className="text-2xl text-white"
+                                style={{ position: "relative", top: "-6px" }}
+                              >
+                                ...
+                              </span>
                             </div>
                           )}
                         </div>
@@ -537,10 +573,35 @@ function PlaceContent() {
                     </div>
                   </div>
                 </div>
+                {/* Edit Review Button */}
+                <div className="absolute right-0 top-0 mr-6 flex h-full items-center justify-end">
+                  {session?.user?.id === review.user?.id && (
+                    <button
+                      className="mt-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+                      onClick={() => {
+                        setEditReviewModalVisible(true);
+                        setReviewToEdit(review);
+                      }}
+                    >
+                      Edit Review
+                    </button>
+                  )}
+                </div>
               </div>
             ))
           ) : (
             <p>No reviews yet.</p>
+          )}
+          {/* Modal display logic */}
+          {isReviewModalOpen && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <Review
+                onClose={toggleReviewModal}
+                onReviewSubmitted={async () => {
+                  await resetDatabaseImagesReceived(); // Reset the state to trigger a refetch
+                }}
+              />
+            </div>
           )}
         </div>
       </div>
@@ -688,6 +749,13 @@ function PlaceContent() {
             </div>
           </div>
         </div>
+      )}
+
+      {editReviewModalVisible && (
+        <EditReviewPopup
+          closeEditReviewPopup={closeEditReviewPopup}
+          review={reviewToEdit}
+        />
       )}
     </>
   );
