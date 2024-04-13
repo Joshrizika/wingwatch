@@ -161,8 +161,6 @@ const ExploreLocationSearch: React.FC<LocationSearchProps> = ({
     };
   }, []);
 
-  console.log("InputRef Width", inputRef.current?.offsetWidth);
-
   function segmentLongWords(selectedPlace: string): string {
     const charsPerPixel = 0.13452914798;
     const maxChars = inputRef.current!.offsetWidth * charsPerPixel;
