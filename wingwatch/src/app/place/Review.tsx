@@ -145,8 +145,9 @@ export default function Review({ onClose, onReviewSubmitted }: ReviewProps) {
   return (
     <>
       <div
-        className="z-15 fixed inset-0 bg-black bg-opacity-50"
+        className="z-15 fixed inset-0 bg-black bg-opacity-10"
         onClick={onClose}
+        style={{ zIndex: 2 }}
       >
         <div className="fixed inset-0 z-20 flex items-center justify-center">
           <div
