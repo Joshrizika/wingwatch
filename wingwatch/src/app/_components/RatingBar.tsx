@@ -58,7 +58,7 @@ const RatingBar = ({ rating }: { rating: number }) => {
           clipPath="url(#star-mask)"
         />
         {/* Draw stars with black outline */}
-        <g stroke="black" strokeWidth="1" fill="none">
+        <g stroke="black" strokeWidth=".75" fill="none">
           <path
             d="M12 .587l3.668 7.431 8.332 1.209-6.035 5.884 1.425 8.309-7.39-3.884-7.39 3.884 1.425-8.309-6.035-5.884 8.332-1.209L12 .587z"
             transform="scale(2.0833333)"
