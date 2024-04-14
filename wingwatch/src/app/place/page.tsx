@@ -542,11 +542,18 @@ function PlaceContent() {
                       <div className="mt-2">
                         <RatingBar rating={review.rating} />
                       </div>
+                      <div className="mt-2 flex items-center text-sm text-gray-500">
+                        <Image
+                          src={review.user?.image ?? "/path/to/default/image"}
+                          alt={review.user?.name ?? "User Image"}
+                          width={24}
+                          height={24}
+                          className="mr-2 h-8 w-8 rounded-full"
+                        />
+                        {review.user?.name ?? "Unknown"}
+                      </div>
                       <p className="mt-2 text-sm text-gray-500">
-                        User: {review.user?.name ?? "Unknown"}
-                      </p>
-                      <p className="mt-2 text-sm text-gray-500">
-                        Date: {format(new Date(review.timestamp), "PP")}
+                        {format(new Date(review.timestamp), "PP")}
                       </p>
                     </div>
                   </div>
