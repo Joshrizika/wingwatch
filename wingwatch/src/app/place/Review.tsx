@@ -220,6 +220,7 @@ export default function Review({ onClose, onReviewSubmitted }: ReviewProps) {
                 <button
                   type="submit"
                   className="mt-4 w-full rounded bg-blue-500 py-2 text-white"
+                  disabled={submitted}
                 >
                   {submitted ? "Submitting..." : "Submit Review"}
                 </button>

@@ -97,9 +97,10 @@ export default function EditReviewPopup({
   const deleteImageMutation = api.main.deleteImage.useMutation();
   const imageMutation = api.main.addImage.useMutation();
 
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async () => {
-    console.log("Submitting review...");
+    setSubmitting(true);
     editReviewMutation.mutate({
       id: review!.id,
       title: newTitle,
@@ -302,8 +303,9 @@ export default function EditReviewPopup({
               className="mt-4 w-full rounded bg-blue-500 py-2 text-white"
               onClick={() => handleSubmit()}
               style={{ userSelect: "none" }}
+              disabled={submitting}
             >
-              Save Changes
+              {submitting ? "Saving Changes..." : "Save Changes"}
             </button>
           </div>
         </div>

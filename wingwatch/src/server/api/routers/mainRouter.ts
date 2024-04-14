@@ -82,7 +82,12 @@ async function uploadImage(
   }
 }
 
-async function deleteImage(imageId: string, reviewId: string, placeId: string, type: string) {
+async function deleteImage(
+  imageId: string,
+  reviewId: string,
+  placeId: string,
+  type: string,
+) {
   try {
     const params = {
       Bucket: "wingwatch",
@@ -109,6 +114,50 @@ async function deleteImage(imageId: string, reviewId: string, placeId: string, t
   }
 }
 
+async function deleteReview(reviewId: string, placeId: string) {
+  try {
+    const params = {
+      Bucket: "wingwatch",
+      Prefix: `${placeId}/${reviewId}/`, // Specify the folder path
+    };
+    const s3 = new aws.S3({
+      endpoint: new aws.Endpoint("nyc3.digitaloceanspaces.com"),
+      accessKeyId: process.env.DO_SPACES_ACCESS_KEY,
+      secretAccessKey: process.env.DO_SPACES_SECRET_KEY,
+      region: "nyc3",
+      signatureVersion: "v4",
+    });
+
+    // List all objects in the folder
+    const listedObjects = await s3.listObjectsV2(params).promise();
+
+    // If the folder is not empty, delete the objects
+    if (listedObjects.Contents && listedObjects.Contents.length > 0) {
+      const deleteParams: aws.S3.DeleteObjectsRequest = {
+        Bucket: params.Bucket,
+        Delete: {
+          Objects: listedObjects.Contents.filter(
+            (content): content is aws.S3.ObjectIdentifier => !!content.Key,
+          ).map(({ Key }) => ({ Key })),
+        },
+      };
+
+      await s3.deleteObjects(deleteParams).promise();
+
+      // Check if there are more objects to delete and repeat the process
+      if (listedObjects.IsTruncated) await deleteReview(reviewId, placeId);
+    }
+
+    console.log(`Review folder deleted for reviewId: ${reviewId}`);
+  } catch (error) {
+    console.error(
+      "Error deleting review folder with reviewId:",
+      reviewId,
+      "Error:",
+      error,
+    );
+  }
+}
 
 export const mainRouter = createTRPCRouter({
   getSession: publicProcedure
@@ -304,7 +353,7 @@ export const mainRouter = createTRPCRouter({
       return newReview;
     }),
 
-    editReview: publicProcedure
+  editReview: publicProcedure
     .input(
       z.object({
         id: z.string(),
@@ -322,6 +371,20 @@ export const mainRouter = createTRPCRouter({
           rating: input.rating,
         },
       });
+    }),
+
+  deleteReview: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input }) => {
+      const reviewToDelete = await db.review.findUnique({
+        where: { id: input.id },
+        select: { placeId: true },
+      });
+      if (!reviewToDelete) throw new Error("Review not found");
+      await db.review.delete({
+        where: { id: input.id },
+      });
+      await deleteReview(input.id, reviewToDelete.placeId);
     }),
 
   addImage: publicProcedure
@@ -374,8 +437,13 @@ export const mainRouter = createTRPCRouter({
           type: true,
         },
       });
-      
-      await deleteImage(input.id, deletedImage.reviewId, deletedImage.placeId, deletedImage.type);
+
+      await deleteImage(
+        input.id,
+        deletedImage.reviewId,
+        deletedImage.placeId,
+        deletedImage.type,
+      );
     }),
 
   //Account Page

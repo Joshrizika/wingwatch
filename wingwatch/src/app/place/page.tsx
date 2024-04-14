@@ -404,11 +404,28 @@ function PlaceContent() {
   }
 
   const [editReviewModalVisible, setEditReviewModalVisible] = useState(false);
+  const [deleteReviewModalVisible, setDeleteReviewModalVisible] =
+    useState(false);
+
   const [reviewToEdit, setReviewToEdit] = useState<Review>();
 
   const closeEditReviewPopup = async () => {
     setEditReviewModalVisible(false);
     setReviewToEdit(undefined);
+    await placeQuery.refetch();
+    await resetDatabaseImagesReceived();
+  };
+
+  //Delete Review
+
+  const deleteReviewMutation = api.main.deleteReview.useMutation();
+
+  const [reviewToDelete, setReviewToDelete] = useState<Review>();
+
+  const handleDeleteReview = async () => {
+    deleteReviewMutation.mutate({ id: reviewToDelete!.id });
+    setDeleteReviewModalVisible(false);
+    setReviewToDelete(undefined);
     await placeQuery.refetch();
     await resetDatabaseImagesReceived();
   };
@@ -576,15 +593,26 @@ function PlaceContent() {
                 {/* Edit Review Button */}
                 <div className="absolute right-0 top-0 mr-6 flex h-full items-center justify-end">
                   {session?.user?.id === review.user?.id && (
-                    <button
-                      className="mt-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-                      onClick={() => {
-                        setEditReviewModalVisible(true);
-                        setReviewToEdit(review);
-                      }}
-                    >
-                      Edit Review
-                    </button>
+                    <div className="flex flex-col">
+                      <button
+                        className="mb-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+                        onClick={() => {
+                          setEditReviewModalVisible(true);
+                          setReviewToEdit(review);
+                        }}
+                      >
+                        Edit Review
+                      </button>
+                      <button
+                        className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+                        onClick={() => {
+                          setDeleteReviewModalVisible(true);
+                          setReviewToDelete(review);
+                        }}
+                      >
+                        Delete Review
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
@@ -756,6 +784,65 @@ function PlaceContent() {
           closeEditReviewPopup={closeEditReviewPopup}
           review={reviewToEdit}
         />
+      )}
+      {deleteReviewModalVisible && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onClick={() => {
+            setDeleteReviewModalVisible(false);
+            setReviewToDelete(undefined);
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#fff",
+              padding: "20px",
+              borderRadius: "5px",
+              position: "relative",
+            }}
+            onClick={(e) => e.stopPropagation()} // Prevents click from propagating to the parent and closing the modal immediately
+          >
+            <button
+              onClick={() => {
+                setDeleteReviewModalVisible(false);
+                setReviewToDelete(undefined);
+              }}
+              style={{
+                position: "absolute",
+                right: "10px",
+                top: "10px",
+                border: "none",
+                background: "transparent",
+                fontSize: "1.5em",
+              }}
+            >
+              &times;
+            </button>
+            <p style={{ textAlign: "center", fontWeight: "bold" }}>
+              Are you sure?
+            </p>
+            <p style={{ textAlign: "center", fontWeight: "bold" }}>
+              This action cannot be undone.
+            </p>
+            <button
+              type="button"
+              onClick={() => handleDeleteReview()}
+              className="mt-4 flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+            >
+              Delete Review
+            </button>
+          </div>
+        </div>
       )}
     </>
   );
