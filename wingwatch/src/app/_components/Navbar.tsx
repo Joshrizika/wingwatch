@@ -66,7 +66,7 @@ export default function Navbar() {
           )}
           <Link href="/about" passHref>
             <span className="text-gray-800 transition duration-300 ease-in-out hover:text-blue-500">
-              About Us
+              About
             </span>
           </Link>
           <div className="relative inline-block text-left" ref={dropdownRef}>
