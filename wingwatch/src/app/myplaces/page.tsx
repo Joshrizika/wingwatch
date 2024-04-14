@@ -8,12 +8,15 @@ import Loading from "../_components/Loading";
 export default function MyPlaces() {
   const session = api.main.getSession.useQuery().data;
   const userId = session?.user?.id;
+
   const {
     data: savedPlaces,
     isLoading: savedLoading,
     refetch,
   } = api.main.findSavedPlaces.useQuery({ id: userId! }, { enabled: !!userId });
+
   const unsavePlaceMutation = api.main.unsavePlace.useMutation();
+
   const handleUnsavePlace = (placeId: string) => {
     unsavePlaceMutation.mutate(
       { userId: userId!, placeId },
@@ -24,6 +27,7 @@ export default function MyPlaces() {
       },
     );
   };
+  
   const { data: contributedPlaces, isLoading: contributedLoading } =
     api.main.findContributedPlaces.useQuery(
       { userId: userId! },
@@ -43,7 +47,7 @@ export default function MyPlaces() {
       <Navbar />
       <div className="mt-5 w-full">
         <div className="sticky top-0 bg-white p-4">
-          <h1 className="mb-4 text-2xl font-bold">Saved Places</h1>
+          <h1 className="mb-4 text-2xl font-bold">Favorited Places</h1>
         </div>
         <div
           className="overflow-auto p-4 pt-0"
@@ -88,7 +92,7 @@ export default function MyPlaces() {
                   onClick={() => handleUnsavePlace(place.place_id)}
                   className="ml-4 rounded bg-red-500 px-4 py-2 text-white hover:bg-red-700"
                 >
-                  Unsave
+                  Unfavorite
                 </button>
               </div>
             ))}

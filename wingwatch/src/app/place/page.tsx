@@ -485,7 +485,7 @@ function PlaceContent() {
             )}
 
             {/* Gap and Rating section with header */}
-            <div className="mt-8 text-center">
+            <div className="mt-16 text-center">
               <h2 className="mb-4 text-2xl font-bold">Rating</h2>
               <div className="flex justify-center">
                 <RatingBar rating={totalRating} />
@@ -494,7 +494,7 @@ function PlaceContent() {
           </div>
 
           <div className="w-full md:w-1/2">
-            <div id="map" className="h-full w-full"></div>
+            <div id="map" className="h-[500px] w-full"></div>
           </div>
         </div>
 
@@ -504,7 +504,7 @@ function PlaceContent() {
             className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
             onClick={isPlaceSaved ? handleUnsavePlace : handleSavePlace}
           >
-            {isPlaceSaved ? "Unsave" : "Save"}
+            {isPlaceSaved ? "Unfavorite" : "Favorite"}
           </button>
         </div>
 
@@ -530,6 +530,7 @@ function PlaceContent() {
                 key={review.id}
                 className="relative mb-4 mr-4 flex rounded-lg border p-4 shadow-lg"
               >
+                {/* Review Content */}
                 <div className="mr-8 flex-grow" style={{ maxWidth: "50%" }}>
                   <div className="flex items-center">
                     <div>
@@ -558,6 +559,7 @@ function PlaceContent() {
                     </div>
                   </div>
                 </div>
+                {/* Image Display */}
                 <div className="right-0 top-0 flex h-full w-1/2">
                   <div className="flex flex-col items-center">
                     {review.images && review.images.length > 0 && (
@@ -597,7 +599,7 @@ function PlaceContent() {
                     </div>
                   </div>
                 </div>
-                {/* Edit Review Button */}
+                {/* Edit/Delete Review Button */}
                 <div className="absolute right-0 top-0 mr-6 flex h-full items-center justify-end">
                   {session?.user?.id === review.user?.id && (
                     <div className="flex flex-col">
