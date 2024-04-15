@@ -188,6 +188,9 @@ const ExploreLocationSearch: React.FC<LocationSearchProps> = ({
         position: "relative",
         display: "flex",
         flexDirection: "column",
+        padding: "3px",
+        border: "1px solid gray",
+        borderRadius: "5px",
       }}
     >
       <div style={{ width: "100%" }}>
@@ -267,7 +270,7 @@ const ExploreLocationSearch: React.FC<LocationSearchProps> = ({
             fontWeight: "normal",
             marginTop: "5px",
             fontSize: "12px",
-            borderRadius: "4px",
+            borderRadius: "5px",
             minHeight: "30px",
             height: "auto",
             zIndex: 3, // Lower than suggestions to be obscured when suggestions are shown
