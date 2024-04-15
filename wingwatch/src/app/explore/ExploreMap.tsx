@@ -149,7 +149,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
                 });
               }
             }
-          } 
+          }
         })
         .catch((e) => {
           console.error("Failed to load the map library:", e);
@@ -433,7 +433,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
   return (
     <div
       className="relative flex-grow"
-      style={{ maxHeight: "80vh", minHeight: "80vh" }}
+      style={{ maxHeight: "85.5vh", minHeight: "85.5vh" }}
     >
       <div
         id="map"
