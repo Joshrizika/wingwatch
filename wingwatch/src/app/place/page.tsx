@@ -33,7 +33,7 @@ function PlaceContent() {
     },
     {
       // This option ensures the query only runs if the userId and placeId are available
-      enabled: !!session?.user?.id && !!id,
+      enabled: !session && !!id,
     },
   );
   const savePlaceMutation = api.main.savePlace.useMutation();
@@ -437,6 +437,9 @@ function PlaceContent() {
 
   //Loading
   if (placeQuery.isLoading || isPlaceSavedQuery.isLoading) {
+    console.log("Loading");
+    console.log("placeQuery.isLoading", placeQuery.isLoading);
+    console.log("isPlaceSavedQuery.isLoading", isPlaceSavedQuery.isLoading);
     return <Loading />;
   }
 
@@ -504,17 +507,21 @@ function PlaceContent() {
         </div>
 
         {/* Save/Unsave Button */}
-        <div className="mb-2 flex justify-start">
-          <button
-            className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
-            onClick={isPlaceSaved ? handleUnsavePlace : handleSavePlace}
-          >
-            {isPlaceSaved ? "Unfavorite" : "Favorite"}
-          </button>
-        </div>
+        {session && (
+          <div className="mb-2 flex justify-start">
+            <button
+              className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
+              onClick={isPlaceSaved ? handleUnsavePlace : handleSavePlace}
+            >
+              {isPlaceSaved ? "Unfavorite" : "Favorite"}
+            </button>
+          </div>
+        )}
 
         {/* Image Display */}
-        <ImageDisplay images={images ?? null} imagesLoading={imagesLoading} />
+        <div className="mt-4">
+          <ImageDisplay images={images ?? null} imagesLoading={imagesLoading} />
+        </div>
 
         {/* Review Section */}
         <div className="mt-10 w-full">
