@@ -276,8 +276,20 @@ function ExploreContent() {
 
             <div
               className="flex flex-col justify-center"
-              style={{ minWidth: "160px", height: "100%", paddingTop: "20px" }}
+              style={{ minWidth: "160px", height: "100%", paddingTop: "5px" }}
             >
+              {/* Title for the slider centered */}
+              <div style={{ textAlign: "center", marginBottom: "5px" }}>
+                <span
+                  style={{
+                    // fontWeight: "bold",
+                    fontSize: "16px",
+                  }}
+                >
+                  Radius
+                </span>
+              </div>
+
               {/* Container for the slider centered */}
               <div className="flex items-center justify-center">
                 <input
