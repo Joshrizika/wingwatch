@@ -216,6 +216,7 @@ export const mainRouter = createTRPCRouter({
         where: {
           isVerified: true,
         },
+        include: { airportDetails: true },
       });
       return places;
     }),

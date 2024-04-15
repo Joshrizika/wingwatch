@@ -16,6 +16,13 @@ interface IPlace {
   path_id: string | null;
   google_maps_uri: string | null;
   airport: string | null;
+  airportDetails: {
+    name: string;
+    iata_code: string;
+    latitude: number;
+    longitude: number;
+    elevation: number | null;
+  } | null;
   distance_from_flightpath: number | null;
   average_altitude: number;
   altitude_estimated: boolean;
@@ -138,7 +145,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
                   },
                   map: mapRef.current,
                   icon: {
-                    url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+                    url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
                   },
                   title: "Search Origin",
                 });
@@ -210,7 +217,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
             ),
             map: mapRef.current,
             icon: {
-              url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+              url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
             },
             title: "Search Origin",
           });
@@ -307,8 +314,8 @@ const MapComponent: React.FC<MapComponentProps> = ({
               title: place.name,
               visible: true, // Ensure marker is visible upon creation
               icon: {
-                url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                scaledSize: new google.maps.Size(40, 40),
+                url: "./PlaceIcon.png",
+                scaledSize: new google.maps.Size(28, 40),
               },
             });
             markersRef.current.set(place.place_id, marker);
@@ -320,7 +327,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
             const infowindow = new google.maps.InfoWindow({
               content: `<div><h1>${place.name}</h1>
                                   <p>${place.address}</p>
-                                  <p>Airport: ${place.airport}</p>
+                                  <p>Airport: ${place.airportDetails?.name}</p>
                                   ${place.distance_from_flightpath !== null ? `<p>Distance From Flightpath: ${(Math.round(place.distance_from_flightpath * 100) / 100).toFixed(2)} ${Math.round(place.distance_from_flightpath * 100) / 100 === 1 ? "mile" : "miles"}</p>` : ""}
                                   <p>Average Altitude: ${Math.round(place.average_altitude)} ${Math.round(place.average_altitude) === 1 ? "foot" : "feet"}</p>
                                   ${place.distance_from_airport !== null ? `<p>Distance From Airport: ${(Math.round(place.distance_from_airport * 100) / 100).toFixed(2)} ${Math.round(place.distance_from_airport * 100) / 100 === 1 ? "mile" : "miles"}</p>` : ""}</div>`,
@@ -342,13 +349,13 @@ const MapComponent: React.FC<MapComponentProps> = ({
           // Adjust icon size based on hoveredPlace
           if (hoveredPlace === place.place_id) {
             marker.setIcon({
-              url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-              scaledSize: new google.maps.Size(60, 60),
+              url: "./PlaceIcon.png",
+              scaledSize: new google.maps.Size(42, 60),
             });
           } else {
             marker.setIcon({
-              url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-              scaledSize: new google.maps.Size(40, 40),
+              url: "./PlaceIcon.png",
+              scaledSize: new google.maps.Size(28, 40),
             });
           }
         } else {
@@ -402,8 +409,8 @@ const MapComponent: React.FC<MapComponentProps> = ({
           map: mapRef.current,
           title: airport.name,
           icon: {
-            url: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
-            scaledSize: new google.maps.Size(50, 50), // back to normal size
+            url: "./AirportIcon.png",
+            scaledSize: new google.maps.Size(35, 50),
           },
         });
 

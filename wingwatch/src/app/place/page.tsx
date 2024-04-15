@@ -156,7 +156,8 @@ function PlaceContent() {
               },
               title: placeQuery.data?.airportDetails?.name,
               icon: {
-                url: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
+                url: "./AirportIcon.png",
+                scaledSize: new google.maps.Size(35, 50), 
               },
             });
             setIsMapLoaded(true);

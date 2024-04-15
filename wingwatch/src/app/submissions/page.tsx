@@ -192,8 +192,8 @@ export default function Submissions() {
                 map: map,
                 title: airport.name,
                 icon: {
-                  url: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
-                  scaledSize: new google.maps.Size(50, 50), // back to normal size
+                  url: "./AirportIcon.png",
+                  scaledSize: new google.maps.Size(35, 50), // back to normal size
                 },
               });
             });
