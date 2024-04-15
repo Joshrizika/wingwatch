@@ -129,6 +129,10 @@ function PlaceContent() {
                 lng: placeQuery.data?.longitude ?? 0,
               },
               title: placeQuery.data?.name,
+              icon: {
+                url: "./PlaceIcon.png",
+                scaledSize: new google.maps.Size(28, 40),
+              },
             });
 
             const pathPoints: { lat: number; lng: number }[] =
@@ -143,9 +147,9 @@ function PlaceContent() {
               map: map,
               path: pathPoints,
               geodesic: true,
-              strokeColor: "#0000FF", // Customize color as needed
-              strokeOpacity: 1.0,
-              strokeWeight: 2,
+              strokeColor: "#34baeb",
+              strokeOpacity: 0.8,
+              strokeWeight: 5,
             });
 
             new google.maps.Marker({
@@ -157,7 +161,7 @@ function PlaceContent() {
               title: placeQuery.data?.airportDetails?.name,
               icon: {
                 url: "./AirportIcon.png",
-                scaledSize: new google.maps.Size(35, 50), 
+                scaledSize: new google.maps.Size(35, 50),
               },
             });
             setIsMapLoaded(true);

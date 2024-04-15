@@ -1,8 +1,14 @@
+import Image from "next/image";
+
 export default function Loading() {
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-12 w-12 mb-4"></div>
-      <h1 className="text-lg text-gray-700">Loading...</h1>
+    <div className="flex h-screen flex-col items-center justify-center">
+      <Image
+        src="/LoadingAnimation.gif"
+        alt="Loading Animation"
+        width={100}
+        height={100}
+      />
     </div>
   );
 }

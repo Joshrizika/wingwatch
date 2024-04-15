@@ -206,9 +206,9 @@ const MapComponent: React.FC<MapComponentProps> = ({
         new google.maps.Polyline({
           path: pathPoints,
           geodesic: true,
-          strokeColor: "#0000FF",
-          strokeOpacity: 1.0,
-          strokeWeight: 2,
+          strokeColor: "#34baeb",
+          strokeOpacity: 0.8,
+          strokeWeight: 5,
           map: mapRef.current,
         });
       });
