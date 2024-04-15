@@ -33,7 +33,7 @@ function PlaceContent() {
     },
     {
       // This option ensures the query only runs if the userId and placeId are available
-      enabled: !session && !!id,
+      enabled: !!session?.user?.id && !!id,
     },
   );
   const savePlaceMutation = api.main.savePlace.useMutation();
@@ -436,12 +436,22 @@ function PlaceContent() {
   };
 
   //Loading
-  if (placeQuery.isLoading || isPlaceSavedQuery.isLoading) {
-    console.log("Loading");
-    console.log("placeQuery.isLoading", placeQuery.isLoading);
-    console.log("isPlaceSavedQuery.isLoading", isPlaceSavedQuery.isLoading);
-    return <Loading />;
+  if(session){
+    if (placeQuery.isLoading || isPlaceSavedQuery.isLoading) {
+      console.log("Loading");
+      console.log("placeQuery.isLoading", placeQuery.isLoading);
+      console.log("isPlaceSavedQuery", isPlaceSavedQuery);
+      return <Loading />;
+    }
   }
+  else{
+    if (placeQuery.isLoading) {
+      console.log("Loading");
+      console.log("placeQuery.isLoading", placeQuery.isLoading);
+      return <Loading />;
+    }
+  }
+  
 
   return (
     <>
