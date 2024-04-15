@@ -324,7 +324,9 @@ function ExploreContent() {
 
           {/* Scrollable Container for Places */}
           {filteredPlacesQuery.isLoading ? (
-            <Loading />
+            <div style={{ marginTop: "-150px" }}>
+              <Loading />
+            </div>
           ) : (
             <div
               className="overflow-auto rounded-lg border p-4"
