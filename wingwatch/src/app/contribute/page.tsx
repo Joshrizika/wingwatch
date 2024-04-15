@@ -397,10 +397,11 @@ export default function Contribute() {
         style={{
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "calc(100vh - 80px)", // Subtract the height of the Navbar
-          padding: "20px",
+          marginRight: "20px",
+          border: "1px solid #ccc",
+          padding: "10px",
+          borderRadius: "5px",
+          height: "66%", // Adjust if necessary
         }}
       >
         <h1
@@ -412,6 +413,7 @@ export default function Contribute() {
             fontWeight: "bold",
             fontSize: "2em",
             margin: "20px 0",
+            marginTop: "50px",
             textAlign: "center",
             width: "80%",
           }}
@@ -441,7 +443,7 @@ export default function Contribute() {
               border: "1px solid #ccc",
               padding: "10px",
               borderRadius: "5px",
-              height: "50%", // Adjust if necessary
+              height: "50%",
             }}
           >
             <label style={{ marginBottom: "10px" }}>

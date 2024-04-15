@@ -29,7 +29,9 @@ interface Suggestions {
   suggestions: Place[];
 }
 
-const ContributeLocationSearch: React.FC<LocationSearchProps> = ({ onSearch }) => {
+const ContributeLocationSearch: React.FC<LocationSearchProps> = ({
+  onSearch,
+}) => {
   const [currentInput, setCurrentInput] = useState<string>("");
   const [suggestions, setSuggestions] = useState<Place[]>([]);
   const [activeSuggestion, setActiveSuggestion] = useState(-1);
@@ -172,7 +174,12 @@ const ContributeLocationSearch: React.FC<LocationSearchProps> = ({ onSearch }) =
         onKeyDown={handleKeyPress}
         onFocus={() => setShowSuggestions(true)}
         placeholder="Search..."
-        style={{ fontWeight: "normal", zIndex: 3, outline: "1px solid #000" }}
+        style={{
+          fontWeight: "normal",
+          zIndex: 3,
+          outline: "1px solid #000",
+          borderRadius: "2px",
+        }}
         ref={inputRef}
       />
       {showSuggestions && suggestions.length > 0 && (
