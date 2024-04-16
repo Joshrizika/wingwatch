@@ -4,7 +4,7 @@ import Image from "next/image";
 import { api } from "~/trpc/react";
 import SearchBar from "./SearchBar";
 
-export default function Navbar() {
+export default function Navbar({ trans = false }: { trans?: boolean }) {
   const session = api.main.getSession.useQuery().data;
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -27,12 +27,20 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="bg-white shadow" style={{ zIndex: 10 }}>
+    <nav
+      className={`bg-white shadow ${trans ? "opacity-80" : ""}`}
+      style={{ zIndex: 10 }}
+    >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
         <div className="flex items-center space-x-4">
           <Link href="/" passHref>
             <span>
-              <Image src="/favicon.ico" alt="Logo" width={32} height={32} />
+              <Image
+                src="/WingWatchLogo.ico"
+                alt="Logo"
+                width={32}
+                height={32}
+              />
             </span>
           </Link>
           <Link href="/" passHref>

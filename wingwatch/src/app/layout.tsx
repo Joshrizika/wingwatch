@@ -12,7 +12,7 @@ const inter = Inter({
 export const metadata = {
   title: "Wing Watch",
   description: "An app for the planespotting enthusiast",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [{ rel: "icon", url: "/WingWatchLogo.ico" }],
 };
 
 export default function RootLayout({
