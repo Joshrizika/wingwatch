@@ -336,7 +336,7 @@ function ExploreContent() {
               }}
             >
               {/* Display of places */}
-              {location ? (
+              {location ?? searchOriginLocation ? (
                 filteredPlacesQuery.data?.length ? (
                   filteredPlacesQuery.data.map((place, index) => (
                     <div
@@ -385,10 +385,10 @@ function ExploreContent() {
                         {(() => {
                           const originLat = searchOriginLocation
                             ? searchOriginLocation.latitude
-                            : location.latitude;
+                            : location!.latitude;
                           const originLon = searchOriginLocation
                             ? searchOriginLocation.longitude
-                            : location.longitude;
+                            : location!.longitude;
                           const distance = calculateDistance(
                             originLat,
                             originLon,
