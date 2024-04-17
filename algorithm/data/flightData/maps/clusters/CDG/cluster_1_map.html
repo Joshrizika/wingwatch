@@ -1,0 +1,2535 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_8a0fd1a9af30a8f62ad598440a8b884c {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_8a0fd1a9af30a8f62ad598440a8b884c" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_8a0fd1a9af30a8f62ad598440a8b884c = L.map(
+                "map_8a0fd1a9af30a8f62ad598440a8b884c",
+                {
+                    center: [49.012798, 2.55],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 8,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_cf1654d16fec60a3674e636971fbe1f1 = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca target=\"_blank\" href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\"_blank\" href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+                tile_layer_cf1654d16fec60a3674e636971fbe1f1.addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+    
+            var marker_4dcd19f4df965fc1b82b8212af630435 = L.marker(
+                [48.997728, 2.654968],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_4dcd19f4df965fc1b82b8212af630435.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 11:22:52.525143<br>Flight ICAO: AFR435<br>Latitude: 48.997728<br>Longitude: 2.654968<br>Altitude: 842<br>Departure IATA: BOG<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_662a8a3e4cff14cd88a02b12ca792ad3 = L.marker(
+                [48.997728, 2.654968],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_662a8a3e4cff14cd88a02b12ca792ad3.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 11:22:57.716294<br>Flight ICAO: AFR435<br>Latitude: 48.997728<br>Longitude: 2.654968<br>Altitude: 842<br>Departure IATA: BOG<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_8e607c7cd7f65ac7438c7db4b9511156 = L.marker(
+                [48.998598, 2.674123],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_8e607c7cd7f65ac7438c7db4b9511156.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 11:27:49.364603<br>Flight ICAO: AFR86EX<br>Latitude: 48.998598<br>Longitude: 2.674123<br>Altitude: 868<br>Departure IATA: FLR<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ae93e2048bdd8f00a4c11b8944590329 = L.marker(
+                [48.998324, 2.668278],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_ae93e2048bdd8f00a4c11b8944590329.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 11:27:53.895779<br>Flight ICAO: AFR86EX<br>Latitude: 48.998324<br>Longitude: 2.668278<br>Altitude: 815<br>Departure IATA: FLR<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2bbea0a2e9c9a376f11232dc6921db36 = L.marker(
+                [48.998324, 2.668278],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_2bbea0a2e9c9a376f11232dc6921db36.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 11:27:58.543217<br>Flight ICAO: AFR86EX<br>Latitude: 48.998324<br>Longitude: 2.668278<br>Altitude: 815<br>Departure IATA: FLR<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4115aa4579d4276303d207be5b043bf4 = L.marker(
+                [48.998049, 2.662785],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_4115aa4579d4276303d207be5b043bf4.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 11:28:03.017936<br>Flight ICAO: AFR86EX<br>Latitude: 48.998049<br>Longitude: 2.662785<br>Altitude: 740<br>Departure IATA: FLR<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e835bd4e7dc3e3a159b9a45d1e0c2a0b = L.marker(
+                [48.99761, 2.655021],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_e835bd4e7dc3e3a159b9a45d1e0c2a0b.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 11:28:08.148251<br>Flight ICAO: AFR86EX<br>Latitude: 48.99761<br>Longitude: 2.655021<br>Altitude: 641<br>Departure IATA: FLR<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_66629fe466730f15c4050637bc446d3c = L.marker(
+                [48.99761, 2.655021],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_66629fe466730f15c4050637bc446d3c.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 11:28:13.882216<br>Flight ICAO: AFR86EX<br>Latitude: 48.99761<br>Longitude: 2.655021<br>Altitude: 641<br>Departure IATA: FLR<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_0d32e7543cf71c1d2628b642e71a78d1 = L.marker(
+                [48.998683, 2.674247],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_0d32e7543cf71c1d2628b642e71a78d1.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 11:29:34.846034<br>Flight ICAO: AFR471<br>Latitude: 48.998683<br>Longitude: 2.674247<br>Altitude: 1065<br>Departure IATA: EZE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4a9c936d5986d3705ef27721c404a232 = L.marker(
+                [48.998218, 2.665646],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_4a9c936d5986d3705ef27721c404a232.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 11:29:39.082505<br>Flight ICAO: AFR471<br>Latitude: 48.998218<br>Longitude: 2.665646<br>Altitude: 940<br>Departure IATA: EZE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_8b4cc2d6f636e8af6275f5322bb3033b = L.marker(
+                [48.998218, 2.665646],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_8b4cc2d6f636e8af6275f5322bb3033b.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 11:29:43.178733<br>Flight ICAO: AFR471<br>Latitude: 48.998218<br>Longitude: 2.665646<br>Altitude: 940<br>Departure IATA: EZE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f8ac5a05c01ab52feab0db29f3ad457f = L.marker(
+                [48.998218, 2.665646],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_f8ac5a05c01ab52feab0db29f3ad457f.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 11:29:48.032823<br>Flight ICAO: AFR471<br>Latitude: 48.998218<br>Longitude: 2.665646<br>Altitude: 940<br>Departure IATA: EZE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_870bf51538c87b0b28896d85c2db923d = L.marker(
+                [48.998218, 2.665646],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_870bf51538c87b0b28896d85c2db923d.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 11:29:53.352907<br>Flight ICAO: AFR471<br>Latitude: 48.998218<br>Longitude: 2.665646<br>Altitude: 940<br>Departure IATA: EZE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_884d65087c28e2d6dc791ecfef54c700 = L.marker(
+                [48.997636, 2.654827],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_884d65087c28e2d6dc791ecfef54c700.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 11:29:58.711097<br>Flight ICAO: AFR471<br>Latitude: 48.997636<br>Longitude: 2.654827<br>Altitude: 792<br>Departure IATA: EZE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c0e11dfaa9949c6bd329d97fe24e18cd = L.marker(
+                [48.997636, 2.654827],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_c0e11dfaa9949c6bd329d97fe24e18cd.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 11:30:03.616790<br>Flight ICAO: AFR471<br>Latitude: 48.997636<br>Longitude: 2.654827<br>Altitude: 792<br>Departure IATA: EZE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f36b96ada482e7213342e91c393deb32 = L.marker(
+                [48.997724, 2.656517],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_f36b96ada482e7213342e91c393deb32.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 11:31:22.855781<br>Flight ICAO: AFR267<br>Latitude: 48.997724<br>Longitude: 2.656517<br>Altitude: 868<br>Departure IATA: ICN<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9a278a290bca34b9691da8b6048ff15f = L.marker(
+                [48.997724, 2.656517],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_9a278a290bca34b9691da8b6048ff15f.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 11:31:27.203491<br>Flight ICAO: AFR267<br>Latitude: 48.997724<br>Longitude: 2.656517<br>Altitude: 868<br>Departure IATA: ICN<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_fc089133e3af476c0c9b4e77a80355ff = L.marker(
+                [48.997729, 2.656517],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_fc089133e3af476c0c9b4e77a80355ff.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 11:31:31.247441<br>Flight ICAO: AFR267<br>Latitude: 48.997729<br>Longitude: 2.656517<br>Altitude: 868<br>Departure IATA: ICN<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_242112a0575d67739f29e3046abee878 = L.marker(
+                [48.997729, 2.656517],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_242112a0575d67739f29e3046abee878.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 11:31:36.235634<br>Flight ICAO: AFR267<br>Latitude: 48.997729<br>Longitude: 2.656517<br>Altitude: 868<br>Departure IATA: ICN<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_005235be9d8b24c6dfa81479f3af30f5 = L.marker(
+                [48.998872, 2.677504],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_005235be9d8b24c6dfa81479f3af30f5.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:45:34.059482<br>Flight ICAO: AFR245<br>Latitude: 48.998872<br>Longitude: 2.677504<br>Altitude: 1117<br>Departure IATA: NRT<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b208b03cc006973dd97ff792d214fe40 = L.marker(
+                [48.998496, 2.670489],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_b208b03cc006973dd97ff792d214fe40.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:45:36.504300<br>Flight ICAO: AFR245<br>Latitude: 48.998496<br>Longitude: 2.670489<br>Altitude: 1015<br>Departure IATA: NRT<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_0e161e893035b3e9e20b5ee169509ade = L.marker(
+                [48.998496, 2.670489],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_0e161e893035b3e9e20b5ee169509ade.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:45:38.669393<br>Flight ICAO: AFR245<br>Latitude: 48.998496<br>Longitude: 2.670489<br>Altitude: 1015<br>Departure IATA: NRT<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f3d424c1fe45d032fb6e18f5a22f1026 = L.marker(
+                [48.998496, 2.670489],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_f3d424c1fe45d032fb6e18f5a22f1026.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:45:41.517199<br>Flight ICAO: AFR245<br>Latitude: 48.998496<br>Longitude: 2.670489<br>Altitude: 1015<br>Departure IATA: NRT<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3b49fa22fde6a5b73977ffdce04ab3f7 = L.marker(
+                [48.998496, 2.670489],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_3b49fa22fde6a5b73977ffdce04ab3f7.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:45:43.575142<br>Flight ICAO: AFR245<br>Latitude: 48.998496<br>Longitude: 2.670489<br>Altitude: 1015<br>Departure IATA: NRT<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2a34bc6be25f4cafbe3128ed3d0410ae = L.marker(
+                [48.998496, 2.670489],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_2a34bc6be25f4cafbe3128ed3d0410ae.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:45:45.856207<br>Flight ICAO: AFR245<br>Latitude: 48.998496<br>Longitude: 2.670489<br>Altitude: 1015<br>Departure IATA: NRT<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_bda651260d5328bb17f70d0758c6f0b4 = L.marker(
+                [48.998077, 2.662538],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_bda651260d5328bb17f70d0758c6f0b4.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:45:48.759522<br>Flight ICAO: AFR245<br>Latitude: 48.998077<br>Longitude: 2.662538<br>Altitude: 917<br>Departure IATA: NRT<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_0d892054f4eba400de4438b5ee4645c9 = L.marker(
+                [48.998077, 2.662538],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_0d892054f4eba400de4438b5ee4645c9.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:45:51.503566<br>Flight ICAO: AFR245<br>Latitude: 48.998077<br>Longitude: 2.662538<br>Altitude: 917<br>Departure IATA: NRT<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2a24566a6ffec8a48a0b52335bdc7eea = L.marker(
+                [48.998077, 2.662538],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_2a24566a6ffec8a48a0b52335bdc7eea.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:45:54.208234<br>Flight ICAO: AFR245<br>Latitude: 48.998077<br>Longitude: 2.662538<br>Altitude: 917<br>Departure IATA: NRT<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4808f100210a7d74864e85a06258ff87 = L.marker(
+                [48.998077, 2.662538],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_4808f100210a7d74864e85a06258ff87.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:45:56.731881<br>Flight ICAO: AFR245<br>Latitude: 48.998077<br>Longitude: 2.662538<br>Altitude: 917<br>Departure IATA: NRT<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_de749345176968908b433747eadfe78c = L.marker(
+                [48.998077, 2.662538],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_de749345176968908b433747eadfe78c.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:45:59.113079<br>Flight ICAO: AFR245<br>Latitude: 48.998077<br>Longitude: 2.662538<br>Altitude: 917<br>Departure IATA: NRT<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_885867a57723412d193560bd7537c4e8 = L.marker(
+                [48.998077, 2.662538],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_885867a57723412d193560bd7537c4e8.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:46:01.578329<br>Flight ICAO: AFR245<br>Latitude: 48.998077<br>Longitude: 2.662538<br>Altitude: 917<br>Departure IATA: NRT<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_626aeded41b8ee5f8d8d7a9b427f0618 = L.marker(
+                [48.998077, 2.662538],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_626aeded41b8ee5f8d8d7a9b427f0618.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:46:03.793830<br>Flight ICAO: AFR245<br>Latitude: 48.998077<br>Longitude: 2.662538<br>Altitude: 917<br>Departure IATA: NRT<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d81e7b454a9758a89b1ef0e91939c2ff = L.marker(
+                [48.997772, 2.656094],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_d81e7b454a9758a89b1ef0e91939c2ff.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:46:06.396527<br>Flight ICAO: AFR245<br>Latitude: 48.997772<br>Longitude: 2.656094<br>Altitude: 842<br>Departure IATA: NRT<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d4df0874aa0a7ea66965ba7b16a734e6 = L.marker(
+                [48.997772, 2.656094],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_d4df0874aa0a7ea66965ba7b16a734e6.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:46:08.694027<br>Flight ICAO: AFR245<br>Latitude: 48.997772<br>Longitude: 2.656094<br>Altitude: 842<br>Departure IATA: NRT<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_05c4be9176f05884d97b511ba32b6067 = L.marker(
+                [48.997772, 2.656094],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_05c4be9176f05884d97b511ba32b6067.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:47:14.299090<br>Flight ICAO: AFR245<br>Latitude: 48.997772<br>Longitude: 2.656094<br>Altitude: 842<br>Departure IATA: NRT<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_8ef58d3200d2fc2c62621b3ca2f25a0a = L.marker(
+                [48.998732, 2.67562],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_8ef58d3200d2fc2c62621b3ca2f25a0a.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:55:51.853645<br>Flight ICAO: AFR291<br>Latitude: 48.998732<br>Longitude: 2.67562<br>Altitude: 1117<br>Departure IATA: KIX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_0838c710267cdba8ac1362f27fcf1851 = L.marker(
+                [48.998732, 2.67562],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_0838c710267cdba8ac1362f27fcf1851.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:55:54.584862<br>Flight ICAO: AFR291<br>Latitude: 48.998732<br>Longitude: 2.67562<br>Altitude: 1117<br>Departure IATA: KIX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_605c1a0f31a0b1d50347660ca4be1d47 = L.marker(
+                [48.998732, 2.67562],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_605c1a0f31a0b1d50347660ca4be1d47.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:55:57.525846<br>Flight ICAO: AFR291<br>Latitude: 48.998732<br>Longitude: 2.67562<br>Altitude: 1117<br>Departure IATA: KIX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_fcc009de1e61f9e5c512598bac432eda = L.marker(
+                [48.998732, 2.67562],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_fcc009de1e61f9e5c512598bac432eda.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:56:00.700825<br>Flight ICAO: AFR291<br>Latitude: 48.998732<br>Longitude: 2.67562<br>Altitude: 1117<br>Departure IATA: KIX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_825672daa9e1c551ad559d5a7d36bd1a = L.marker(
+                [48.998732, 2.67562],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_825672daa9e1c551ad559d5a7d36bd1a.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:56:03.537360<br>Flight ICAO: AFR291<br>Latitude: 48.998732<br>Longitude: 2.67562<br>Altitude: 1117<br>Departure IATA: KIX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e79a66f34648db8c8146670519c4d1c6 = L.marker(
+                [48.998324, 2.667222],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_e79a66f34648db8c8146670519c4d1c6.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:56:06.441815<br>Flight ICAO: AFR291<br>Latitude: 48.998324<br>Longitude: 2.667222<br>Altitude: 1042<br>Departure IATA: KIX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4880ef8d736b713d117b9708b34ee1c8 = L.marker(
+                [48.997657, 2.654732],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_4880ef8d736b713d117b9708b34ee1c8.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:56:10.310800<br>Flight ICAO: AFR291<br>Latitude: 48.997657<br>Longitude: 2.654732<br>Altitude: 815<br>Departure IATA: KIX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_de8886ed1c72930de9a75a045297928f = L.marker(
+                [48.997657, 2.654732],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_de8886ed1c72930de9a75a045297928f.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:56:12.986799<br>Flight ICAO: AFR291<br>Latitude: 48.997657<br>Longitude: 2.654732<br>Altitude: 815<br>Departure IATA: KIX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_53aa639bf0459bfea653031c13e98c05 = L.marker(
+                [48.997657, 2.654732],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_53aa639bf0459bfea653031c13e98c05.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:56:15.999841<br>Flight ICAO: AFR291<br>Latitude: 48.997657<br>Longitude: 2.654732<br>Altitude: 815<br>Departure IATA: KIX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_8767c7405f542bdd00132df9aead2cbd = L.marker(
+                [48.997657, 2.654732],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_8767c7405f542bdd00132df9aead2cbd.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:56:19.178164<br>Flight ICAO: AFR291<br>Latitude: 48.997657<br>Longitude: 2.654732<br>Altitude: 815<br>Departure IATA: KIX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_283411ed55d686fa25b06133bde62694 = L.marker(
+                [48.997657, 2.654732],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_283411ed55d686fa25b06133bde62694.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:56:22.117264<br>Flight ICAO: AFR291<br>Latitude: 48.997657<br>Longitude: 2.654732<br>Altitude: 815<br>Departure IATA: KIX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_37407f466c70fd4cf8650d622cc0c4c7 = L.marker(
+                [48.997657, 2.654732],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_37407f466c70fd4cf8650d622cc0c4c7.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:56:25.055831<br>Flight ICAO: AFR291<br>Latitude: 48.997657<br>Longitude: 2.654732<br>Altitude: 815<br>Departure IATA: KIX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_a412c19e7cb0c9771f19e13de5466c86 = L.marker(
+                [48.997657, 2.654732],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_a412c19e7cb0c9771f19e13de5466c86.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:56:28.142301<br>Flight ICAO: AFR291<br>Latitude: 48.997657<br>Longitude: 2.654732<br>Altitude: 815<br>Departure IATA: KIX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_afe7c0022a98a53dfd3dec0ee658fc91 = L.marker(
+                [48.997657, 2.654732],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_afe7c0022a98a53dfd3dec0ee658fc91.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:56:31.257659<br>Flight ICAO: AFR291<br>Latitude: 48.997657<br>Longitude: 2.654732<br>Altitude: 815<br>Departure IATA: KIX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_6ed17e9288d9c3aea49a41919a8810ae = L.marker(
+                [48.997657, 2.654732],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_6ed17e9288d9c3aea49a41919a8810ae.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:56:34.202770<br>Flight ICAO: AFR291<br>Latitude: 48.997657<br>Longitude: 2.654732<br>Altitude: 815<br>Departure IATA: KIX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_83df15a151bf56ec0ee06a46f7e2febe = L.marker(
+                [48.997657, 2.654732],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_83df15a151bf56ec0ee06a46f7e2febe.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:56:37.225649<br>Flight ICAO: AFR291<br>Latitude: 48.997657<br>Longitude: 2.654732<br>Altitude: 815<br>Departure IATA: KIX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3b8a11c2b3c831d7a9aaafb57ca5f3d9 = L.marker(
+                [48.997657, 2.654732],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_3b8a11c2b3c831d7a9aaafb57ca5f3d9.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:56:40.140927<br>Flight ICAO: AFR291<br>Latitude: 48.997657<br>Longitude: 2.654732<br>Altitude: 815<br>Departure IATA: KIX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2a2caf3c7ed18e9a705a18c971b8d615 = L.marker(
+                [48.998682, 2.675693],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_2a2caf3c7ed18e9a705a18c971b8d615.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:58:14.746912<br>Flight ICAO: AFR82VX<br>Latitude: 48.998682<br>Longitude: 2.675693<br>Altitude: 1091<br>Departure IATA: OSL<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9b18db20dca158f33c552676590dfa8b = L.marker(
+                [48.998682, 2.675693],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_9b18db20dca158f33c552676590dfa8b.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:58:17.995499<br>Flight ICAO: AFR82VX<br>Latitude: 48.998682<br>Longitude: 2.675693<br>Altitude: 1091<br>Departure IATA: OSL<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_6e61aa1d586ce2a95bc9a60f5837f290 = L.marker(
+                [48.998459, 2.671095],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_6e61aa1d586ce2a95bc9a60f5837f290.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:58:21.371273<br>Flight ICAO: AFR82VX<br>Latitude: 48.998459<br>Longitude: 2.671095<br>Altitude: 1042<br>Departure IATA: OSL<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_a2e788b706d1220c63ed62205d8e8564 = L.marker(
+                [48.998459, 2.671095],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_a2e788b706d1220c63ed62205d8e8564.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:58:24.561598<br>Flight ICAO: AFR82VX<br>Latitude: 48.998459<br>Longitude: 2.671095<br>Altitude: 1042<br>Departure IATA: OSL<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4f5794d9bbeca3b31022e10bb7187357 = L.marker(
+                [48.998095, 2.663419],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_4f5794d9bbeca3b31022e10bb7187357.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:58:28.322338<br>Flight ICAO: AFR82VX<br>Latitude: 48.998095<br>Longitude: 2.663419<br>Altitude: 917<br>Departure IATA: OSL<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7fd8d0a88b01d9be561b3176cd1f1c31 = L.marker(
+                [48.998095, 2.663419],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_7fd8d0a88b01d9be561b3176cd1f1c31.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:58:31.318123<br>Flight ICAO: AFR82VX<br>Latitude: 48.998095<br>Longitude: 2.663419<br>Altitude: 917<br>Departure IATA: OSL<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7b29bb8ee4bc63df7f44167950166175 = L.marker(
+                [48.998095, 2.663419],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_7b29bb8ee4bc63df7f44167950166175.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:58:33.583239<br>Flight ICAO: AFR82VX<br>Latitude: 48.998095<br>Longitude: 2.663419<br>Altitude: 917<br>Departure IATA: OSL<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_bc27a79893415db19fb0e5b069bccf96 = L.marker(
+                [48.997892, 2.659575],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_bc27a79893415db19fb0e5b069bccf96.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:58:36.338059<br>Flight ICAO: AFR82VX<br>Latitude: 48.997892<br>Longitude: 2.659575<br>Altitude: 868<br>Departure IATA: OSL<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e5199001111366e12d8c1bb007edf291 = L.marker(
+                [48.997892, 2.659575],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_e5199001111366e12d8c1bb007edf291.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:58:39.581359<br>Flight ICAO: AFR82VX<br>Latitude: 48.997892<br>Longitude: 2.659575<br>Altitude: 868<br>Departure IATA: OSL<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4eb7bbebb7e048f9507fa4bc7aada53b = L.marker(
+                [48.997892, 2.659575],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_4eb7bbebb7e048f9507fa4bc7aada53b.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:58:42.020524<br>Flight ICAO: AFR82VX<br>Latitude: 48.997892<br>Longitude: 2.659575<br>Altitude: 868<br>Departure IATA: OSL<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5752e7560084aabe2cd532361ba4bb8c = L.marker(
+                [48.998781, 2.677856],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_5752e7560084aabe2cd532361ba4bb8c.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:59:45.718625<br>Flight ICAO: AFR47NQ<br>Latitude: 48.998781<br>Longitude: 2.677856<br>Altitude: 966<br>Departure IATA: FLR<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b14efe77a9a9379ccc53afecb5867562 = L.marker(
+                [48.998784, 2.677507],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_b14efe77a9a9379ccc53afecb5867562.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:59:53.800641<br>Flight ICAO: AFR1667<br>Latitude: 48.998784<br>Longitude: 2.677507<br>Altitude: 966<br>Departure IATA: FLR<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7f9c29f156851b8439aa1cfcce3c213e = L.marker(
+                [48.998784, 2.677507],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_7f9c29f156851b8439aa1cfcce3c213e.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 12:59:56.782603<br>Flight ICAO: AFR1667<br>Latitude: 48.998784<br>Longitude: 2.677507<br>Altitude: 966<br>Departure IATA: FLR<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5e130c772a988bba3bef6dc1ed6da184 = L.marker(
+                [48.998784, 2.677507],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_5e130c772a988bba3bef6dc1ed6da184.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:00:00.041464<br>Flight ICAO: AFR1667<br>Latitude: 48.998784<br>Longitude: 2.677507<br>Altitude: 966<br>Departure IATA: FLR<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_db097ada5bef5748874a8ec2e28bee0c = L.marker(
+                [48.997634, 2.653627],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_db097ada5bef5748874a8ec2e28bee0c.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:00:27.106421<br>Flight ICAO: AFR1667<br>Latitude: 48.997634<br>Longitude: 2.653627<br>Altitude: 615<br>Departure IATA: FLR<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7cd10f07c30fb88af8b3a1f30b24ef41 = L.marker(
+                [48.997634, 2.653627],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_7cd10f07c30fb88af8b3a1f30b24ef41.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:00:30.522878<br>Flight ICAO: AFR1667<br>Latitude: 48.997634<br>Longitude: 2.653627<br>Altitude: 615<br>Departure IATA: FLR<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_95bc606e9aef7b0ef44ce52364cdf420 = L.marker(
+                [48.997634, 2.653627],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_95bc606e9aef7b0ef44ce52364cdf420.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:00:33.720395<br>Flight ICAO: AFR1667<br>Latitude: 48.997634<br>Longitude: 2.653627<br>Altitude: 615<br>Departure IATA: FLR<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_89782b4f05ed2b8e8ccb6ba6b1d2a47b = L.marker(
+                [48.997634, 2.653627],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_89782b4f05ed2b8e8ccb6ba6b1d2a47b.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:00:37.300267<br>Flight ICAO: AFR1667<br>Latitude: 48.997634<br>Longitude: 2.653627<br>Altitude: 615<br>Departure IATA: FLR<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9f6db38dd0ebb204a6e2d7edc0d188d0 = L.marker(
+                [48.997634, 2.653627],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_9f6db38dd0ebb204a6e2d7edc0d188d0.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:00:41.057254<br>Flight ICAO: AFR1667<br>Latitude: 48.997634<br>Longitude: 2.653627<br>Altitude: 615<br>Departure IATA: FLR<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5195113a16f24c6be49f9969f362165a = L.marker(
+                [48.997634, 2.653627],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_5195113a16f24c6be49f9969f362165a.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:00:44.290267<br>Flight ICAO: AFR1667<br>Latitude: 48.997634<br>Longitude: 2.653627<br>Altitude: 615<br>Departure IATA: FLR<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f59f92cb48f2a04b1fc5734c5227555f = L.marker(
+                [48.997634, 2.653627],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_f59f92cb48f2a04b1fc5734c5227555f.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:00:48.046514<br>Flight ICAO: AFR1667<br>Latitude: 48.997634<br>Longitude: 2.653627<br>Altitude: 615<br>Departure IATA: FLR<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_546369da8ccefbd61ceedce427e3dba9 = L.marker(
+                [48.997864, 2.661447],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_546369da8ccefbd61ceedce427e3dba9.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:02:11.191019<br>Flight ICAO: AFR1259<br>Latitude: 48.997864<br>Longitude: 2.661447<br>Altitude: 691<br>Departure IATA: RBA<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_04bfde12e6d915cd5fa795311c87a20a = L.marker(
+                [48.997864, 2.661447],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_04bfde12e6d915cd5fa795311c87a20a.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:02:14.705047<br>Flight ICAO: AFR1259<br>Latitude: 48.997864<br>Longitude: 2.661447<br>Altitude: 691<br>Departure IATA: RBA<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_84bda8b016f2b97be60f27b3c3e8fcd7 = L.marker(
+                [48.997864, 2.661447],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_84bda8b016f2b97be60f27b3c3e8fcd7.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:02:18.425462<br>Flight ICAO: AFR1259<br>Latitude: 48.997864<br>Longitude: 2.661447<br>Altitude: 691<br>Departure IATA: RBA<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ac2e0d5d7c99130af341f150af3e4bbf = L.marker(
+                [48.997864, 2.661447],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_ac2e0d5d7c99130af341f150af3e4bbf.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:02:21.747223<br>Flight ICAO: AFR1259<br>Latitude: 48.997864<br>Longitude: 2.661447<br>Altitude: 691<br>Departure IATA: RBA<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c426f98f7101d87246d12b80e6db5498 = L.marker(
+                [48.997864, 2.661447],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_c426f98f7101d87246d12b80e6db5498.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:02:24.816445<br>Flight ICAO: AFR1259<br>Latitude: 48.997864<br>Longitude: 2.661447<br>Altitude: 691<br>Departure IATA: RBA<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d4ec91a42b8da667ac20b5fb9c2563c4 = L.marker(
+                [48.997864, 2.661447],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_d4ec91a42b8da667ac20b5fb9c2563c4.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:02:28.258486<br>Flight ICAO: AFR1259<br>Latitude: 48.997864<br>Longitude: 2.661447<br>Altitude: 691<br>Departure IATA: RBA<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_8d23909fba23eb3ad1071876e69f6644 = L.marker(
+                [48.997864, 2.661447],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_8d23909fba23eb3ad1071876e69f6644.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:02:31.588375<br>Flight ICAO: AFR1259<br>Latitude: 48.997864<br>Longitude: 2.661447<br>Altitude: 691<br>Departure IATA: RBA<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9d0f3b2282a7b113b4844e1e22bc3f19 = L.marker(
+                [48.99878, 2.675813],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_9d0f3b2282a7b113b4844e1e22bc3f19.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:03:43.875837<br>Flight ICAO: EJU98TM<br>Latitude: 48.99878<br>Longitude: 2.675813<br>Altitude: 1117<br>Departure IATA: VCE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_a3b2e9e0d2fdde108dab9eaf51298e27 = L.marker(
+                [48.99878, 2.675813],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_a3b2e9e0d2fdde108dab9eaf51298e27.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:03:47.326857<br>Flight ICAO: EJU98TM<br>Latitude: 48.99878<br>Longitude: 2.675813<br>Altitude: 1117<br>Departure IATA: VCE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_40e687bb03a18fab016d8a807f89228d = L.marker(
+                [48.99878, 2.675813],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_40e687bb03a18fab016d8a807f89228d.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:03:50.844582<br>Flight ICAO: EJU98TM<br>Latitude: 48.99878<br>Longitude: 2.675813<br>Altitude: 1117<br>Departure IATA: VCE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_bd312da556c2fb33ba02f29bcac64872 = L.marker(
+                [48.99878, 2.675813],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_bd312da556c2fb33ba02f29bcac64872.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:03:54.097049<br>Flight ICAO: EJU98TM<br>Latitude: 48.99878<br>Longitude: 2.675813<br>Altitude: 1117<br>Departure IATA: VCE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5d91311c1aee2a7352d806167f1e8288 = L.marker(
+                [48.998414, 2.669193],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_5d91311c1aee2a7352d806167f1e8288.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:03:58.053609<br>Flight ICAO: EJU98TM<br>Latitude: 48.998414<br>Longitude: 2.669193<br>Altitude: 1015<br>Departure IATA: VCE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2cf9a8022f08549a054ecb9cab4f2ad2 = L.marker(
+                [48.998094, 2.66194],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_2cf9a8022f08549a054ecb9cab4f2ad2.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:04:01.945953<br>Flight ICAO: EJU98TM<br>Latitude: 48.998094<br>Longitude: 2.66194<br>Altitude: 917<br>Departure IATA: VCE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3e8d01bd7df2d7a56ba5ee1877021203 = L.marker(
+                [48.998094, 2.66194],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_3e8d01bd7df2d7a56ba5ee1877021203.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:04:04.721914<br>Flight ICAO: EJU98TM<br>Latitude: 48.998094<br>Longitude: 2.66194<br>Altitude: 917<br>Departure IATA: VCE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_87c90574cbe318b44e29359637f51f7f = L.marker(
+                [48.997636, 2.653418],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_87c90574cbe318b44e29359637f51f7f.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:04:08.253423<br>Flight ICAO: EJU98TM<br>Latitude: 48.997636<br>Longitude: 2.653418<br>Altitude: 792<br>Departure IATA: VCE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_cf56f8f748781e16cc1bc76c5667833a = L.marker(
+                [48.997636, 2.653418],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_cf56f8f748781e16cc1bc76c5667833a.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:04:12.772355<br>Flight ICAO: EJU98TM<br>Latitude: 48.997636<br>Longitude: 2.653418<br>Altitude: 792<br>Departure IATA: VCE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_92595cbd0291ce22d8a7584e1e35fede = L.marker(
+                [48.997636, 2.653418],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_92595cbd0291ce22d8a7584e1e35fede.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:04:16.071997<br>Flight ICAO: EJU98TM<br>Latitude: 48.997636<br>Longitude: 2.653418<br>Altitude: 792<br>Departure IATA: VCE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b59fe533afba814c9be8d406e31e79ea = L.marker(
+                [48.997636, 2.653418],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_b59fe533afba814c9be8d406e31e79ea.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:04:19.603840<br>Flight ICAO: EJU98TM<br>Latitude: 48.997636<br>Longitude: 2.653418<br>Altitude: 792<br>Departure IATA: VCE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_cd12fec7191868c954f9224b1831c033 = L.marker(
+                [48.998594, 2.673277],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_cd12fec7191868c954f9224b1831c033.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:06:31.711074<br>Flight ICAO: AFR1601<br>Latitude: 48.998594<br>Longitude: 2.673277<br>Altitude: 891<br>Departure IATA: MAD<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b0e41a4893038fa85280e2c045dea3e8 = L.marker(
+                [48.998594, 2.673277],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_b0e41a4893038fa85280e2c045dea3e8.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:06:35.108246<br>Flight ICAO: AFR1601<br>Latitude: 48.998594<br>Longitude: 2.673277<br>Altitude: 891<br>Departure IATA: MAD<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ee1ef0413e993cab4bf856ac2a52bb16 = L.marker(
+                [48.998594, 2.673277],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_ee1ef0413e993cab4bf856ac2a52bb16.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:06:38.370337<br>Flight ICAO: AFR1601<br>Latitude: 48.998594<br>Longitude: 2.673277<br>Altitude: 891<br>Departure IATA: MAD<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_63a87d914a2bc8075324348837222bb4 = L.marker(
+                [48.998594, 2.673277],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_63a87d914a2bc8075324348837222bb4.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:06:41.823091<br>Flight ICAO: AFR1601<br>Latitude: 48.998594<br>Longitude: 2.673277<br>Altitude: 891<br>Departure IATA: MAD<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d1a75d7a2b144147bff2fab76cee3083 = L.marker(
+                [48.998594, 2.673277],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_d1a75d7a2b144147bff2fab76cee3083.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:06:46.283676<br>Flight ICAO: AFR1601<br>Latitude: 48.998594<br>Longitude: 2.673277<br>Altitude: 891<br>Departure IATA: MAD<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_082b6ea35c88a60a8c5368ddfef5ca3e = L.marker(
+                [48.997794, 2.659067],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_082b6ea35c88a60a8c5368ddfef5ca3e.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:06:49.174386<br>Flight ICAO: AFR1601<br>Latitude: 48.997794<br>Longitude: 2.659067<br>Altitude: 717<br>Departure IATA: MAD<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_62686b9d0a6204bd6b8e0b7b11253a03 = L.marker(
+                [48.997794, 2.659067],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_62686b9d0a6204bd6b8e0b7b11253a03.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:06:52.198614<br>Flight ICAO: AFR1601<br>Latitude: 48.997794<br>Longitude: 2.659067<br>Altitude: 717<br>Departure IATA: MAD<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3d66b09849674ab0a5282319a5cb77b6 = L.marker(
+                [48.997794, 2.659067],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_3d66b09849674ab0a5282319a5cb77b6.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:06:54.845239<br>Flight ICAO: AFR1601<br>Latitude: 48.997794<br>Longitude: 2.659067<br>Altitude: 717<br>Departure IATA: MAD<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_08e87909c09479f0c0cb5666c347ed76 = L.marker(
+                [48.997794, 2.659067],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_08e87909c09479f0c0cb5666c347ed76.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:06:57.689932<br>Flight ICAO: AFR1601<br>Latitude: 48.997794<br>Longitude: 2.659067<br>Altitude: 717<br>Departure IATA: MAD<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2290471657cc0c6772affece7aaf2501 = L.marker(
+                [48.998914, 2.675838],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_2290471657cc0c6772affece7aaf2501.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:16:49.762520<br>Flight ICAO: DAH1084<br>Latitude: 48.998914<br>Longitude: 2.675838<br>Altitude: 1117<br>Departure IATA: ORN<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_a9705a24492ac3e4b73a7f65c55b6d7e = L.marker(
+                [48.998914, 2.675838],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_a9705a24492ac3e4b73a7f65c55b6d7e.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:16:51.922565<br>Flight ICAO: DAH1084<br>Latitude: 48.998914<br>Longitude: 2.675838<br>Altitude: 1117<br>Departure IATA: ORN<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_8538d6202af7e58f6fb6b7eedb538c13 = L.marker(
+                [48.998914, 2.675838],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_8538d6202af7e58f6fb6b7eedb538c13.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:16:53.837182<br>Flight ICAO: DAH1084<br>Latitude: 48.998914<br>Longitude: 2.675838<br>Altitude: 1117<br>Departure IATA: ORN<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5077341f8c13ae1e30e666816954358f = L.marker(
+                [48.998914, 2.675838],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_5077341f8c13ae1e30e666816954358f.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:16:56.144037<br>Flight ICAO: DAH1084<br>Latitude: 48.998914<br>Longitude: 2.675838<br>Altitude: 1117<br>Departure IATA: ORN<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_514296fe04522a9be455f4855ee11618 = L.marker(
+                [48.998915, 2.675838],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_514296fe04522a9be455f4855ee11618.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:16:58.964238<br>Flight ICAO: DAH1084<br>Latitude: 48.998915<br>Longitude: 2.675838<br>Altitude: 1117<br>Departure IATA: ORN<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_486cc25223194615da50ee64f6d8a23f = L.marker(
+                [48.998915, 2.675838],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_486cc25223194615da50ee64f6d8a23f.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:17:02.100419<br>Flight ICAO: DAH1084<br>Latitude: 48.998915<br>Longitude: 2.675838<br>Altitude: 1117<br>Departure IATA: ORN<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e42c343be2ea8d50feb6752030af075d = L.marker(
+                [48.998915, 2.675838],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_e42c343be2ea8d50feb6752030af075d.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:17:05.511411<br>Flight ICAO: DAH1084<br>Latitude: 48.998915<br>Longitude: 2.675838<br>Altitude: 1117<br>Departure IATA: ORN<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f49f1d8f0eaaebb71af447c698db4644 = L.marker(
+                [48.998915, 2.675838],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_f49f1d8f0eaaebb71af447c698db4644.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:17:08.794271<br>Flight ICAO: DAH1084<br>Latitude: 48.998915<br>Longitude: 2.675838<br>Altitude: 1117<br>Departure IATA: ORN<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_da9cf0eae77aca64f3a8e6ba185f1657 = L.marker(
+                [48.998915, 2.675838],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_da9cf0eae77aca64f3a8e6ba185f1657.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:17:12.162666<br>Flight ICAO: DAH1084<br>Latitude: 48.998915<br>Longitude: 2.675838<br>Altitude: 815<br>Departure IATA: ORN<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_184772669638a4abbbb7986a35993426 = L.marker(
+                [48.998915, 2.675838],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_184772669638a4abbbb7986a35993426.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:17:14.967469<br>Flight ICAO: DAH1084<br>Latitude: 48.998915<br>Longitude: 2.675838<br>Altitude: 815<br>Departure IATA: ORN<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_65218a87bc02dc69108334a2e7284999 = L.marker(
+                [48.998915, 2.675838],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_65218a87bc02dc69108334a2e7284999.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:17:16.730735<br>Flight ICAO: DAH1084<br>Latitude: 48.998915<br>Longitude: 2.675838<br>Altitude: 717<br>Departure IATA: ORN<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c1b51bf4234f906139c6e957e2d1d30c = L.marker(
+                [48.998915, 2.675838],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_c1b51bf4234f906139c6e957e2d1d30c.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:17:18.824517<br>Flight ICAO: DAH1084<br>Latitude: 48.998915<br>Longitude: 2.675838<br>Altitude: 717<br>Departure IATA: ORN<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3cbd7e7f376440309cd1af58603e77f2 = L.marker(
+                [48.998915, 2.675838],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_3cbd7e7f376440309cd1af58603e77f2.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:17:21.066996<br>Flight ICAO: DAH1084<br>Latitude: 48.998915<br>Longitude: 2.675838<br>Altitude: 717<br>Departure IATA: ORN<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b2c07daa55d48b9e2987d09d9a07cb61 = L.marker(
+                [48.998915, 2.675838],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_b2c07daa55d48b9e2987d09d9a07cb61.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:17:23.191654<br>Flight ICAO: DAH1084<br>Latitude: 48.998915<br>Longitude: 2.675838<br>Altitude: 717<br>Departure IATA: ORN<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ca4afd097a532cdad254655a52f1b5d5 = L.marker(
+                [48.998453, 2.678077],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_ca4afd097a532cdad254655a52f1b5d5.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:26:33.169450<br>Flight ICAO: AFR9351<br>Latitude: 48.998453<br>Longitude: 2.678077<br>Altitude: 1117<br>Departure IATA: BHX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2a79fe3abdcc47dc745e1845d7efda80 = L.marker(
+                [48.998453, 2.678077],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_2a79fe3abdcc47dc745e1845d7efda80.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:26:35.452570<br>Flight ICAO: AFR9351<br>Latitude: 48.998453<br>Longitude: 2.678077<br>Altitude: 1117<br>Departure IATA: BHX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c95e8b17b1cbea13e756751ae95e3ff0 = L.marker(
+                [48.998453, 2.678077],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_c95e8b17b1cbea13e756751ae95e3ff0.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:26:37.687413<br>Flight ICAO: AFR9351<br>Latitude: 48.998453<br>Longitude: 2.678077<br>Altitude: 1117<br>Departure IATA: BHX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9ace21547d5f3cf238e8fb26edc93533 = L.marker(
+                [48.998453, 2.678077],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_9ace21547d5f3cf238e8fb26edc93533.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:26:39.771154<br>Flight ICAO: AFR9351<br>Latitude: 48.998453<br>Longitude: 2.678077<br>Altitude: 1117<br>Departure IATA: BHX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_48d4b9c35bdb71270f37d589b3af098a = L.marker(
+                [48.998319, 2.671211],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_48d4b9c35bdb71270f37d589b3af098a.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:26:42.049083<br>Flight ICAO: AFR9351<br>Latitude: 48.998319<br>Longitude: 2.671211<br>Altitude: 1042<br>Departure IATA: BHX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5c3830b2f962c4769916c4ff93799ef5 = L.marker(
+                [48.998319, 2.671211],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_5c3830b2f962c4769916c4ff93799ef5.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:26:44.270969<br>Flight ICAO: AFR9351<br>Latitude: 48.998319<br>Longitude: 2.671211<br>Altitude: 1042<br>Departure IATA: BHX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_07694b9b30dcde591c51f6161ff75792 = L.marker(
+                [48.998319, 2.671211],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_07694b9b30dcde591c51f6161ff75792.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:26:46.500295<br>Flight ICAO: AFR9351<br>Latitude: 48.998319<br>Longitude: 2.671211<br>Altitude: 1042<br>Departure IATA: BHX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e786c3124e8270d426e5abb65dba4bab = L.marker(
+                [48.998129, 2.665718],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_e786c3124e8270d426e5abb65dba4bab.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:26:49.132907<br>Flight ICAO: AFR9351<br>Latitude: 48.998129<br>Longitude: 2.665718<br>Altitude: 993<br>Departure IATA: BHX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e0c328164382758d3fae7ca4a220607e = L.marker(
+                [48.998129, 2.665718],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_e0c328164382758d3fae7ca4a220607e.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:26:51.909191<br>Flight ICAO: AFR9351<br>Latitude: 48.998129<br>Longitude: 2.665718<br>Altitude: 993<br>Departure IATA: BHX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e4a25015d50f7c0c4f59e960b1313296 = L.marker(
+                [48.998129, 2.665718],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_e4a25015d50f7c0c4f59e960b1313296.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:26:54.770872<br>Flight ICAO: AFR9351<br>Latitude: 48.998129<br>Longitude: 2.665718<br>Altitude: 993<br>Departure IATA: BHX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b4c2190033f331866e3f16811a65fd12 = L.marker(
+                [48.997895, 2.659574],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_b4c2190033f331866e3f16811a65fd12.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:26:57.386189<br>Flight ICAO: AFR9351<br>Latitude: 48.997895<br>Longitude: 2.659574<br>Altitude: 917<br>Departure IATA: BHX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_06998ebe8a7683eb2b296835da14156f = L.marker(
+                [48.997895, 2.659574],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_06998ebe8a7683eb2b296835da14156f.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:27:00.198390<br>Flight ICAO: AFR9351<br>Latitude: 48.997895<br>Longitude: 2.659574<br>Altitude: 917<br>Departure IATA: BHX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_82ded10ead681c0f8382bc0d49a8da2b = L.marker(
+                [48.997884, 2.659576],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_82ded10ead681c0f8382bc0d49a8da2b.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:27:02.702265<br>Flight ICAO: AFR9351<br>Latitude: 48.997884<br>Longitude: 2.659576<br>Altitude: 917<br>Departure IATA: BHX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5ad43bdd665a5fc9b7c1c694b03a0e60 = L.marker(
+                [48.997884, 2.659576],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_5ad43bdd665a5fc9b7c1c694b03a0e60.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:27:05.005041<br>Flight ICAO: AFR9351<br>Latitude: 48.997884<br>Longitude: 2.659576<br>Altitude: 917<br>Departure IATA: BHX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_18f3d0e33ac22e96092158224d72f2db = L.marker(
+                [48.997884, 2.659576],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_18f3d0e33ac22e96092158224d72f2db.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:27:07.152445<br>Flight ICAO: AFR9351<br>Latitude: 48.997884<br>Longitude: 2.659576<br>Altitude: 917<br>Departure IATA: BHX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_aad1105c4698e5939b96917c15e4ca27 = L.marker(
+                [48.997884, 2.659576],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_aad1105c4698e5939b96917c15e4ca27.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:27:09.487622<br>Flight ICAO: AFR9351<br>Latitude: 48.997884<br>Longitude: 2.659576<br>Altitude: 917<br>Departure IATA: BHX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e5539f027601b390786b11a6f599c19d = L.marker(
+                [48.997884, 2.659576],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_e5539f027601b390786b11a6f599c19d.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:27:11.610237<br>Flight ICAO: AFR9351<br>Latitude: 48.997884<br>Longitude: 2.659576<br>Altitude: 917<br>Departure IATA: BHX<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_728c3dea23cdcba4d6c869743467a5b2 = L.marker(
+                [48.998094, 2.662714],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_728c3dea23cdcba4d6c869743467a5b2.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:41:02.731424<br>Flight ICAO: AFR67WH<br>Latitude: 48.998094<br>Longitude: 2.662714<br>Altitude: 917<br>Departure IATA: LIS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ed72022c1d1fa84f2872ecff86de9454 = L.marker(
+                [48.998094, 2.662714],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_ed72022c1d1fa84f2872ecff86de9454.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:41:04.647647<br>Flight ICAO: AFR67WH<br>Latitude: 48.998094<br>Longitude: 2.662714<br>Altitude: 917<br>Departure IATA: LIS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_82c5dc5193359fbce5fafd6792c54341 = L.marker(
+                [48.998094, 2.662714],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_82c5dc5193359fbce5fafd6792c54341.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:41:06.664732<br>Flight ICAO: AFR67WH<br>Latitude: 48.998094<br>Longitude: 2.662714<br>Altitude: 917<br>Departure IATA: LIS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_327802e136971d2e51de446c1a85b513 = L.marker(
+                [48.998094, 2.662714],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_327802e136971d2e51de446c1a85b513.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:41:08.623755<br>Flight ICAO: AFR67WH<br>Latitude: 48.998094<br>Longitude: 2.662714<br>Altitude: 917<br>Departure IATA: LIS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_1fddbd59dc2612ca14812e43f78370a4 = L.marker(
+                [48.998094, 2.662714],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_1fddbd59dc2612ca14812e43f78370a4.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:41:10.615780<br>Flight ICAO: AFR67WH<br>Latitude: 48.998094<br>Longitude: 2.662714<br>Altitude: 917<br>Departure IATA: LIS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2c31ad8fdc035c8fefa3e9ee23123a6f = L.marker(
+                [48.998094, 2.662714],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_2c31ad8fdc035c8fefa3e9ee23123a6f.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:41:12.499658<br>Flight ICAO: AFR67WH<br>Latitude: 48.998094<br>Longitude: 2.662714<br>Altitude: 917<br>Departure IATA: LIS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b6a2bfbd491c37c0e9df98d5c0bdf8b5 = L.marker(
+                [48.998094, 2.662714],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_b6a2bfbd491c37c0e9df98d5c0bdf8b5.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:41:14.537943<br>Flight ICAO: AFR67WH<br>Latitude: 48.998094<br>Longitude: 2.662714<br>Altitude: 917<br>Departure IATA: LIS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2b884f3a7faf3ad9f8e69b85357bc839 = L.marker(
+                [48.998094, 2.662714],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_2b884f3a7faf3ad9f8e69b85357bc839.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:41:16.511932<br>Flight ICAO: AFR67WH<br>Latitude: 48.998094<br>Longitude: 2.662714<br>Altitude: 917<br>Departure IATA: LIS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9b1ca506196221681f7bcb5e65edf1cf = L.marker(
+                [48.998094, 2.662714],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_9b1ca506196221681f7bcb5e65edf1cf.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:41:18.419153<br>Flight ICAO: AFR67WH<br>Latitude: 48.998094<br>Longitude: 2.662714<br>Altitude: 917<br>Departure IATA: LIS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4b7f86aab99caec41e17a4e170cbc0c2 = L.marker(
+                [48.997754, 2.656033],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_4b7f86aab99caec41e17a4e170cbc0c2.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:41:20.841915<br>Flight ICAO: AFR67WH<br>Latitude: 48.997754<br>Longitude: 2.656033<br>Altitude: 815<br>Departure IATA: LIS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b0e131eefd0fa8bdeee292bef743b2be = L.marker(
+                [48.998595, 2.672574],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_b0e131eefd0fa8bdeee292bef743b2be.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:45:56.905681<br>Flight ICAO: AFR7409<br>Latitude: 48.998595<br>Longitude: 2.672574<br>Altitude: 1042<br>Departure IATA: TLS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_bbcb3ed1dfca450f95db693ff0445d85 = L.marker(
+                [48.998595, 2.672574],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_bbcb3ed1dfca450f95db693ff0445d85.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:45:59.177958<br>Flight ICAO: AFR7409<br>Latitude: 48.998595<br>Longitude: 2.672574<br>Altitude: 1042<br>Departure IATA: TLS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_82cc9e7aa150b3a50b41bb8b493a9b57 = L.marker(
+                [48.998595, 2.672574],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_82cc9e7aa150b3a50b41bb8b493a9b57.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:46:01.300200<br>Flight ICAO: AFR7409<br>Latitude: 48.998595<br>Longitude: 2.672574<br>Altitude: 1042<br>Departure IATA: TLS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3c767a407456d4d3977a3b06656d0665 = L.marker(
+                [48.998595, 2.672574],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_3c767a407456d4d3977a3b06656d0665.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:46:04.099773<br>Flight ICAO: AFR7409<br>Latitude: 48.998595<br>Longitude: 2.672574<br>Altitude: 1042<br>Departure IATA: TLS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e984fcc9dfc55e4a786afafe3f3469ab = L.marker(
+                [48.998595, 2.672574],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_e984fcc9dfc55e4a786afafe3f3469ab.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:46:06.105739<br>Flight ICAO: AFR7409<br>Latitude: 48.998595<br>Longitude: 2.672574<br>Altitude: 1042<br>Departure IATA: TLS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d9083861885652181badfe4fee44fda8 = L.marker(
+                [48.998595, 2.672574],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_d9083861885652181badfe4fee44fda8.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:46:08.112289<br>Flight ICAO: AFR7409<br>Latitude: 48.998595<br>Longitude: 2.672574<br>Altitude: 1042<br>Departure IATA: TLS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e82d35b4850985357ca19b3260f8bd67 = L.marker(
+                [48.998595, 2.672574],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_e82d35b4850985357ca19b3260f8bd67.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:46:10.080650<br>Flight ICAO: AFR7409<br>Latitude: 48.998595<br>Longitude: 2.672574<br>Altitude: 1042<br>Departure IATA: TLS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5beb67f0bb38ebcb34cc984b138bffe3 = L.marker(
+                [48.998595, 2.672574],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_5beb67f0bb38ebcb34cc984b138bffe3.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:46:12.158686<br>Flight ICAO: AFR7409<br>Latitude: 48.998595<br>Longitude: 2.672574<br>Altitude: 1042<br>Departure IATA: TLS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_332b591afa61c85496a799e87f14211c = L.marker(
+                [48.998142, 2.663136],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_332b591afa61c85496a799e87f14211c.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:46:14.045211<br>Flight ICAO: AFR7409<br>Latitude: 48.998142<br>Longitude: 2.663136<br>Altitude: 891<br>Departure IATA: TLS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4ba861f2ec86c83b91dda06eca13ba43 = L.marker(
+                [48.998142, 2.663136],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_4ba861f2ec86c83b91dda06eca13ba43.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:46:16.529163<br>Flight ICAO: AFR7409<br>Latitude: 48.998142<br>Longitude: 2.663136<br>Altitude: 891<br>Departure IATA: TLS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9706f0b2f58485d73e303041479c0f9a = L.marker(
+                [48.997705, 2.65466],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_9706f0b2f58485d73e303041479c0f9a.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:46:18.557749<br>Flight ICAO: AFR7409<br>Latitude: 48.997705<br>Longitude: 2.65466<br>Altitude: 815<br>Departure IATA: TLS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_54f9f3a6db6474ba2fad6829190eef92 = L.marker(
+                [48.997705, 2.65466],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_54f9f3a6db6474ba2fad6829190eef92.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:46:20.838036<br>Flight ICAO: AFR7409<br>Latitude: 48.997705<br>Longitude: 2.65466<br>Altitude: 815<br>Departure IATA: TLS<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5651f1eb8003db8cd2bc1c04f387b42a = L.marker(
+                [48.998731, 2.674826],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_5651f1eb8003db8cd2bc1c04f387b42a.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:47:29.132606<br>Flight ICAO: EJU84QL<br>Latitude: 48.998731<br>Longitude: 2.674826<br>Altitude: 1065<br>Departure IATA: MXP<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_03d31368345880ea68713d78daf3e189 = L.marker(
+                [48.998731, 2.674826],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_03d31368345880ea68713d78daf3e189.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:47:31.858065<br>Flight ICAO: EJU84QL<br>Latitude: 48.998731<br>Longitude: 2.674826<br>Altitude: 1065<br>Departure IATA: MXP<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ac0c831d46786b464b2a759e73483f0c = L.marker(
+                [48.998731, 2.674826],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_ac0c831d46786b464b2a759e73483f0c.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:47:34.713944<br>Flight ICAO: EJU84QL<br>Latitude: 48.998731<br>Longitude: 2.674826<br>Altitude: 1065<br>Departure IATA: MXP<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c99ca705e43069fe8eb22f043c03d0d7 = L.marker(
+                [48.998731, 2.674826],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_c99ca705e43069fe8eb22f043c03d0d7.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:47:37.609268<br>Flight ICAO: EJU84QL<br>Latitude: 48.998731<br>Longitude: 2.674826<br>Altitude: 1065<br>Departure IATA: MXP<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_01ca05cffc5a48df6107bfa5f951af55 = L.marker(
+                [48.998781, 2.676377],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_01ca05cffc5a48df6107bfa5f951af55.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:48:51.532339<br>Flight ICAO: AFR39NB<br>Latitude: 48.998781<br>Longitude: 2.676377<br>Altitude: 1091<br>Departure IATA: NCE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5f82275130eab6618564a69114cc9468 = L.marker(
+                [48.998781, 2.676377],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_5f82275130eab6618564a69114cc9468.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:48:53.316141<br>Flight ICAO: AFR39NB<br>Latitude: 48.998781<br>Longitude: 2.676377<br>Altitude: 1091<br>Departure IATA: NCE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_0d300566bcd539c638f1377ab4340a96 = L.marker(
+                [48.998781, 2.676377],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_0d300566bcd539c638f1377ab4340a96.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:48:55.744930<br>Flight ICAO: AFR39NB<br>Latitude: 48.998781<br>Longitude: 2.676377<br>Altitude: 1091<br>Departure IATA: NCE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_36583f1ce0f33f84d86387af2f9ff5ba = L.marker(
+                [48.998781, 2.676377],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_36583f1ce0f33f84d86387af2f9ff5ba.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:48:57.769482<br>Flight ICAO: AFR39NB<br>Latitude: 48.998781<br>Longitude: 2.676377<br>Altitude: 1091<br>Departure IATA: NCE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ffa88f96767774a6d543d7833fbc84d2 = L.marker(
+                [48.998781, 2.676377],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_ffa88f96767774a6d543d7833fbc84d2.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:48:59.565309<br>Flight ICAO: AFR39NB<br>Latitude: 48.998781<br>Longitude: 2.676377<br>Altitude: 1091<br>Departure IATA: NCE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b415b39c46c5203d46285dcb16cce277 = L.marker(
+                [48.998781, 2.676377],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_b415b39c46c5203d46285dcb16cce277.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:49:01.546958<br>Flight ICAO: AFR39NB<br>Latitude: 48.998781<br>Longitude: 2.676377<br>Altitude: 1091<br>Departure IATA: NCE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_a0af2ab5cee9ad4b36e3b2ddedbb6c38 = L.marker(
+                [48.998405, 2.668176],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_a0af2ab5cee9ad4b36e3b2ddedbb6c38.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:49:03.692557<br>Flight ICAO: AFR39NB<br>Latitude: 48.998405<br>Longitude: 2.668176<br>Altitude: 993<br>Departure IATA: NCE<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d03761aee9a0f61b3c87e93a61ca7342 = L.marker(
+                [48.997609, 2.655094],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_d03761aee9a0f61b3c87e93a61ca7342.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:59:15.432946<br>Flight ICAO: AFR67ZA<br>Latitude: 48.997609<br>Longitude: 2.655094<br>Altitude: 792<br>Departure IATA: BRI<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e04f362880bbcb65d5adf309bc805192 = L.marker(
+                [48.997609, 2.655094],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_e04f362880bbcb65d5adf309bc805192.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 13:59:17.883426<br>Flight ICAO: AFR67ZA<br>Latitude: 48.997609<br>Longitude: 2.655094<br>Altitude: 792<br>Departure IATA: BRI<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_10e889bc25f2bb4c89c1fdbe29777fd8 = L.marker(
+                [48.998636, 2.671356],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_10e889bc25f2bb4c89c1fdbe29777fd8.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 14:01:40.490162<br>Flight ICAO: AFR29UB<br>Latitude: 48.998636<br>Longitude: 2.671356<br>Altitude: 1015<br>Departure IATA: FRA<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_59922857b93e398088ab2a0acf9bb875 = L.marker(
+                [48.998636, 2.671356],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_59922857b93e398088ab2a0acf9bb875.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 14:01:42.909900<br>Flight ICAO: AFR29UB<br>Latitude: 48.998636<br>Longitude: 2.671356<br>Altitude: 1015<br>Departure IATA: FRA<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_61fcae7af910b04dbc532fbb1d1d055f = L.marker(
+                [48.998636, 2.671356],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_61fcae7af910b04dbc532fbb1d1d055f.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 14:01:45.262341<br>Flight ICAO: AFR29UB<br>Latitude: 48.998636<br>Longitude: 2.671356<br>Altitude: 1015<br>Departure IATA: FRA<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d48e6c7d8bae4d51236accb7d0926b61 = L.marker(
+                [48.998636, 2.671356],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_d48e6c7d8bae4d51236accb7d0926b61.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 14:01:47.575768<br>Flight ICAO: AFR29UB<br>Latitude: 48.998636<br>Longitude: 2.671356<br>Altitude: 1015<br>Departure IATA: FRA<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4f70a9d5cf7182c948b9a004f1c4b5c5 = L.marker(
+                [48.998636, 2.671356],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_4f70a9d5cf7182c948b9a004f1c4b5c5.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 14:01:50.125984<br>Flight ICAO: AFR29UB<br>Latitude: 48.998636<br>Longitude: 2.671356<br>Altitude: 1015<br>Departure IATA: FRA<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2ff12a5ed92f4574bf125de8af7211f6 = L.marker(
+                [48.998636, 2.671356],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_2ff12a5ed92f4574bf125de8af7211f6.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 14:01:52.613878<br>Flight ICAO: AFR29UB<br>Latitude: 48.998636<br>Longitude: 2.671356<br>Altitude: 1015<br>Departure IATA: FRA<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_35aa2962241683dfeb020f08fcb50d96 = L.marker(
+                [48.998636, 2.671356],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_35aa2962241683dfeb020f08fcb50d96.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 14:01:55.083401<br>Flight ICAO: AFR29UB<br>Latitude: 48.998636<br>Longitude: 2.671356<br>Altitude: 1015<br>Departure IATA: FRA<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_619ff044084146aec386b009ec0bbe70 = L.marker(
+                [48.998636, 2.671356],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_619ff044084146aec386b009ec0bbe70.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 14:01:57.346516<br>Flight ICAO: AFR29UB<br>Latitude: 48.998636<br>Longitude: 2.671356<br>Altitude: 1015<br>Departure IATA: FRA<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5284355d6434d7d63257f2dffc9d3c73 = L.marker(
+                [48.998636, 2.671356],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_5284355d6434d7d63257f2dffc9d3c73.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 14:01:59.981724<br>Flight ICAO: AFR29UB<br>Latitude: 48.998636<br>Longitude: 2.671356<br>Altitude: 1015<br>Departure IATA: FRA<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9178a9a52345d95fd9072338662ec0d9 = L.marker(
+                [48.998139, 2.662926],
+                {}
+            ).addTo(map_8a0fd1a9af30a8f62ad598440a8b884c);
+        
+    
+            marker_9178a9a52345d95fd9072338662ec0d9.bindTooltip(
+                `<div>
+                     Timestamp: 2024-04-17 14:02:02.668112<br>Flight ICAO: AFR29UB<br>Latitude: 48.998139<br>Longitude: 2.662926<br>Altitude: 917<br>Departure IATA: FRA<br>Arrival IATA: CDG<br>
+                 </div>`,
+                {"sticky": true}
+            );
+        
+</script>
+</html>

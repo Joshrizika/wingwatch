@@ -74,7 +74,7 @@ def getSpots(iataCode):
     if 'editorialSummary' not in df.columns: #if the editorialSummary column does not exist
         df['editorialSummary'] = None #add it and fill it with None values
     
-    df.to_csv(f'data/spotData/data/spots_{iataCode}.csv', index=False) #save data to .csv file
+    df.to_csv(f'data/spotData/data/spots_{iataCode}.csv', index=False) #save data to .csv file if df is not empty
 
     return spots
 
@@ -92,9 +92,9 @@ def getSpotsThreading(iataCodes): #DISABLE ALL FOLIUM AND MATPLOTLIB PLOTS WHEN 
         thread.join() #make sure that the main program waits until thread is finished
 
 if __name__ == '__main__':
-    # iataCodes = ['DEN', 'IAH', 'MCO', 'LAS', 'MIA', 'CLT', 'SEA', 'PHX', 'FLL', 'MSP', 'DTW']
-    # getSpotsThreading(iataCodes)
-    iataCode = 'DEN'
+    # iataCodes = ['IST' 'LHR']
+    # # getSpotsThreading(iataCodes)
+    iataCode = 'IST'
     getSpots(iataCode)
 
    

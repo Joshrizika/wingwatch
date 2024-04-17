@@ -28,7 +28,7 @@ def displayData(iataCode):
 
 
 if __name__ == "__main__":
-    iataCodes = ['SFO', 'DEN', 'IAH', 'MCO', 'LAS', 'MIA', 'CLT', 'SEA', 'PHX', 'FLL', 'MSP', 'DTW']
+    iataCodes = ['IST', 'CDG', 'AMS']
     for iataCode in iataCodes:
         displayData(iataCode)
 

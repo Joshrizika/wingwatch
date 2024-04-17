@@ -112,7 +112,7 @@ def createClusters(iataCode):
         else: #if they are noise
             print(f"Noise: {size} points") #print out the noise and its corresponding size
 
-    # visualizeClusters(flight_data) #visualize the clusters
+    visualizeClusters(flight_data) #visualize the clusters
 
     return (flight_data, cluster_sizes)
 
@@ -168,13 +168,13 @@ def getPaths(iataCode):
         X_curve = np.linspace(min(X_filtered), max(X_filtered), 100) #generate x values along curve for plotting
         y_curve = poly(X_curve) #generate corresponding y values
 
-        # plt.scatter(X, y, c=z, s=50, label='Data Points') #create a scatter plot with all the data
-        # plt.plot(X_curve, y_curve, color='red', label='Polynomial Regression')
-        # plt.title(f'Cluster: {cluster_df.iloc[0]["cluster"]}')
-        # plt.xlabel('Longitude') #label longitude
-        # plt.ylabel('Latitude') #label latitude
-        # plt.legend() #create a legend
-        # plt.show() #show the plot
+        plt.scatter(X, y, c=z, s=50, label='Data Points') #create a scatter plot with all the data
+        plt.plot(X_curve, y_curve, color='red', label='Polynomial Regression')
+        plt.title(f'Cluster: {cluster_df.iloc[0]["cluster"]}')
+        plt.xlabel('Longitude') #label longitude
+        plt.ylabel('Latitude') #label latitude
+        plt.legend() #create a legend
+        plt.show() #show the plot
 
         # Print the polynomial regression equation
         equation = f'Latitude = {coefficients[-1]:.2f} '  # Intercept term
