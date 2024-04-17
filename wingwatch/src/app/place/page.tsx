@@ -648,7 +648,9 @@ function PlaceContent() {
               </div>
             ))
           ) : (
-            <p>No reviews yet.</p>
+            <div className="mb-4 ml-5">
+              <p>No reviews yet.</p>
+            </div>
           )}
           {/* Modal display logic */}
           {isReviewModalOpen && (
