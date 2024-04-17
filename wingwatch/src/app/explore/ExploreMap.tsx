@@ -449,6 +449,9 @@ const MapComponent: React.FC<MapComponentProps> = ({
         className="h-full rounded-lg border"
         style={{ minHeight: "80vh" }}
       ></div>
+      <div className="text-right text-gray-500 text-sm">
+        <p>*Click on an airport or path to filter results</p>
+      </div>
 
       {(selectedPath ?? selectedAirport) && (
         <div className="absolute bottom-0 left-0 z-10 m-2 max-w-xs rounded bg-white p-4 shadow-lg">
