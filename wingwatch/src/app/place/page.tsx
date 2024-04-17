@@ -528,7 +528,7 @@ function PlaceContent() {
         )}
 
         {/* Image Display */}
-        <div className="ml-1 mr-1 mt-4">
+        <div className="ml-2 mr-2 mt-4">
           <ImageDisplay images={images ?? null} imagesLoading={imagesLoading} />
         </div>
 
@@ -549,7 +549,7 @@ function PlaceContent() {
             reviews.map((review) => (
               <div
                 key={review.id}
-                className="relative mb-4 ml-1 mr-1 flex rounded-lg border p-4 shadow-lg"
+                className="relative mb-4 ml-2 mr-2 flex rounded-lg border p-4 shadow-lg"
               >
                 {/* Review Content */}
                 <div className="mr-8 flex-grow" style={{ maxWidth: "50%" }}>
