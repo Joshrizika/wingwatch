@@ -27,7 +27,7 @@ export default function MyPlaces() {
       },
     );
   };
-  
+
   const { data: contributedPlaces, isLoading: contributedLoading } =
     api.main.findContributedPlaces.useQuery(
       { userId: userId! },
@@ -45,7 +45,7 @@ export default function MyPlaces() {
   return (
     <>
       <Navbar />
-      {(!savedPlaces?.savedPlaces.length && !contributedPlaces?.length) ? (
+      {!savedPlaces?.savedPlaces.length && !contributedPlaces?.length ? (
         <div className="mt-5 w-full text-center">
           <h2>No saved places</h2>
         </div>
@@ -68,15 +68,21 @@ export default function MyPlaces() {
                     >
                       <div>
                         <h3 className="font-semibold">{place.name}</h3>
-                        {place.description && <p>Description: {place.description}</p>}
+                        {place.description && (
+                          <p>Description: {place.description}</p>
+                        )}
                         <p>Address: {place.address}</p>
                         {place.airport && (
-                          <p>Airport: {place.airportDetails?.name}</p>
+                          <p>
+                            Airport: {place.airportDetails?.name} (
+                            {place.airportDetails?.iata_code})
+                          </p>
                         )}
                         {place.distance_from_flightpath && (
                           <p>
                             Distance from Flight Path:{" "}
-                            {Math.round(place.distance_from_flightpath * 100) / 100}{" "}
+                            {Math.round(place.distance_from_flightpath * 100) /
+                              100}{" "}
                             {Math.round(place.distance_from_flightpath * 100) /
                               100 ===
                             1
@@ -87,7 +93,9 @@ export default function MyPlaces() {
                         <p>
                           Average Altitude: {place.altitude_estimated && "~"}
                           {Math.round(place.average_altitude)}{" "}
-                          {Math.round(place.average_altitude) === 1 ? "foot" : "feet"}
+                          {Math.round(place.average_altitude) === 1
+                            ? "foot"
+                            : "feet"}
                         </p>
                         <Link href={`/place/?id=${place.place_id}`}>
                           <span className="text-blue-500 hover:text-blue-700">
@@ -124,15 +132,21 @@ export default function MyPlaces() {
                     >
                       <div>
                         <h3 className="font-semibold">{place.name}</h3>
-                        {place.description && <p>Description: {place.description}</p>}
+                        {place.description && (
+                          <p>Description: {place.description}</p>
+                        )}
                         <p>Address: {place.address}</p>
                         {place.airport && (
-                          <p>Airport: {place.airportDetails?.name}</p>
+                          <p>
+                            Airport: {place.airportDetails?.name} (
+                            {place.airportDetails?.iata_code})
+                          </p>
                         )}
                         {place.distance_from_flightpath && (
                           <p>
                             Distance from Flight Path:{" "}
-                            {Math.round(place.distance_from_flightpath * 100) / 100}{" "}
+                            {Math.round(place.distance_from_flightpath * 100) /
+                              100}{" "}
                             {Math.round(place.distance_from_flightpath * 100) /
                               100 ===
                             1
@@ -143,7 +157,9 @@ export default function MyPlaces() {
                         <p>
                           Average Altitude: {place.altitude_estimated && "~"}
                           {Math.round(place.average_altitude)}{" "}
-                          {Math.round(place.average_altitude) === 1 ? "foot" : "feet"}
+                          {Math.round(place.average_altitude) === 1
+                            ? "foot"
+                            : "feet"}
                         </p>
                         <Link href={`/place/?id=${place.place_id}`}>
                           <span className="text-blue-500 hover:text-blue-700">

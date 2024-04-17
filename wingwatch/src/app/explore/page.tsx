@@ -359,7 +359,10 @@ function ExploreContent() {
                       )}
                       <p>Address: {place.address}</p>
                       {place.airport && (
-                        <p>Airport: {place.airportDetails?.name}</p>
+                        <p>
+                          Airport: {place.airportDetails?.name} (
+                          {place.airportDetails?.iata_code})
+                        </p>
                       )}
                       {place.distance_from_flightpath && (
                         <p>

@@ -465,7 +465,8 @@ function PlaceContent() {
             </div>
             <p className="mt-2">Located at: {placeQuery.data?.address}</p>
             <p className="mt-2">
-              Airport: {placeQuery.data?.airportDetails?.name}
+              Airport: {placeQuery.data?.airportDetails?.name} (
+              {placeQuery.data?.airportDetails?.iata_code})
             </p>
             {placeQuery.data?.distance_from_flightpath && (
               <p className="mt-2">

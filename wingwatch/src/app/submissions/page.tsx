@@ -241,7 +241,12 @@ export default function Submissions() {
                 <h3 className="font-semibold">{place.name}</h3>
                 {place.description && <p>Description: {place.description}</p>}
                 <p>Address: {place.address}</p>
-                {place.airport && <p>Airport: {place.airportDetails?.name}</p>}
+                {place.airport && (
+                  <p>
+                    Airport: {place.airportDetails?.name} (
+                    {place.airportDetails?.iata_code})
+                  </p>
+                )}
                 {place.distance_from_flightpath && (
                   <p>
                     Distance from Flight Path:{" "}
