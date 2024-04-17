@@ -436,22 +436,20 @@ function PlaceContent() {
   };
 
   //Loading
-  if(session){
+  if (session) {
     if (placeQuery.isLoading || isPlaceSavedQuery.isLoading) {
       console.log("Loading");
       console.log("placeQuery.isLoading", placeQuery.isLoading);
       console.log("isPlaceSavedQuery", isPlaceSavedQuery);
       return <Loading />;
     }
-  }
-  else{
+  } else {
     if (placeQuery.isLoading) {
       console.log("Loading");
       console.log("placeQuery.isLoading", placeQuery.isLoading);
       return <Loading />;
     }
   }
-  
 
   return (
     <>
@@ -518,7 +516,7 @@ function PlaceContent() {
 
         {/* Save/Unsave Button */}
         {session && (
-          <div className="mb-2 flex justify-start">
+          <div className="mb-2 ml-5 flex justify-start">
             <button
               className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
               onClick={isPlaceSaved ? handleUnsavePlace : handleSavePlace}
@@ -529,14 +527,14 @@ function PlaceContent() {
         )}
 
         {/* Image Display */}
-        <div className="mt-4">
+        <div className="ml-1 mr-1 mt-4">
           <ImageDisplay images={images ?? null} imagesLoading={imagesLoading} />
         </div>
 
         {/* Review Section */}
         <div className="mt-10 w-full">
           {session && (
-            <div className="mb-4 flex justify-start">
+            <div className="mb-4 ml-5 flex justify-start">
               <button
                 className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
                 onClick={toggleReviewModal}
@@ -545,12 +543,12 @@ function PlaceContent() {
               </button>
             </div>
           )}
-          <h2 className="mb-4 text-2xl font-bold">Reviews</h2>
+          <h2 className="mb-4 ml-5 text-2xl font-bold">Reviews</h2>
           {reviews && reviews.length > 0 ? (
             reviews.map((review) => (
               <div
                 key={review.id}
-                className="relative mb-4 mr-4 flex rounded-lg border p-4 shadow-lg"
+                className="relative mb-4 ml-1 mr-1 flex rounded-lg border p-4 shadow-lg"
               >
                 {/* Review Content */}
                 <div className="mr-8 flex-grow" style={{ maxWidth: "50%" }}>
@@ -622,7 +620,7 @@ function PlaceContent() {
                   </div>
                 </div>
                 {/* Edit/Delete Review Button */}
-                <div className="absolute right-0 top-0 mr-6 flex h-full items-center justify-end">
+                <div className="absolute right-0 top-0 mr-2 flex h-full items-center justify-end">
                   {session?.user?.id === review.user?.id && (
                     <div className="flex flex-col">
                       <button
