@@ -234,10 +234,7 @@ function ExploreContent() {
     <>
       <Navbar />
       <div className="mt-5 flex flex-col gap-4 px-4 md:flex-row">
-        <div
-          className="w-full md:w-1/3 xl:w-1/3"
-          style={{ maxHeight: "80vh", minHeight: "80vh", minWidth: "490px" }}
-        >
+        <div className="w-full md:w-1/3 xl:w-1/3" style={{ minWidth: "490px" }}>
           {/* Non-scrollable Header and Slider Bar */}
           <div className="mb-4 flex flex-row items-start gap-4">
             <div className="flex flex-col">
