@@ -52,9 +52,10 @@ def insertSpots(iataCode):
         df['rank'] = df.groupby(['latitude', 'longitude', 'displayName'])['averageAltitude'].rank(method='first', ascending=True)
         df_filtered = df[df['rank'] == 1].drop('rank', axis=1)
 
-        # Prepare the data tuples, respecting the new column names.
+        # Prepare the data tuples, respecting the new column names and ensuring null values for NaN in description fields.
         columns = ['formattedAddress', 'googleMapsUri', 'airport', 'distanceFromFlightpath', 'averageAltitude', 
                    'distanceFromAirport', 'path_id', 'latitude', 'longitude', 'displayName', 'editorialSummary']
+        df_filtered['editorialSummary'] = df_filtered['editorialSummary'].replace('NaN', None)  # Replace 'NaN' with None in editorialSummary
         data_tuples = [(cuid_generator(),) + tuple(x) for x in df_filtered[columns].to_numpy()]
         
         insert_query = "INSERT INTO places (place_id, address, google_maps_uri, airport, distance_from_flightpath, average_altitude, " \
@@ -74,6 +75,6 @@ def insertSpots(iataCode):
         connection.close()
 
 if __name__ == '__main__':
-    iataCodes = ['IST', 'CDG', 'AMS', 'LHR']
+    iataCodes = ['BOG', 'GRU', 'LIM']
     for iataCode in iataCodes:
         insertSpots(iataCode)
