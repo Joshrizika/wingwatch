@@ -49667,7 +49667,7 @@ const airportData = [{
   "iso_region": "US-NV",
   "local_code": "LAS",
   "municipality": "Las Vegas",
-  "name": "McCarran International Airport",
+  "name": "Harry Reid International Airport",
   "type": "large_airport"
 },
 {
