@@ -517,7 +517,7 @@ function PlaceContent() {
 
         {/* Save/Unsave Button */}
         {session && (
-          <div className="mb-2 ml-5 flex justify-start">
+          <div className="mb-2 ml-4 flex justify-start">
             <button
               className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
               onClick={isPlaceSaved ? handleUnsavePlace : handleSavePlace}
@@ -528,14 +528,14 @@ function PlaceContent() {
         )}
 
         {/* Image Display */}
-        <div className="ml-2 mr-2 mt-4">
+        <div className="ml-1 mr-1 mt-4">
           <ImageDisplay images={images ?? null} imagesLoading={imagesLoading} />
         </div>
 
         {/* Review Section */}
         <div className="mt-10 w-full">
           {session && (
-            <div className="mb-4 ml-5 flex justify-start">
+            <div className="mb-4 ml-4 flex justify-start">
               <button
                 className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
                 onClick={toggleReviewModal}
@@ -544,12 +544,12 @@ function PlaceContent() {
               </button>
             </div>
           )}
-          <h2 className="mb-4 ml-5 text-2xl font-bold">Reviews</h2>
+          <h2 className="mb-4 ml-4 text-2xl font-bold">Reviews</h2>
           {reviews && reviews.length > 0 ? (
             reviews.map((review) => (
               <div
                 key={review.id}
-                className="relative mb-4 ml-2 mr-2 flex rounded-lg border p-4 shadow-lg"
+                className="relative mb-4 ml-1 mr-1 flex rounded-lg border p-4 shadow-lg"
               >
                 {/* Review Content */}
                 <div className="mr-8 flex-grow" style={{ maxWidth: "50%" }}>
@@ -566,7 +566,9 @@ function PlaceContent() {
                       </div>
                       <div className="mt-2 flex items-center text-sm text-gray-500">
                         <Image
-                          src={review.user?.image ?? "/path/to/default/image"}
+                          src={
+                            review.user?.image ?? "/DefaultProfilePicture.png"
+                          }
                           alt={review.user?.name ?? "User Image"}
                           width={24}
                           height={24}
@@ -648,7 +650,7 @@ function PlaceContent() {
               </div>
             ))
           ) : (
-            <div className="mb-4 ml-5">
+            <div className="mb-4 ml-4">
               <p>No reviews yet.</p>
             </div>
           )}
