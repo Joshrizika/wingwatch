@@ -276,7 +276,7 @@ function PlaceContent() {
             {
               displayName: image.review.user?.name ?? "Unknown",
               uri: "",
-              photoUri: image.review.user?.image ?? "",
+              photoUri: image.review.user?.image ?? "/DefaultProfilePicture.png",
             },
           ],
           heightPx: image.height, // Fill in with appropriate value
