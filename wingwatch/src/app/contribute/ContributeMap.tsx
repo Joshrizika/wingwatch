@@ -77,6 +77,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
           lng: longitude,
         },
         zoom: 12,
+        minZoom: 2,
       };
       loader
         .importLibrary("maps")

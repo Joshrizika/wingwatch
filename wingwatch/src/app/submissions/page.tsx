@@ -152,6 +152,7 @@ export default function Submissions() {
           lng: longitude,
         },
         zoom: 12,
+        minZoom: 2,
       };
       loader
         .importLibrary("maps")

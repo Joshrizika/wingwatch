@@ -103,6 +103,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
           lng: longitude,
         },
         zoom: 12,
+        minZoom: 2,
       };
       loader
         .importLibrary("maps")
@@ -449,7 +450,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
         className="h-full rounded-lg border"
         style={{ minHeight: "80vh" }}
       ></div>
-      <div className="text-right text-gray-500 text-sm">
+      <div className="text-right text-sm text-gray-500">
         <p>*Click on an airport or path to filter results</p>
       </div>
 
