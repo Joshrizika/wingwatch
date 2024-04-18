@@ -411,7 +411,9 @@ function ExploreContent() {
                   </div>
                 )
               ) : (
-                <div className="text-center">Finding your location...</div>
+                <div style={{ marginTop: "-150px" }}>
+                  <Loading text="Finding your location..." />
+                </div>
               )}
             </div>
           )}
