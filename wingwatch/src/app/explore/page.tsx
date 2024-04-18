@@ -347,7 +347,7 @@ function ExploreContent() {
                         <h3 className="font-semibold">{place.name}</h3>
                         {place.isUserSubmitted && (
                           <span className="ml-2 rounded bg-yellow-200 px-2 py-1 text-yellow-500">
-                            User Recommended
+                            User Submitted
                           </span>
                         )}
                       </div>
