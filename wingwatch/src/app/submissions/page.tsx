@@ -392,9 +392,10 @@ export default function Submissions() {
                       }
                       style={{
                         border: "1px solid #ddd",
-                        height: "100px",
+                        height: "128px",
                         width: "100%",
                         minWidth: "400px",
+                        resize: "none",
                       }}
                     />
                     <p>Coordinates:</p>

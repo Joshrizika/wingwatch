@@ -471,6 +471,8 @@ export default function Contribute() {
                   borderRadius: "5px",
                   padding: "5px",
                   marginTop: "5px",
+                  resize: "none",
+                  height: "150px",
                 }}
               />
             </label>
