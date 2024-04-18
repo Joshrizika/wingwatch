@@ -92,9 +92,9 @@ def getSpotsThreading(iataCodes): #DISABLE ALL FOLIUM AND MATPLOTLIB PLOTS WHEN 
         thread.join() #make sure that the main program waits until thread is finished
 
 if __name__ == '__main__':
-    iataCodes = ['BOG', 'GRU', 'LIM']
-    getSpotsThreading(iataCodes)
-    # iataCode = 'IST'
-    # getSpots(iataCode)
+    # iataCodes = ['HND', 'SIN', 'HKG', "DEL"]
+    # getSpotsThreading(iataCodes)
+    iataCode = 'DEL'
+    getSpots(iataCode)
 
    
