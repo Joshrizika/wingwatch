@@ -55,7 +55,7 @@ def insertSpots(iataCode):
         # Prepare the data tuples, respecting the new column names and ensuring null values for NaN in description fields.
         columns = ['formattedAddress', 'googleMapsUri', 'airport', 'distanceFromFlightpath', 'averageAltitude', 
                    'distanceFromAirport', 'path_id', 'latitude', 'longitude', 'displayName', 'editorialSummary']
-        df_filtered['editorialSummary'] = df_filtered['editorialSummary'].replace('NaN', None)  # Replace 'NaN' with None in editorialSummary
+        df_filtered['editorialSummary'] = df_filtered['editorialSummary'].replace('NaN', "")  # Replace "" with None in editorialSummary
         data_tuples = [(cuid_generator(),) + tuple(x) for x in df_filtered[columns].to_numpy()]
         
         insert_query = "INSERT INTO places (place_id, address, google_maps_uri, airport, distance_from_flightpath, average_altitude, " \
@@ -75,6 +75,6 @@ def insertSpots(iataCode):
         connection.close()
 
 if __name__ == '__main__':
-    iataCodes = ['HND', 'SIN', 'HKG', "DEL"]
+    iataCodes = ['SLC']
     for iataCode in iataCodes:
         insertSpots(iataCode)
