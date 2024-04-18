@@ -170,6 +170,6 @@ def collectAirportData(iataCodes):
 
 if __name__ == "__main__":
     # iataCodes = ['SYD', 'MEL']
-    iataCodes = ['CAI']
-    collectAirportData(iataCodes)
-    # trackFlights('DEL')
+    # iataCodes = ['DXB', 'SLC']
+    # collectAirportData(iataCodes)
+    trackFlights('DXB')

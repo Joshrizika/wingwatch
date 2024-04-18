@@ -94,7 +94,7 @@ def getSpotsThreading(iataCodes): #DISABLE ALL FOLIUM AND MATPLOTLIB PLOTS WHEN 
 if __name__ == '__main__':
     # iataCodes = ['HND', 'SIN', 'HKG', "DEL"]
     # getSpotsThreading(iataCodes)
-    iataCode = 'DEL'
+    iataCode = 'DXB'
     getSpots(iataCode)
 
    
