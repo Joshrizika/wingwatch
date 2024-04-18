@@ -326,13 +326,25 @@ const MapComponent: React.FC<MapComponentProps> = ({
 
           if (!markersListenersRef.current.has(place.place_id)) {
             const infowindow = new google.maps.InfoWindow({
-              content: `<div><h1><strong>${place.name}</strong></h1>
-                                  <p>${place.address}</p>
-                                  <p>Airport: ${place.airportDetails?.name} (${place.airportDetails?.iata_code})</p>
-                                  ${place.distance_from_flightpath !== null ? `<p>Distance From Flightpath: ${(Math.round(place.distance_from_flightpath * 100) / 100).toFixed(2)} ${Math.round(place.distance_from_flightpath * 100) / 100 === 1 ? "mile" : "miles"}</p>` : ""}
-                                  <p>Average Altitude: ${Math.round(place.average_altitude)} ${Math.round(place.average_altitude) === 1 ? "foot" : "feet"}</p>
-                                  ${place.distance_from_airport !== null ? `<p>Distance From Airport: ${(Math.round(place.distance_from_airport * 100) / 100).toFixed(2)} ${Math.round(place.distance_from_airport * 100) / 100 === 1 ? "mile" : "miles"}</p>` : ""}</div>
-                                  <p>*Click to view page</p>`,
+              content: `
+                <style>
+                  .no-select {
+                    user-select: none;
+                    -moz-user-select: none;
+                    -webkit-user-select: none;
+                    -ms-user-select: none;
+                  }
+                </style>
+                <div class="no-select">
+                  <h1><strong>${place.name}</strong></h1>
+                  <p>${place.address}</p>
+                  <p>Airport: ${place.airportDetails?.name} (${place.airportDetails?.iata_code})</p>
+                  ${place.distance_from_flightpath !== null ? `<p>Distance From Flightpath: ${(Math.round(place.distance_from_flightpath * 100) / 100).toFixed(2)} ${Math.round(place.distance_from_flightpath * 100) / 100 === 1 ? "mile" : "miles"}</p>` : ""}
+                  <p>Average Altitude: ${Math.round(place.average_altitude)} ${Math.round(place.average_altitude) === 1 ? "foot" : "feet"}</p>
+                  ${place.distance_from_airport !== null ? `<p>Distance From Airport: ${(Math.round(place.distance_from_airport * 100) / 100).toFixed(2)} ${Math.round(place.distance_from_airport * 100) / 100 === 1 ? "mile" : "miles"}</p>` : ""}
+                  <p>*Click to view page</p>
+                </div>
+              `,
             });
 
             marker.addListener("mouseover", () => {
@@ -423,10 +435,22 @@ const MapComponent: React.FC<MapComponentProps> = ({
 
         // Info window for each airport
         const infowindow = new google.maps.InfoWindow({
-          content: `<div><h1><strong>${airport.name}</strong></h1>
-                                      <p>IATA Code: ${airport.iata_code}</p>
-                                      ${airport.elevation ? `<p>Elevation: ${airport.elevation}</p>` : ""}</div>
-                                      <p>*Click to filter results</p>`,
+          content: `
+        <style>
+          .no-select {
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+          }
+        </style>
+        <div class="no-select">
+          <h1><strong>${airport.name}</strong></h1>
+          <p>IATA Code: ${airport.iata_code}</p>
+          ${airport.elevation ? `<p>Elevation: ${airport.elevation}</p>` : ""}
+          <p>*Click to filter results</p>
+        </div>
+      `,
         });
 
         marker.addListener("mouseover", () => {
