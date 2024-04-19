@@ -461,7 +461,7 @@ function PlaceContent() {
             <div className="text-center">
               <h1 className="text-xl font-bold">{placeQuery.data?.name}</h1>
               {placeQuery.data?.description && (
-                <p className="mt-2">{placeQuery.data?.description}</p>
+                <p className="mt-2"><em>{placeQuery.data?.description}</em></p>
               )}
             </div>
             <p className="mt-2">Located at: {placeQuery.data?.address}</p>

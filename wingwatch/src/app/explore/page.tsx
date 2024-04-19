@@ -352,7 +352,9 @@ function ExploreContent() {
                         )}
                       </div>
                       {place.description && (
-                        <p>Description: {place.description}</p>
+                        <p>
+                          <em>{place.description}</em>
+                        </p>
                       )}
                       <p>Address: {place.address}</p>
                       {place.airport && (
