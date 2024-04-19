@@ -66,7 +66,7 @@ export default function Home() {
             onClick={() => router.push("/contribute")}
             className="w-[30vw] transform cursor-pointer rounded-2xl bg-white p-6 shadow-xl transition-transform duration-300 ease-in-out hover:scale-105"
           >
-            <h2 className="text-center text-2xl font-bold">Submit a Place</h2>
+            <h2 className="text-center text-2xl font-bold">Add a Place</h2>
             <p className="text-center text-lg">
               Don&apos;t see your favorite spot? Submit it to be added to our
               database.

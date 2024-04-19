@@ -68,7 +68,7 @@ export default function Navbar({ trans = false }: { trans?: boolean }) {
           {session && (
             <Link href="/contribute" passHref>
               <span className="text-gray-800 transition duration-300 ease-in-out hover:text-blue-500">
-                Submit a Place
+                Add a Place
               </span>
             </Link>
           )}
