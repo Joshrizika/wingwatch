@@ -453,7 +453,6 @@ export const mainRouter = createTRPCRouter({
       z.object({
         id: z.string(),
         name: z.string(),
-        email: z.string(),
       }),
     )
     .mutation(async ({ input }) => {
@@ -461,7 +460,6 @@ export const mainRouter = createTRPCRouter({
         where: { id: input.id },
         data: {
           name: input.name,
-          email: input.email,
         },
       });
     }),
