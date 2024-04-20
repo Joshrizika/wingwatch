@@ -559,7 +559,7 @@ export default function Contribute() {
             >
               &times;
             </button>
-            <h2>New Place Details</h2>
+            <h2><b>New Place Details</b></h2>
             {newPlace && (
               <>
                 <p>Name: {newPlace.name}</p>
