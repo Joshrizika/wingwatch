@@ -571,14 +571,18 @@ export default function Contribute() {
                 <p>Google Maps URI: {newPlace.googleMapsUri}</p>
                 <p>IATA Code: {newPlace.iataCode}</p>
                 <p>
-                  Distance from Flightpath: {newPlace.distanceFromFlightpath}
+                  Distance from Flight Path:{" "}
+                  {newPlace.distanceFromFlightpath
+                    ? `${Math.round(newPlace.distanceFromFlightpath * 100) / 100} ${Math.round(newPlace.distanceFromFlightpath * 100) / 100 === 1 ? "mile" : "miles"}`
+                    : ""}
                 </p>
                 <label>
-                  Average Altitude:
+                  Average Altitude:{" "}
                   <input
                     type="number"
                     min="0"
-                    value={averageAltitude ?? ""}
+                    style={{ width: "80px" }} // Adjusted width
+                    value={averageAltitude ? Math.round(averageAltitude) : ""}
                     placeholder="Estimate the altitude"
                     onChange={(e) => {
                       setAverageAltitude(
@@ -587,11 +591,17 @@ export default function Contribute() {
                       setAltitudeError("");
                     }}
                   />
+                  {averageAltitude === 1 ? " foot" : " feet"}
                 </label>
                 {altitudeError && (
                   <div style={{ color: "red" }}>{altitudeError}</div>
                 )}
-                <p>Distance from Airport: {newPlace.distanceFromAirport}</p>
+                <p>
+                  Distance from Airport:{" "}
+                  {newPlace.distanceFromAirport
+                    ? `${newPlace.distanceFromAirport.toFixed(2)} ${newPlace.distanceFromAirport.toFixed(2) === "1.00" ? "mile" : "miles"}`
+                    : ""}
+                </p>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <button
                     onClick={addNewPlace}
