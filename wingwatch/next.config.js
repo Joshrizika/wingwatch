@@ -8,6 +8,7 @@ await import("./src/env.js");
 const config = {
     images: {
         domains: ['lh3.googleusercontent.com', 'avatars.githubusercontent.com', 'maps.googleapis.com', 'places.googleapis.com', 'wingwatch.nyc3.cdn.digitaloceanspaces.com'],
+        unoptimized: true,
       },
 };
 
