@@ -80,23 +80,33 @@ export default function Place() {
   const documents: Document[] = [
     {
       name: "Elevator Pitch",
-      path: "/writings/Wing Watch Elevator Pitch.pdf",
-      thumbnail: "/writings/thumbnails/Writing 1 Thumbnail.png",
+      path: "/documents/Wing Watch Elevator Pitch.pdf",
+      thumbnail: "/documents/thumbnails/Writing 1 Thumbnail.png",
     },
     {
       name: "Project Design",
-      path: "/writings/Wing Watch Essay 2.pdf",
-      thumbnail: "/writings/thumbnails/Writing 2 Thumbnail.png",
+      path: "/documents/Wing Watch Essay 2.pdf",
+      thumbnail: "/documents/thumbnails/Writing 2 Thumbnail.png",
     },
     {
       name: "Project Description",
-      path: "/writings/Team Josh Project Description.pdf",
-      thumbnail: "/writings/thumbnails/Writing 3 Thumbnail.png",
+      path: "/documents/Team Josh Project Description.pdf",
+      thumbnail: "/documents/thumbnails/Writing 3 Thumbnail.png",
     },
     {
       name: "Final Design Document",
-      path: "/writings/Team Josh Writing 4.pdf",
-      thumbnail: "/writings/thumbnails/Writing 4 Thumbnail.png",
+      path: "/documents/Team Josh Writing 4.pdf",
+      thumbnail: "/documents/thumbnails/Writing 4 Thumbnail.png",
+    },
+    {
+      name: "Wing Watch Final Presentation",
+      path: "/documents/Final Presentation.pdf",
+      thumbnail: "/documents/thumbnails/Final Presentation Thumbnail.png",
+    },
+    {
+      name: "Wing Watch R&D Showcase Poster",
+      path: "/documents/Showcase Poster.pdf",
+      thumbnail: "/documents/thumbnails/Showcase Poster Thumbnail.png",
     },
   ];
 
@@ -224,7 +234,7 @@ export default function Place() {
         <section className="mb-8 text-center">
           <h2 className="mb-4 text-2xl font-bold">Documents</h2>
           <div className="flex justify-center gap-4">
-            {documents.map((doc, index) => (
+            {documents.slice(0, 4).map((doc, index) => (
               <div
                 key={index}
                 className="relative h-80 w-60 cursor-pointer overflow-hidden rounded-lg shadow-lg transition-shadow duration-300 ease-in-out hover:shadow-xl"
@@ -235,6 +245,28 @@ export default function Place() {
                   alt={`Preview of ${doc.name}`}
                   layout="fill"
                   objectFit="cover"
+                  className="transition-opacity duration-300 ease-in-out hover:opacity-75"
+                />
+                <p className="absolute bottom-0 mt-2 w-full bg-white bg-opacity-75 p-1 text-sm">
+                  {doc.name}
+                </p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 flex justify-center gap-4">
+            {documents.slice(4).map((doc, index) => (
+              <div
+                key={index}
+                className="relative h-auto w-60 cursor-pointer rounded-lg shadow-lg transition-shadow duration-300 ease-in-out hover:shadow-xl"
+                onClick={() => handleDocumentClick(doc.path)}
+              >
+                <Image
+                  src={doc.thumbnail}
+                  alt={`Preview of ${doc.name}`}
+                  layout="responsive"
+                  width={240}
+                  height={320}
+                  objectFit="contain"
                   className="transition-opacity duration-300 ease-in-out hover:opacity-75"
                 />
                 <p className="absolute bottom-0 mt-2 w-full bg-white bg-opacity-75 p-1 text-sm">
