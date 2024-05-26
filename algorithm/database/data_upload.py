@@ -75,6 +75,6 @@ def insertSpots(iataCode):
         connection.close()
 
 if __name__ == '__main__':
-    iataCodes = ['MEL']
+    iataCodes = ['SAN']
     for iataCode in iataCodes:
         insertSpots(iataCode)
