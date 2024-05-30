@@ -56,7 +56,8 @@ def calculateCoordinatesWithinDimensions(iataCode, boxDimensions):
     latitudeNorth = latitude + (angularDistance * (180 / math.pi)) #get the northern latitude
     latitudeSouth = latitude - (angularDistance * (180 / math.pi)) #get the southern latitude
     longitudeWest = longitude - (angularDistance * (180 / math.pi) / math.cos(latitudeRadians)) #get the western longitude
-    longitudeEast = longitude + (angularDistance * (180 / math.pi) / math.cos(latitudeRadians)) #get the eastern longitude
+    # longitudeEast = longitude + (angularDistance * (180 / math.pi) / math.cos(latitudeRadians)) #get the eastern longitude
+    longitudeEast = longitude
 
     return (latitudeNorth, longitudeEast, latitudeSouth, longitudeWest) #reurn the bounds going clockwise starting at north
 
@@ -125,7 +126,7 @@ def trackFlights(iataCode):
     log_file_name = f"data/flightData/data/flight_log_{iataCode}.csv" #create a new file name
     file_exists = os.path.isfile(log_file_name) #check if file exists already
 
-    max_line_count = 5000 #set maximum line count
+    max_line_count = 7000 #set maximum line count
     
     if not file_exists: #if the file does not exist then create it
         try:
@@ -149,7 +150,7 @@ def trackFlights(iataCode):
             include_headers = False
 
         file_exists = False
-        # time.sleep(10) #wait 10 seconds then repeat
+        time.sleep(2) #wait 2 seconds then repeat
 
     destination_dir = '../wingwatch/src/server/api/opt/flightDataStore' #set the destination directory
     shutil.copy(log_file_name, destination_dir) #copy the file to the destination directory
