@@ -219,7 +219,20 @@ export default function Submissions() {
   }
 
   if (!session?.user?.isAdmin) {
-    return <div>Invalid Access</div>;
+    return (
+      <>
+        <Navbar />
+        <div
+          className="flex h-screen flex-col items-center justify-center"
+          style={{ marginTop: "-150px" }}
+        >
+          <h1 className="text-center text-xl font-bold">
+            Invalid Access.<br /> Please log in as an admin to view this page.
+          </h1>
+          
+        </div>
+      </>
+    );
   }
 
   return (
