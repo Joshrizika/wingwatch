@@ -60,6 +60,25 @@ export default function Account() {
     return <Loading />;
   }
 
+  if (!session) {
+    return (
+      <>
+        <Navbar />
+        <div className="flex h-screen flex-col items-center justify-center" style={{ marginTop: "-150px" }}>
+          <h1 className="text-center text-xl font-bold">
+            To view account settings please log in
+          </h1>
+          <button
+            onClick={() => (window.location.href = "/api/auth/signin")}
+            className="mt-5 cursor-pointer px-5 py-2 text-lg bg-blue-500 text-white rounded-md"
+          >
+            Log In
+          </button>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <div>
