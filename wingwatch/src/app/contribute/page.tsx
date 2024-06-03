@@ -390,6 +390,25 @@ export default function Contribute() {
     return <Loading />;
   }
 
+  if (!session) {
+    return (
+      <>
+        <Navbar />
+        <div className="flex h-screen flex-col items-center justify-center" style={{ marginTop: "-150px" }}>
+          <h1 className="text-center text-xl font-bold">
+            To contribute places to our database please log in
+          </h1>
+          <button
+            onClick={() => (window.location.href = "/api/auth/signin")}
+            className="mt-5 cursor-pointer px-5 py-2 text-lg bg-blue-500 text-white rounded-md"
+          >
+            Log In
+          </button>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <Navbar />
@@ -559,7 +578,9 @@ export default function Contribute() {
             >
               &times;
             </button>
-            <h2><b>New Place Details</b></h2>
+            <h2>
+              <b>New Place Details</b>
+            </h2>
             {newPlace && (
               <>
                 <p>Name: {newPlace.name}</p>

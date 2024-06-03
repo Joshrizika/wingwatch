@@ -34,6 +34,28 @@ export default function MyPlaces() {
       { enabled: !!userId },
     );
 
+  if (!session) {
+    return (
+      <>
+        <Navbar />
+        <div
+          className="flex h-screen flex-col items-center justify-center"
+          style={{ marginTop: "-150px" }}
+        >
+          <h1 className="text-center text-xl font-bold">
+            To view saved and contributed places please log in
+          </h1>
+          <button
+            onClick={() => (window.location.href = "/api/auth/signin")}
+            className="mt-5 cursor-pointer rounded-md bg-blue-500 px-5 py-2 text-lg text-white"
+          >
+            Log In
+          </button>
+        </div>
+      </>
+    );
+  }
+
   if (savedLoading || contributedLoading) {
     return (
       <>
