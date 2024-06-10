@@ -251,16 +251,14 @@ export const mainRouter = createTRPCRouter({
         .filter((place) => place.distance <= input.radius) // Keep only places within the radius
         .filter(
           (place) =>
-            place.path &&
-            (!input.pathId || place.path.path_id === input.pathId),
-        ) // Filter by pathId if provided
+            !input.pathId || (place.path && place.path.path_id === input.pathId),
+        ) // Filter by pathId if provided, but include places without a path
         .filter(
           (place) =>
             place.airportDetails &&
             (!input.iata_code ||
               place.airportDetails.iata_code === input.iata_code),
         ); // Filter by iata_code if provided and ensure place has airport details
-
       // Sort the places based on the sort parameter
       if (input.sort === "closest") {
         filteredAndSortedPlaces = filteredAndSortedPlaces.sort(
