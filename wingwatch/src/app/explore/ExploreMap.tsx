@@ -334,6 +334,12 @@ const MapComponent: React.FC<MapComponentProps> = ({
                     -webkit-user-select: none;
                     -ms-user-select: none;
                   }
+                  .gm-style-iw {
+                    max-width: none !important;
+                  }
+                  .gm-style-iw .gm-ui-hover-effect {
+                    display: none !important;
+                  }
                 </style>
                 <div class="no-select">
                   <h1><strong>${place.name}</strong></h1>
@@ -346,6 +352,9 @@ const MapComponent: React.FC<MapComponentProps> = ({
                 </div>
               `,
             });
+
+            // const infowindow = new google.maps.InfoWindow({
+            // });
 
             marker.addListener("mouseover", () => {
               infowindow.open(mapRef.current, marker);
@@ -442,6 +451,12 @@ const MapComponent: React.FC<MapComponentProps> = ({
             -moz-user-select: none;
             -webkit-user-select: none;
             -ms-user-select: none;
+          }
+          .gm-style-iw {
+            max-width: none !important;
+          }
+          .gm-style-iw .gm-ui-hover-effect {
+            display: none !important;
           }
         </style>
         <div class="no-select">
