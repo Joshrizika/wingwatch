@@ -175,7 +175,7 @@ export const mainRouter = createTRPCRouter({
     .input(z.void()) // No input required for this procedure
     .query(async () => {
       // Find airports with verified places
-      const verifiedAirports = await db.airports.findMany({
+      const airportsWithPlaces = await db.airports.findMany({
         where: {
           places: {
             some: {
@@ -188,18 +188,22 @@ export const mainRouter = createTRPCRouter({
       // Fetch all paths in a separate query
       const paths = await db.paths.findMany();
 
-      // Get all airports to check against the paths
-      const allAirports = await db.airports.findMany();
+      // Extract the first 3 letters (IATA codes) from each path_id and ensure uniqueness
+      const uniqueIATACodes = Array.from(new Set(paths.map(path => path.path_id.slice(0, 3))));
 
-      // Filter airports based on path_id matching with iata_code
-      const airportsWithMatchingPaths = allAirports.filter((airport) =>
-        paths.some((path) => path.path_id.startsWith(airport.iata_code)),
-      );
+      // Fetch airports that match the unique IATA codes derived from paths
+      const airportsWithPaths = await db.airports.findMany({
+        where: {
+          iata_code: {
+            in: uniqueIATACodes,
+          },
+        },
+      });
 
       // Combine the two airport lists (verified and matching paths) while removing duplicates
       const combinedAirports = [
-        ...verifiedAirports,
-        ...airportsWithMatchingPaths,
+        ...airportsWithPlaces,
+        ...airportsWithPaths,
       ].filter(
         (value, index, self) =>
           self.findIndex((t) => t.airport_id === value.airport_id) === index,
