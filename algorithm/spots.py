@@ -199,7 +199,7 @@ def getParks(line):
 
     headers = { #set headers
         'Content-Type': 'application/json', #content type JSON
-        'X-Goog-Api-Key': 'AIzaSyAXt99dXCkF4UFgLWPckl6pKzfCwc792ts', #api key
+        'X-Goog-Api-Key': '', #enter api key
         'X-Goog-FieldMask': 'places.formattedAddress,places.location,places.googleMapsUri,places.displayName,places.editorialSummary' #expected fields
     }
 
