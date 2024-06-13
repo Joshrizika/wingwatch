@@ -46,11 +46,6 @@ export default function EditReviewPopup({
 
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
-  useEffect(() => {
-    console.log("removedImages", removedImages);
-    console.log("uploadedImages", uploadedImages);
-  }, [removedImages, uploadedImages]);
-
   const handleRatingSelect = (selectedRating: number) => {
     setNewRating(selectedRating);
   };

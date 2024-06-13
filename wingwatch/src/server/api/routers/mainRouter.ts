@@ -101,7 +101,6 @@ async function deleteImage(
       signatureVersion: "v4",
     });
     await s3.deleteObject(params).promise();
-    console.log("\n\n\n\n\nImage deleted with imageId:", imageId);
   } catch (error) {
     console.error(
       "Error deleting image with imageId:",
@@ -148,7 +147,6 @@ async function deleteReview(reviewId: string, placeId: string) {
       if (listedObjects.IsTruncated) await deleteReview(reviewId, placeId);
     }
 
-    console.log(`Review folder deleted for reviewId: ${reviewId}`);
   } catch (error) {
     console.error(
       "Error deleting review folder with reviewId:",

@@ -439,15 +439,11 @@ function PlaceContent() {
   //Loading
   if (session) {
     if (placeQuery.isLoading || isPlaceSavedQuery.isLoading) {
-      console.log("Loading");
-      console.log("placeQuery.isLoading", placeQuery.isLoading);
-      console.log("isPlaceSavedQuery", isPlaceSavedQuery);
       return <Loading />;
     }
   } else {
     if (placeQuery.isLoading) {
-      console.log("Loading");
-      console.log("placeQuery.isLoading", placeQuery.isLoading);
+
       return <Loading />;
     }
   }
