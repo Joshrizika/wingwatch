@@ -135,6 +135,10 @@ export default function SearchBar() {
                 onClick={() => handleSelect(place.place_id)}
               >
                 {place.name}
+                <br />
+                {place.airportDetails && (
+                  <span style={{ color: "gray", fontSize: "12px" }}>{place.airportDetails.name}</span>
+                )}
               </li>
             ))}
           </ul>

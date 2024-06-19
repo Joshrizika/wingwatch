@@ -306,6 +306,9 @@ export const mainRouter = createTRPCRouter({
           },
           isVerified: true,
         },
+        include: {
+          airportDetails: true,
+        },
         take: 5, // Return only the top 5 results
       });
       return places;
