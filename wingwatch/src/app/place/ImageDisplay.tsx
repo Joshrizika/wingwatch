@@ -213,7 +213,7 @@ export default function ImageDisplay({
                             images[currentImageIndex]!.authorAttributions[0]
                               .photoUri
                           }
-                          src={`${images[currentImageIndex]!.type === "GM" ? "https:" : ""}${images[currentImageIndex]!.authorAttributions[0].photoUri}`}
+                          src={images[currentImageIndex]!.authorAttributions[0].photoUri}
                           alt="Author's Photo"
                           width={40}
                           height={40}
